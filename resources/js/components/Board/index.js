@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import Board, { moveCard } from "@lourenci/react-kanban";
 import "@lourenci/react-kanban/dist/styles.css";
 import detalles from './index.css';
+import axios from 'axios';
+import Swal from 'sweetalert2'
 
 let colorCard = "#f9fdf7";
 
@@ -99,6 +101,7 @@ export default class IBoard extends React.Component {
     this.state = {
       isLoading: true,
       projects: [],
+      data: [],
       draggedOverCol: 0
     };
 
@@ -107,13 +110,93 @@ export default class IBoard extends React.Component {
     this.columns = columnList;                                       //<---------column list
   }
 
+  async updateTicket(){
+
+    const formData = new FormData()
+    formData.append('_method', 'PATCH');
+    formData.append('transDate', transDate);
+    formData.append('priority', priority);
+    formData.append('complexity', complexity);
+    formData.append('description', description);
+    formData.append('tipo', tipo);
+    formData.append('solicitante', solicitante);
+    formData.append('asignado', asignado);
+    formData.append('responsable', responsable);
+    formData.append('incidenteId', incidenteId);
+
+    await axios.post('/api/tickets/${id}', formData).then(({data})=>{
+      Swal.fire({
+        icon:"success",
+        text:data.message
+      })
+      navigate("/")
+    }).catch(({response})=>{
+      if(response.status===422){
+        setValidationError(response.data.errors)
+      }else{
+        Swal.fire({
+          text:response.data.message,
+          icon:"error"
+        })
+      }
+    })
+
+    alert('Saved!');
+  }
+
+  ingresarPizarra(){
+    //Inicializo json
+    var registros = [];
+    //iterar data
+    for(let i = 0; i < this.state.data.length; i++) {
+        let obj = this.state.data[i];
+        var item = {}
+        item ["id"] = obj.id;
+        item ["order"] = "1";
+        item ["name"] = obj.description; //"Ticket "+(obj.id).toString() 
+        item ["date"] = obj.transDate;
+        item ["description"] = obj.tipo;
+        item ["project_stage"] = obj.id;
+        item ["color"] = colorCard;
+        console.log(item);
+        registros.push(item);
+    }
+    this.setState({ projects: registros, isLoading: false });
+  }
+
+
   componentDidMount() {
-    this.setState({ projects: projectList, isLoading: false });
+
+     // Retrieve project data from the database.
+     fetch('/tickets', {
+        credentials: 'include'
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            console.log('Error with session response');
+        }
+    })
+    .then((result) => {
+        // Set the state of data.
+        this.setState({ data: result['data']})
+        console.log(result['data']);
+        this.ingresarPizarra();
+    })
+    .catch((error) => {
+        console.log('Error: ', error);
+    });
+
+    console.log(this.state.data);
+
+    //this.setState({ projects: projectList, isLoading: false });
   }
 
   //this is called when a Kanban card is dragged over a column (called by column)
   handleOnDragEnter(e, stageValue) {
     this.setState({ draggedOverCol: stageValue });
+    console.log(this.setState.data);
   }
 
   //this is called when a Kanban card dropped over a column (called by card)
@@ -188,7 +271,7 @@ class KanbanColumn extends React.Component {
               paddingTop: "0px",
               width: "230px",
               textAlign: "center",
-              "border-radius": "8px",
+              "borderRadius": "8px",
               backgroundColor: this.state.mouseIsHovering ? "#d3d3d3" : "#ccccff" };
               */
     
@@ -202,9 +285,9 @@ class KanbanColumn extends React.Component {
           'paddingTop': '0px',
           'width': '230px',
           'textAlign': 'center",
-          "border-radius": '8px',
-          "border-style": 'solid',
-          "border-width": 'medium',
+          "borderRadius": '8px',
+          "borderStyle": 'solid',
+          "borderWidth": 'medium',
           'backgroundColor': this.state.mouseIsHovering
             ? "#d3d3d3"
             : this.props.color
@@ -237,9 +320,9 @@ class KanbanColumn extends React.Component {
 			'width': '230px',
 			'textAlign': 'center',
 			'backgroundColor': (this.state.mouseIsHovering) ? '#d3d3d3' : this.props.color,
-      "border-radius": '8px',
-      "border-style": 'solid',
-      "border-width": 'medium',
+      "borderRadius": '8px',
+      "borderStyle": 'solid',
+      "borderWidth": 'medium',
 		}}
 				
 				onDragEnter={(e) => {this.setState({ mouseIsHovering: true }); this.props.onDragEnter(e, this.props.stage);}}                            //drag ENTER
@@ -276,10 +359,10 @@ class KanbanCard extends React.Component {
     //alert('Description submitted ');
   }
   
-  fnSave(event) {
+  fnSave(value) {
     //this.setState({value: event.target.value});
     //alert('An essay was submitted: ' + this.state.value);
-    alert('Saved!');
+    alert('Saved!'+value.toString());
   }
   
   render() {   //render card
@@ -307,9 +390,9 @@ class KanbanCard extends React.Component {
 			'marginLeft': '0px',
 			'marginRight': '5px',
 			'marginBottom': '5px',
-      "border-radius": "8px",
-      "border-style": "solid",
-      "border-width": "thin",
+      "borderRadius": "8px",
+      "borderStyle": "solid",
+      "borderWidth": "thin",
       "box-shadow": "6px 6px 8px #777"
 		}}
 				draggable={true}
@@ -332,12 +415,13 @@ class KanbanCard extends React.Component {
                    <textarea maxlength= '250' onChange={this.handleChangeDescription}>
                    { this.props.project.description }
                    </textarea>
+                   <p>H</p>
                   
                 {/*<button onclick={fnSave()}>Save</button>*/}
                              <button
                               type="button"
-                              onClick={function() {
-                                {/*setCount(count + 1);*/}
+                              /*onClick={function() {
+                                {//setCount(count + 1);}
                                //alert(("dos").concat(" <--- name"));
                                                                            
                            
@@ -346,10 +430,12 @@ class KanbanCard extends React.Component {
                                         <h3>Good!!!!</h3>,
                                         document.getElementById("idprojname")
                                       );
-                                {/*alert('2.Saved!');*/}
-                                {/*this.getElementById("namex")="hhh";*/}
-                                {/*$('namex').text="hola";*/}
+                                {//alert('2.Saved!');}
+                                {//this.getElementById("namex")="hhh";}
+                                {//$('namex').text="hola";}
                               }}
+                              */
+                              onClick={this.fnSave(this.props.project.id)}
                             >
                               Save
                             </button>
@@ -378,7 +464,7 @@ class KanbanCard extends React.Component {
               marginLeft: "0px",
               marginRight: "5px",
               marginBottom: "5px",
-              "border-radius": "8px",
+              "borderRadius": "8px",
               "box-shadow": "6px 6px 8px #777" };
                 */
 /*
@@ -393,9 +479,9 @@ class KanbanCard extends React.Component {
           marginLeft: "0px",
           marginRight: "5px",
           marginBottom: "5px",
-          "border-radius": "8px",
-          "border-style": "solid",
-          "border-width": "thin",
+          "borderRadius": "8px",
+          "borderStyle": "solid",
+          "borderWidth": "thin",
           "box-shadow": "6px 6px 8px #777"
         },
 
