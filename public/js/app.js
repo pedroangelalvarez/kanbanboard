@@ -5440,7 +5440,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function App() {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Board__WEBPACK_IMPORTED_MODULE_2__["default"], {});
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      position: 'relative'
+    },
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Board__WEBPACK_IMPORTED_MODULE_2__["default"], {})
+  });
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
@@ -5683,12 +5691,8 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
         item["color"] = colorCard;
         console.log(item);
         registros.push(item);
-      }
+      } //this.setState({ projects: registros, isLoading: false });
 
-      this.setState({
-        projects: registros,
-        isLoading: false
-      });
     }
   }, {
     key: "componentDidMount",
@@ -5716,7 +5720,11 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
       })["catch"](function (error) {
         console.log('Error: ', error);
       });
-      console.log(this.state.data); //this.setState({ projects: projectList, isLoading: false });
+      console.log(this.state.data);
+      this.setState({
+        projects: projectList,
+        isLoading: false
+      });
     } //this is called when a Kanban card is dragged over a column (called by column)
 
   }, {
@@ -5745,8 +5753,11 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
       var _this3 = this;
 
       if (this.state.isLoading) {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h3", {
-          children: "\"Loading...\""
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+            className: "loading",
+            children: "Loading\u2026"
+          })
         });
       }
 
@@ -5984,8 +5995,7 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
         draggable: true,
         onDragEnd: function onDragEnd(e) {
           _this8.props.onDragEnd(e, _this8.props.project);
-        } //drag END
-        ,
+        },
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("h", {
             id: "idprojname",
@@ -6007,27 +6017,6 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
               maxlength: "250",
               onChange: this.handleChangeDescription,
               children: this.props.project.description
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("p", {
-              children: "H"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("button", {
-              type: "button"
-              /*onClick={function() {
-                {//setCount(count + 1);}
-               //alert(("dos").concat(" <--- name"));
-                                                           
-                                 
-                      ReactDOM.render(
-                        <h3>Good!!!!</h3>,
-                        document.getElementById("idprojname")
-                      );
-                {//alert('2.Saved!');}
-                {//this.getElementById("namex")="hhh";}
-                {//$('namex').text="hola";}
-              }}
-              */
-              ,
-              onClick: this.fnSave(this.props.project.id),
-              children: "Save"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("br", {})]
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
@@ -6039,7 +6028,7 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
               collapsed: !_this8.state.collapsed
             });
           },
-          children: this.state.collapsed ? String.fromCharCode('9660') : String.fromCharCode('9650')
+          children: this.state.collapsed ? String("Ver más") : String.fromCharCode('9650')
         })]
       }); //style='rows: 3, cols: 50, maxlength: 150'
 
@@ -11446,7 +11435,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "Body {\r\n    font-family: Sans-serif;\r\n    font-size: 14;\r\n    width: 100%;\r\n    background-color: #E0E0E0;\r\n  }\r\n\r\n  h1 {\r\n    position: absolute;\r\n    left: 16px;\r\n    top: 16px;\r\n  }\r\n\r\n  h2{\r\n    color: #30BF10;\r\n    font-family: 'Arbutus Slab', serif;\r\n    font-size: 12px !important;\r\n    font-weight: 800;\r\n    line-height: 2rem;\r\n  }\r\n\r\n  menu {\r\n    position: absolute;\r\n    right: 16px;\r\n    top: 0px;\r\n  }\r\n\r\n  menu.kanban .viewlist,\r\n  menu.list .viewkanban {\r\n    display: inline;\r\n  }\r\n\r\n  menu.kanban .viewkanban,\r\n  menu.list .viewlist {\r\n    display: none;\r\n  }\r\n\r\n  .dd {\r\n    max-width: 100%;\r\n    top: 88px;\r\n    margin: 0 auto;\r\n    display: block;\r\n    vertical-align: top;\r\n  }\r\n\r\n  ol {\r\n    transition: border-color 2s ease, all 0.1s ease;\r\n  }\r\n\r\n  ol.list {\r\n    padding-top: 2em;\r\n    padding-left: 15px;\r\n    max-width: 650px;\r\n    margin: 0 auto;\r\n  }\r\n\r\n  ol.list .text {\r\n    float: right;\r\n    width: 60%;\r\n  }\r\n\r\n  ol.list h3,\r\n  ol.list .actions,\r\n  ol.list label {\r\n    float: left;\r\n    width: 30%;\r\n  }\r\n\r\n  ol.list > li,\r\n  ol.list > h3 {\r\n    max-width: 600px;\r\n    margin: 0 auto;\r\n  }\r\n\r\n  ol.list > h2 {\r\n    padding-bottom: 6px;\r\n  }\r\n\r\n  ol.list.To-do {\r\n    border-left: 2px solid #FFB300;\r\n  }\r\n\r\n  ol.list.Gone {\r\n    border-left: 2px solid #FF3D00;\r\n  }\r\n\r\n  ol.list.progress {\r\n    border-left: 2px solid #29B6F6;\r\n  }\r\n\r\n  ol.list.Done {\r\n    border-left: 2px solid #8BC34A;\r\n  }\r\n\r\n  H2,\r\n  h1,\r\n  button {\r\n    margin-left: 5px;\r\n    font-family: 'Arbutus Slab', serif;\r\n  }\r\n\r\n  h2 {\r\n    color: #607D8B;\r\n  }\r\n\r\n  h2 .material-icons {\r\n    color: #B0BEC5;\r\n    line-height: 1.5;\r\n  }\r\n\r\n  .dd-handle .material-icons {\r\n    color: #B0BEC5;\r\n    font-size: 14px;\r\n    font-weight: 800;\r\n    line-height: 2rem;\r\n    position: relative;\r\n    right: 0;\r\n    color: #607D8B;\r\n    padding: 5px 16px;\r\n  }\r\n\r\n  button>.material-icons {\r\n    line-height: 0.2;\r\n    position:relative;\r\n    top:7px;\r\n  }\r\n\r\n  .dd-item:hover,\r\n  button:hover {\r\n    color: #00838F;\r\n    will-change: box-shadow;\r\n    transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);\r\n    box-shadow: 0 5px 6px 0 rgba(0, 0, 0, .14), 0 3px 1px -6px rgba(0, 0, 0, .2), 2px 5px 3px 0 rgba(0, 0, 0, .12);\r\n  }\r\n\r\n  button.addbutt {\r\n    background-color: #EEEEEE;\r\n    color: #607D8B;\r\n    width: 100%;\r\n  }\r\n\r\n  .list > button.addbutt {\r\n    max-width: 330px;\r\n  }\r\n\r\n  button:active, button:down, button:focus {box-shadow: 0 0 0 0, 0 0 0 0 rgba(0, 0, 0, .2), 0 0 0 0 rgba(0, 0, 0, .12);color:#00838F;}\r\n  button {\r\n    align-items: center;\r\n    background-color: #EEEEEE;\r\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\r\n    border: 1px solid #ccc;\r\n    border-radius: 2px;\r\n    color: #607D8B;\r\n    position: relative;\r\n    margin: 0;\r\n    min-width: 44px;\r\n    padding: 10px 16px;\r\n    display: inline-block;\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    text-transform: uppercase;\r\n    letter-spacing: 1;\r\n    overflow: hidden;\r\n    outline: none;\r\n    cursor: pointer;\r\n    text-decoration: none;\r\n      }\r\n\r\n  ol.kanban.To-do {\r\n    border-top: 5px solid #FFB300;\r\n  }\r\n\r\n  ol.kanban.Gone {\r\n    border-top: 5px solid #FF3D00;\r\n  }\r\n\r\n  ol.kanban.progress {\r\n    border-top: 5px solid #29B6F6;\r\n  }\r\n\r\n  ol.kanban.Done {\r\n    border-top: 5px solid #8BC34A;\r\n  }\r\n\r\n  ol.kanban {\r\n    border-top: 5px solid #78909C;\r\n    width: 20%;\r\n    height: auto;\r\n    margin: 1%;\r\n    max-width: 250px;\r\n    min-width: 120px;\r\n    display: inline-block;\r\n    vertical-align: top;\r\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\r\n    flex-direction: column;\r\n    min-height: 200px;\r\n    z-index: 1;\r\n    position: relative;\r\n    background: #fff;\r\n    padding: 1em;\r\n    border-radius: 2px;\r\n  }\r\n\r\n  .dd-item {\r\n    display: block;\r\n    position: relative;\r\n    list-style: none;\r\n    font-family: \"Roboto\", \"Helvetica\", \"Arial\", sans-serif;\r\n    min-height: 48px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    font-size: 16px;\r\n    min-height: 120px;\r\n    overflow: hidden;\r\n    z-index: 1;\r\n    position: relative;\r\n    background: #fff;\r\n    border-radius: 2px;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n  .title {\r\n    align-self: flex-end;\r\n    color: inherit;\r\n    display: block;\r\n    display: flex;\r\n    font-size: 24px;\r\n    line-height: normal;\r\n    overflow: hidden;\r\n    transform-origin: 149px 48px;\r\n    margin: 0;\r\n  }\r\n\r\n  .text {\r\n    color: grey;\r\n    border-top: 1px solid;\r\n    font-size: 1rem;\r\n    font-weight: 400;\r\n    line-height: 18px;\r\n    overflow: hidden;\r\n    padding: 16px;\r\n    width: 90%;\r\n  }\r\n\r\n  .actions {\r\n    border-top: 1px solid rgba(0, 0, 0, .1);\r\n    font-size: 8px;\r\n    line-height: normal;\r\n    width: 100%;\r\n    color: #B0BEC5;\r\n    padding: 8px;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n\r\n  /**\r\n   * Nestable\r\n   */\r\n\r\n  .dd {\r\n    position: relative;\r\n    display: block;\r\n    list-style: none;\r\n  }\r\n\r\n  .dd-list {\r\n    display: block;\r\n    position: relative;\r\n    margin: 0;\r\n    padding: 0;\r\n    list-style: none;\r\n  }\r\n\r\n  .dd-list .dd-list {\r\n    padding-left: 30px;\r\n  }\r\n\r\n  .dd-collapsed .dd-list {\r\n    display: none;\r\n  }\r\n\r\n  .dd-item {\r\n    display: block;\r\n    margin: 5px 0;\r\n    padding: 5px 10px;\r\n    color: #333;\r\n    text-decoration: none;\r\n    font-weight: bold;\r\n    border: 1px solid #ccc;\r\n    background: #fafafa;\r\n    border-radius: 3px;\r\n    box-sizing: border-box;\r\n    -moz-box-sizing: border-box;\r\n  }\r\n\r\n  .dd-item:hover {\r\n    background: #fff;\r\n  }\r\n\r\n  .dd-item > button {\r\n    display: block;\r\n    position: relative;\r\n    cursor: move;\r\n    float: left;\r\n    width: 25px;\r\n    height: 20px;\r\n    margin: 5px 0;\r\n    padding: 0;\r\n    text-indent: 100%;\r\n    white-space: nowrap;\r\n    overflow: hidden;\r\n    border: 0;\r\n    background: transparent;\r\n    font-size: 12px;\r\n    line-height: 1;\r\n    text-align: center;\r\n    font-weight: bold;\r\n  }\r\n\r\n  .dd-item > button:before {\r\n    content: '+';\r\n    display: block;\r\n    position: absolute;\r\n    width: 100%;\r\n    text-align: center;\r\n    text-indent: 0;\r\n  }\r\n\r\n  .dd-item > button[data-action=\"collapse\"]:before {\r\n    content: '<i class=\"material-icons\">filter_none</i>';\r\n  }\r\n\r\n  .dd-placeholder,\r\n  .dd-empty {\r\n    margin: 5px 0;\r\n    padding: 0;\r\n    min-height: 30px;\r\n    background: #E0E0E0;\r\n    border: 1px dashed #b6bcbf;\r\n    box-sizing: border-box;\r\n    -moz-box-sizing: border-box;\r\n  }\r\n\r\n  .dd-empty {\r\n    border: 1px dashed #bbb;\r\n    min-height: 100px;\r\n    background-color: #E0E0E0;\r\n    background-size: 60px 60px;\r\n    background-position: 0 0, 30px 30px;\r\n  }\r\n\r\n  .dd-dragel {\r\n    position: absolute;\r\n    pointer-events: none;\r\n    z-index: 9999;\r\n  }\r\n\r\n  .dd-dragel > .dd-item .dd-handle {\r\n    margin-top: 0;\r\n    cursor: move;\r\n  }\r\n\r\n  .dd-dragel .dd-item {\r\n    box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, .5);\r\n    cursor: move;\r\n  }", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\r\n    font-family: Sans-serif;\r\n    font-size: 14;\r\n    width: 100%;\r\n    background-color: #E0E0E0;\r\n  }\r\n\r\n  h1 {\r\n    position: absolute;\r\n    left: 16px;\r\n    top: 16px;\r\n  }\r\n\r\n  h2{\r\n    color: #30BF10;\r\n    font-family: 'Arbutus Slab', serif;\r\n    font-size: 12px !important;\r\n    font-weight: 800;\r\n    line-height: 2rem;\r\n  }\r\n\r\n  menu {\r\n    position: absolute;\r\n    right: 16px;\r\n    top: 0px;\r\n  }\r\n\r\n  menu.kanban .viewlist,\r\n  menu.list .viewkanban {\r\n    display: inline;\r\n  }\r\n\r\n  menu.kanban .viewkanban,\r\n  menu.list .viewlist {\r\n    display: none;\r\n  }\r\n\r\n  .dd {\r\n    max-width: 100%;\r\n    top: 88px;\r\n    margin: 0 auto;\r\n    display: block;\r\n    vertical-align: top;\r\n  }\r\n\r\n  ol {\r\n    transition: border-color 2s ease, all 0.1s ease;\r\n  }\r\n\r\n  ol.list {\r\n    padding-top: 2em;\r\n    padding-left: 15px;\r\n    max-width: 650px;\r\n    margin: 0 auto;\r\n  }\r\n\r\n  ol.list .text {\r\n    float: right;\r\n    width: 60%;\r\n  }\r\n\r\n  ol.list h3,\r\n  ol.list .actions,\r\n  ol.list label {\r\n    float: left;\r\n    width: 30%;\r\n  }\r\n\r\n  ol.list > li,\r\n  ol.list > h3 {\r\n    max-width: 600px;\r\n    margin: 0 auto;\r\n  }\r\n\r\n  ol.list > h2 {\r\n    padding-bottom: 6px;\r\n  }\r\n\r\n  ol.list.To-do {\r\n    border-left: 2px solid #FFB300;\r\n  }\r\n\r\n  ol.list.Gone {\r\n    border-left: 2px solid #FF3D00;\r\n  }\r\n\r\n  ol.list.progress {\r\n    border-left: 2px solid #29B6F6;\r\n  }\r\n\r\n  ol.list.Done {\r\n    border-left: 2px solid #8BC34A;\r\n  }\r\n\r\n  H2,\r\n  h1,\r\n  button {\r\n    margin-left: 5px;\r\n    font-family: 'Arbutus Slab', serif;\r\n  }\r\n\r\n  h2 {\r\n    color: #607D8B;\r\n  }\r\n\r\n  h2 .material-icons {\r\n    color: #B0BEC5;\r\n    line-height: 1.5;\r\n  }\r\n\r\n  .dd-handle .material-icons {\r\n    color: #B0BEC5;\r\n    font-size: 14px;\r\n    font-weight: 800;\r\n    line-height: 2rem;\r\n    position: relative;\r\n    right: 0;\r\n    color: #607D8B;\r\n    padding: 5px 16px;\r\n  }\r\n\r\n  button>.material-icons {\r\n    line-height: 0.2;\r\n    position:relative;\r\n    top:7px;\r\n  }\r\n\r\n  .dd-item:hover,\r\n  button:hover {\r\n    color: #00838F;\r\n    will-change: box-shadow;\r\n    transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);\r\n    box-shadow: 0 5px 6px 0 rgba(0, 0, 0, .14), 0 3px 1px -6px rgba(0, 0, 0, .2), 2px 5px 3px 0 rgba(0, 0, 0, .12);\r\n  }\r\n\r\n  button.addbutt {\r\n    background-color: #EEEEEE;\r\n    color: #607D8B;\r\n    width: 100%;\r\n  }\r\n\r\n  .list > button.addbutt {\r\n    max-width: 330px;\r\n  }\r\n\r\n  button:active, button:down, button:focus {box-shadow: 0 0 0 0, 0 0 0 0 rgba(0, 0, 0, .2), 0 0 0 0 rgba(0, 0, 0, .12);color:#00838F;}\r\n  button {\r\n    align-items: center;\r\n    background-color: #EEEEEE;\r\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\r\n    border: 1px solid #ccc;\r\n    border-radius: 2px;\r\n    color: #607D8B;\r\n    position: relative;\r\n    margin: 0;\r\n    min-width: 44px;\r\n    padding: 10px 16px;\r\n    display: inline-block;\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    text-transform: uppercase;\r\n    letter-spacing: 1;\r\n    overflow: hidden;\r\n    outline: none;\r\n    cursor: pointer;\r\n    text-decoration: none;\r\n      }\r\n\r\n  ol.kanban.To-do {\r\n    border-top: 5px solid #FFB300;\r\n  }\r\n\r\n  ol.kanban.Gone {\r\n    border-top: 5px solid #FF3D00;\r\n  }\r\n\r\n  ol.kanban.progress {\r\n    border-top: 5px solid #29B6F6;\r\n  }\r\n\r\n  ol.kanban.Done {\r\n    border-top: 5px solid #8BC34A;\r\n  }\r\n\r\n  ol.kanban {\r\n    border-top: 5px solid #78909C;\r\n    width: 20%;\r\n    height: auto;\r\n    margin: 1%;\r\n    max-width: 250px;\r\n    min-width: 120px;\r\n    display: inline-block;\r\n    vertical-align: top;\r\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\r\n    flex-direction: column;\r\n    min-height: 200px;\r\n    z-index: 1;\r\n    position: relative;\r\n    background: #fff;\r\n    padding: 1em;\r\n    border-radius: 2px;\r\n  }\r\n\r\n  .dd-item {\r\n    display: block;\r\n    position: relative;\r\n    list-style: none;\r\n    font-family: \"Roboto\", \"Helvetica\", \"Arial\", sans-serif;\r\n    min-height: 48px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    font-size: 16px;\r\n    min-height: 120px;\r\n    overflow: hidden;\r\n    z-index: 1;\r\n    position: relative;\r\n    background: #fff;\r\n    border-radius: 2px;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n  .title {\r\n    align-self: flex-end;\r\n    color: inherit;\r\n    display: block;\r\n    display: flex;\r\n    font-size: 24px;\r\n    line-height: normal;\r\n    overflow: hidden;\r\n    transform-origin: 149px 48px;\r\n    margin: 0;\r\n  }\r\n\r\n  .text {\r\n    color: grey;\r\n    border-top: 1px solid;\r\n    font-size: 1rem;\r\n    font-weight: 400;\r\n    line-height: 18px;\r\n    overflow: hidden;\r\n    padding: 16px;\r\n    width: 90%;\r\n  }\r\n\r\n  .actions {\r\n    border-top: 1px solid rgba(0, 0, 0, .1);\r\n    font-size: 8px;\r\n    line-height: normal;\r\n    width: 100%;\r\n    color: #B0BEC5;\r\n    padding: 8px;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n\r\n  /**\r\n   * Nestable\r\n   */\r\n\r\n  .dd {\r\n    position: relative;\r\n    display: block;\r\n    list-style: none;\r\n  }\r\n\r\n  .dd-list {\r\n    display: block;\r\n    position: relative;\r\n    margin: 0;\r\n    padding: 0;\r\n    list-style: none;\r\n  }\r\n\r\n  .dd-list .dd-list {\r\n    padding-left: 30px;\r\n  }\r\n\r\n  .dd-collapsed .dd-list {\r\n    display: none;\r\n  }\r\n\r\n  .dd-item {\r\n    display: block;\r\n    margin: 5px 0;\r\n    padding: 5px 10px;\r\n    color: #333;\r\n    text-decoration: none;\r\n    font-weight: bold;\r\n    border: 1px solid #ccc;\r\n    background: #fafafa;\r\n    border-radius: 3px;\r\n    box-sizing: border-box;\r\n    -moz-box-sizing: border-box;\r\n  }\r\n\r\n  .dd-item:hover {\r\n    background: #fff;\r\n  }\r\n\r\n  .dd-item > button {\r\n    display: block;\r\n    position: relative;\r\n    cursor: move;\r\n    float: left;\r\n    width: 25px;\r\n    height: 20px;\r\n    margin: 5px 0;\r\n    padding: 0;\r\n    text-indent: 100%;\r\n    white-space: nowrap;\r\n    overflow: hidden;\r\n    border: 0;\r\n    background: transparent;\r\n    font-size: 12px;\r\n    line-height: 1;\r\n    text-align: center;\r\n    font-weight: bold;\r\n  }\r\n\r\n  .dd-item > button:before {\r\n    content: '+';\r\n    display: block;\r\n    position: absolute;\r\n    width: 100%;\r\n    text-align: center;\r\n    text-indent: 0;\r\n  }\r\n\r\n  .dd-item > button[data-action=\"collapse\"]:before {\r\n    content: '<i class=\"material-icons\">filter_none</i>';\r\n  }\r\n\r\n  .dd-placeholder,\r\n  .dd-empty {\r\n    margin: 5px 0;\r\n    padding: 0;\r\n    min-height: 30px;\r\n    background: #E0E0E0;\r\n    border: 1px dashed #b6bcbf;\r\n    box-sizing: border-box;\r\n    -moz-box-sizing: border-box;\r\n  }\r\n\r\n  .dd-empty {\r\n    border: 1px dashed #bbb;\r\n    min-height: 100px;\r\n    background-color: #E0E0E0;\r\n    background-size: 60px 60px;\r\n    background-position: 0 0, 30px 30px;\r\n  }\r\n\r\n  .dd-dragel {\r\n    position: absolute;\r\n    pointer-events: none;\r\n    z-index: 9999;\r\n  }\r\n\r\n  .dd-dragel > .dd-item .dd-handle {\r\n    margin-top: 0;\r\n    cursor: move;\r\n  }\r\n\r\n  .dd-dragel .dd-item {\r\n    box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, .5);\r\n    cursor: move;\r\n  }\r\n\r\n#loading\r\n.loading {\r\n  position: fixed;\r\n  z-index: 999;\r\n  height: 2em;\r\n  width: 2em;\r\n  overflow: visible;\r\n  margin: auto;\r\n  top: 0;\r\n  left: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n}\r\n\r\n/* Transparent Overlay */\r\n.loading:before {\r\n  content: '';\r\n  display: block;\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: rgba(0,0,0,0.3);\r\n}\r\n\r\n/* :not(:required) hides these rules from IE9 and below */\r\n.loading:not(:required) {\r\n  /* hide \"loading...\" text */\r\n  font: 0/0 a;\r\n  color: transparent;\r\n  text-shadow: none;\r\n  background-color: transparent;\r\n  border: 0;\r\n}\r\n\r\n.loading:not(:required):after {\r\n  content: '';\r\n  display: block;\r\n  font-size: 10px;\r\n  width: 1em;\r\n  height: 1em;\r\n  margin-top: -0.5em;\r\n  -webkit-animation: spinner 1500ms infinite linear;\r\n  animation: spinner 1500ms infinite linear;\r\n  border-radius: 0.5em;\r\n  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;\r\n}\r\n\r\n/* Animation */\r\n\r\n@-webkit-keyframes spinner {\r\n  0% {\r\n    transform: rotate(0deg);\r\n  }\r\n  100% {\r\n    transform: rotate(360deg);\r\n  }\r\n}\r\n@keyframes spinner {\r\n  0% {\r\n    transform: rotate(0deg);\r\n  }\r\n  100% {\r\n    transform: rotate(360deg);\r\n  }\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

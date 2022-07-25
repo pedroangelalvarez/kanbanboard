@@ -161,7 +161,7 @@ export default class IBoard extends React.Component {
         console.log(item);
         registros.push(item);
     }
-    this.setState({ projects: registros, isLoading: false });
+    //this.setState({ projects: registros, isLoading: false });
   }
 
 
@@ -190,7 +190,7 @@ export default class IBoard extends React.Component {
 
     console.log(this.state.data);
 
-    //this.setState({ projects: projectList, isLoading: false });
+    this.setState({ projects: projectList, isLoading: false });
   }
 
   //this is called when a Kanban card is dragged over a column (called by column)
@@ -210,7 +210,7 @@ export default class IBoard extends React.Component {
 
   render() {
     if (this.state.isLoading) {
-      return <h3>"Loading..."</h3>
+      return <div><div className={"loading"}>Loading&#8230;</div></div>
     }
 
     return (
@@ -397,8 +397,8 @@ class KanbanCard extends React.Component {
 		}}
 				draggable={true}
         
-				onDragEnd={(e) => {this.props.onDragEnd(e, this.props.project);}}     //drag END
-			>
+				onDragEnd={(e) => {this.props.onDragEnd(e, this.props.project);}} >
+                    
 				<div><h id="idprojname">[{this.props.project.id}] {this.props.project.name}</h><h2> {this.props.project.date}</h2></div>
 				{(this.state.collapsed)
 					? null
@@ -415,30 +415,7 @@ class KanbanCard extends React.Component {
                    <textarea maxlength= '250' onChange={this.handleChangeDescription}>
                    { this.props.project.description }
                    </textarea>
-                   <p>H</p>
                   
-                {/*<button onclick={fnSave()}>Save</button>*/}
-                             <button
-                              type="button"
-                              /*onClick={function() {
-                                {//setCount(count + 1);}
-                               //alert(("dos").concat(" <--- name"));
-                                                                           
-                           
-                    
-                                      ReactDOM.render(
-                                        <h3>Good!!!!</h3>,
-                                        document.getElementById("idprojname")
-                                      );
-                                {//alert('2.Saved!');}
-                                {//this.getElementById("namex")="hhh";}
-                                {//$('namex').text="hola";}
-                              }}
-                              */
-                              onClick={this.fnSave(this.props.project.id)}
-                            >
-                              Save
-                            </button>
                    <br/>
                </form>  
              </div>
@@ -448,7 +425,7 @@ class KanbanCard extends React.Component {
 					style={{'width': '100%'}}
 					onClick={(e) => {this.setState({collapsed: !this.state.collapsed});}}
 				>
-					{(this.state.collapsed) ? String.fromCharCode('9660') : String.fromCharCode('9650')}
+					{(this.state.collapsed) ? String("Ver más") : String.fromCharCode('9650')}
  
 				</div>
 			</div>
