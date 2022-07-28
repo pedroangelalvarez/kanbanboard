@@ -1,6 +1,8 @@
 import React, { useState, Component } from "react";
 import ReactDOM from "react-dom";
 import Board, { moveCard } from "@lourenci/react-kanban";
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import "@lourenci/react-kanban/dist/styles.css";
 import detalles from './index.css';
 import axios from 'axios';
@@ -161,7 +163,7 @@ export default class IBoard extends React.Component {
         console.log(item);
         registros.push(item);
     }
-    //this.setState({ projects: registros, isLoading: false });
+    this.setState({ projects: registros, isLoading: false });
   }
 
 
@@ -190,7 +192,7 @@ export default class IBoard extends React.Component {
 
     console.log(this.state.data);
 
-    this.setState({ projects: projectList, isLoading: false });
+    //this.setState({ projects: projectList, isLoading: false });
   }
 
   //this is called when a Kanban card is dragged over a column (called by column)
@@ -399,7 +401,7 @@ class KanbanCard extends React.Component {
         
 				onDragEnd={(e) => {this.props.onDragEnd(e, this.props.project);}} >
                     
-				<div><h id="idprojname">[{this.props.project.id}] {this.props.project.name}</h><h2> {this.props.project.date}</h2></div>
+				<div><h id="idprojname">[<a href="#" target="_blank" rel="noopener noreferrer"><u>Ticket {this.props.project.id}</u></a>] {this.props.project.name}</h><h2> {this.props.project.date}</h2></div>
 				{(this.state.collapsed)
 					? null
 					: (<div>
@@ -407,14 +409,14 @@ class KanbanCard extends React.Component {
               <form>
                    
                    <strong>Title: </strong>
-                   <textarea maxlength= '150' onChange={this.handleChangeTitle} >
+                   <p maxlength= '150' onChange={this.handleChangeTitle} >
                      {this.props.project.name}
-                   </textarea> 
+                   </p> 
                    <strong>
                      : </strong>
-                   <textarea maxlength= '250' onChange={this.handleChangeDescription}>
+                   <p maxlength= '250' onChange={this.handleChangeDescription}>
                    { this.props.project.description }
-                   </textarea>
+                   </p>
                   
                    <br/>
                </form>  
@@ -422,10 +424,10 @@ class KanbanCard extends React.Component {
             )
 				}
 				<div
-					style={{'width': '100%'}}
+					style={{'width': '100%','color': '#7788FF'}}
 					onClick={(e) => {this.setState({collapsed: !this.state.collapsed});}}
 				>
-					{(this.state.collapsed) ? String("Ver más") : String.fromCharCode('9650')}
+				<u>	{(this.state.collapsed) ? String("Ver más") : String("Ocultar")} </u>
  
 				</div>
 			</div>
