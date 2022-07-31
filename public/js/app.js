@@ -6002,7 +6002,7 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("h", {
             id: "idprojname",
             children: ["[", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("a", {
-              href: "#",
+              href: "/ticket",
               target: "_blank",
               rel: "noopener noreferrer",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("u", {

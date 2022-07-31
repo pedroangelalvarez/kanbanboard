@@ -401,7 +401,7 @@ class KanbanCard extends React.Component {
         
 				onDragEnd={(e) => {this.props.onDragEnd(e, this.props.project);}} >
                     
-				<div><h id="idprojname">[<a href="#" target="_blank" rel="noopener noreferrer"><u>Ticket {this.props.project.id}</u></a>] {this.props.project.name}</h><h2> {this.props.project.date}</h2></div>
+				<div><h id="idprojname">[<a href="/ticket" target="_blank" rel="noopener noreferrer"><u>Ticket {this.props.project.id}</u></a>] {this.props.project.name}</h><h2> {this.props.project.date}</h2></div>
 				{(this.state.collapsed)
 					? null
 					: (<div>
