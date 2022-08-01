@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('/gettickets', function (Request $request) {
-    $tickets = Ticket::paginate(10);
+    $tickets = Ticket::paginate(100);
     return $tickets;
 });
 
@@ -29,4 +29,18 @@ Route::get('/getticket/{id}', function ($id) {
 
 Route::get('/ticket/{id}', function ($id){
     return view('ticket', ['id' => $id]);
+});
+
+Route::get('/getincidentes', function (Request $request) {
+    $tickets = Ticket::paginate(100);
+    return $tickets;
+});
+
+Route::get('/getincidente/{id}', function ($id) {
+    $ticket = Ticket::find($id);
+    return $ticket;
+});
+
+Route::get('/incidente/{id}', function ($id){
+    return view('incidente', ['id' => $id]);
 });
