@@ -5,8 +5,8 @@ import "@lourenci/react-kanban/dist/styles.css";
 import axios from 'axios';
 import Swal from 'sweetalert2'
 
-//Componente que recibe el id del ticket y lo muestra en pantalla
-export default class Ticket extends React.Component {
+//Componente que recibe el id del incidente y lo muestra en pantalla
+export default class Incidente extends React.Component {
 
     constructor(props) {
       super(props);
@@ -21,10 +21,10 @@ export default class Ticket extends React.Component {
 
     componentDidMount() {
       var server_request_uri = location.pathname + location.search;
-      var ticketid = server_request_uri.substring(8,server_request_uri.length);
-      console.log(ticketid);
-      this.setState({ id: ticketid })
-      fetch('/getticket/'+ticketid, {
+      var incidenteid = server_request_uri.substring(8,server_request_uri.length);
+      console.log(incidenteid);
+      this.setState({ id: incidenteid })
+      fetch('/getincidente/'+incidenteid, {
         credentials: 'include'
       })
       .then((response) => {

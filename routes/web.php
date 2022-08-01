@@ -17,7 +17,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/tickets', function (Request $request) {
+Route::get('/gettickets', function (Request $request) {
     $tickets = Ticket::paginate(10);
     return $tickets;
+});
+
+Route::get('/getticket/{id}', function ($id) {
+    $ticket = Ticket::find($id);
+    return $ticket;
+});
+
+Route::get('/ticket/{id}', function ($id){
+    return view('ticket', ['id' => $id]);
 });

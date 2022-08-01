@@ -170,7 +170,7 @@ export default class IBoard extends React.Component {
   componentDidMount() {
 
      // Retrieve project data from the database.
-     fetch('/tickets', {
+     fetch('/gettickets', {
         credentials: 'include'
     })
     .then((response) => {
@@ -401,7 +401,7 @@ class KanbanCard extends React.Component {
         
 				onDragEnd={(e) => {this.props.onDragEnd(e, this.props.project);}} >
                     
-				<div><h id="idprojname">[<a href="/ticket" target="_blank" rel="noopener noreferrer"><u>Ticket {this.props.project.id}</u></a>] {this.props.project.name}</h><h2> {this.props.project.date}</h2></div>
+				<div><h id="idprojname">[<a href={"/ticket/"+this.props.project.id} target="_blank" rel="noopener noreferrer"><u>Ticket {this.props.project.id}</u></a>] {this.props.project.name}</h><h2> {this.props.project.date}</h2></div>
 				{(this.state.collapsed)
 					? null
 					: (<div>
