@@ -1,4 +1,4 @@
-import './bootstrap';
+//import './bootstrap';
 
 var server_request_uri = location.pathname + location.search;
 console.log(server_request_uri);

@@ -21,7 +21,7 @@ export default class Incidente extends React.Component {
 
     componentDidMount() {
       var server_request_uri = location.pathname + location.search;
-      var incidenteid = server_request_uri.substring(8,server_request_uri.length);
+      var incidenteid = server_request_uri.substring(11,server_request_uri.length);
       console.log(incidenteid);
       this.setState({ id: incidenteid })
       fetch('/getincidente/'+incidenteid, {
