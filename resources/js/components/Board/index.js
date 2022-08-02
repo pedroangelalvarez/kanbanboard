@@ -13,7 +13,7 @@ let colorCard = "#f9fdf7";
 let columnList =[
   { name: "POR HACER", stage: 1, color: "#e8e858" },
   { name: "EN PROGRESO", stage: 2, color: "#b8bcf8" },
-  { name: "TERMINADO", stage: 3, color: "#88ff88" },
+  { name: "TERMINADO", stage: 3, color: "#1B65A7" },
   { name: "CANCELADO", stage: 4, color: "#ee0a0a" }
 ]
 

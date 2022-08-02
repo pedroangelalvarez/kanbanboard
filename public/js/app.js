@@ -5383,8 +5383,10 @@ console.log(server_request_uri);
 
 if (server_request_uri === '/') {
   __webpack_require__(/*! ./components/Index */ "./resources/js/components/Index.js");
-} else {
+} else if (server_request_uri.includes('ticket')) {
   __webpack_require__(/*! ./components/IndexTicket */ "./resources/js/components/IndexTicket.js");
+} else if (server_request_uri.includes('incidente')) {
+  __webpack_require__(/*! ./components/IndexIncidente */ "./resources/js/components/IndexIncidente.js");
 }
 
 /***/ }),
@@ -5534,7 +5536,7 @@ var columnList = [{
 }, {
   name: "TERMINADO",
   stage: 3,
-  color: "#88ff88"
+  color: "#1B65A7"
 }, {
   name: "CANCELADO",
   stage: 4,
@@ -6156,6 +6158,262 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
 
 /***/ }),
 
+/***/ "./resources/js/components/Incidente/index.js":
+/*!****************************************************!*\
+  !*** ./resources/js/components/Incidente/index.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Incidente)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var _lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lourenci/react-kanban */ "./node_modules/@lourenci/react-kanban/dist/index.js");
+/* harmony import */ var _lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _lourenci_react_kanban_dist_styles_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lourenci/react-kanban/dist/styles.css */ "./node_modules/@lourenci/react-kanban/dist/styles.css");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+
+
+ //Componente que recibe el id del incidente y lo muestra en pantalla
+
+
+
+
+var Incidente = /*#__PURE__*/function (_React$Component) {
+  _inherits(Incidente, _React$Component);
+
+  var _super = _createSuper(Incidente);
+
+  function Incidente(props) {
+    var _this;
+
+    _classCallCheck(this, Incidente);
+
+    _this = _super.call(this, props);
+    _this.state = {
+      isLoading: true,
+      id: 0,
+      data: [],
+      draggedOverCol: 0
+    };
+    return _this;
+  }
+
+  _createClass(Incidente, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var server_request_uri = location.pathname + location.search;
+      var incidenteid = server_request_uri.substring(8, server_request_uri.length);
+      console.log(incidenteid);
+      this.setState({
+        id: incidenteid
+      });
+      fetch('/getincidente/' + incidenteid, {
+        credentials: 'include'
+      }).then(function (response) {
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.log('Error with session response');
+        }
+      }).then(function (result) {
+        // Set the state of data.
+        _this2.setState({
+          data: result['data']
+        });
+
+        console.log(result['data']);
+
+        _this2.setState({
+          isLoading: false
+        });
+      })["catch"](function (error) {
+        console.log('Error: ', error);
+      });
+      console.log(this.state.data);
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {}
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {}
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      if (this.state.isLoading) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("h3", {
+          children: "\"Loading...\""
+        });
+      }
+
+      var modalStyle = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        zIndex: '9999',
+        background: '#fff',
+        border: '1px solid gray',
+        boxShadow: '4px 4px 25px 1px #888888',
+        borderRadius: '2px'
+      };
+      var modalHeaderStyle = {
+        width: '100%',
+        height: 40,
+        background: '#333333',
+        position: 'absolute',
+        borderBottom: '1px solid black',
+        top: 0,
+        cursor: 'move',
+        color: 'white'
+      };
+      var modalFooterStyle = {
+        width: '100%',
+        height: 40,
+        borderTop: '1px solid black',
+        background: '#333',
+        position: 'absolute',
+        bottom: 0,
+        textAlign: 'right'
+      };
+      var modalBodyStyle = {
+        paddingTop: 43,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: 20,
+        background: '#242424',
+        height: '80%',
+        color: 'white'
+      };
+      var closeButtonStyle = {
+        color: '#777',
+        font: '14px/100% arial, sans-serif',
+        position: 'absolute',
+        right: '5px',
+        textDecoration: 'none',
+        textShadow: '0 1px 0 #fff',
+        top: 5
+      };
+
+      if (this.props.width && this.props.height) {
+        modalStyle.width = this.props.width + 'px';
+        modalStyle.height = this.props.height + 'px';
+        modalStyle.marginLeft = '-' + this.props.width / 2 + 'px', modalStyle.marginTop = '-' + this.props.height / 2 + 'px', modalStyle.transform = null;
+      }
+
+      if (this.props.style) {
+        for (var key in this.props.style) {
+          modalStyle[key] = this.props.style[key];
+        }
+      }
+
+      var backdropStyle = {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        top: '0px',
+        left: '0px',
+        zIndex: '9998',
+        background: 'rgba(0, 0, 0, 0.3)'
+      };
+
+      if (this.props.backdropStyle) {
+        for (var _key in this.props.backdropStyle) {
+          backdropStyle[_key] = this.props.backdropStyle[_key];
+        }
+      }
+
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            className: this.props.containerClassName,
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+              className: this.props.className,
+              style: modalStyle,
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                className: "modalHeader",
+                style: modalHeaderStyle,
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
+                  onClick: function onClick(e) {
+                    return _this3.close(e);
+                  },
+                  href: "#",
+                  className: "close-thin"
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                className: "modalBody",
+                style: modalBodyStyle,
+                children: this.props.children
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                className: "modalFooter",
+                style: modalFooterStyle,
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
+                  onClick: function onClick(e) {
+                    _this3.close(e);
+
+                    window.location.reload(false);
+                  },
+                  className: "mm-close",
+                  children: "Close"
+                })
+              })]
+            }), !this.props.noBackdrop && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+              className: this.props.backdropClassName,
+              style: backdropStyle,
+              onClick: function onClick(e) {
+                return _this3.close(e);
+              }
+            })]
+          })
+        })
+      });
+    }
+  }]);
+
+  return Incidente;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Index.js":
 /*!******************************************!*\
   !*** ./resources/js/components/Index.js ***!
@@ -6176,6 +6434,30 @@ __webpack_require__.r(__webpack_exports__);
 
 react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.StrictMode, {
   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_App__WEBPACK_IMPORTED_MODULE_3__["default"], {})
+}), document.getElementById('root'));
+
+/***/ }),
+
+/***/ "./resources/js/components/IndexIncidente.js":
+/*!***************************************************!*\
+  !*** ./resources/js/components/IndexIncidente.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./index.css */ "./resources/js/components/index.css");
+/* harmony import */ var _Incidente__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Incidente */ "./resources/js/components/Incidente/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+
+react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.StrictMode, {
+  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Incidente__WEBPACK_IMPORTED_MODULE_3__["default"], {})
 }), document.getElementById('root'));
 
 /***/ }),
@@ -11733,7 +12015,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\r\n    font-family: Sans-serif;\r\n    font-size: 14;\r\n    width: 100%;\r\n    background-color: #E0E0E0;\r\n  }\r\n\r\n  h1 {\r\n    position: absolute;\r\n    left: 16px;\r\n    top: 16px;\r\n  }\r\n\r\n  h2{\r\n    color: #30BF10;\r\n    font-family: 'Arbutus Slab', serif;\r\n    font-size: 12px !important;\r\n    font-weight: 800;\r\n    line-height: 2rem;\r\n  }\r\n\r\n  menu {\r\n    position: absolute;\r\n    right: 16px;\r\n    top: 0px;\r\n  }\r\n\r\n  menu.kanban .viewlist,\r\n  menu.list .viewkanban {\r\n    display: inline;\r\n  }\r\n\r\n  menu.kanban .viewkanban,\r\n  menu.list .viewlist {\r\n    display: none;\r\n  }\r\n\r\n  .dd {\r\n    max-width: 100%;\r\n    top: 88px;\r\n    margin: 0 auto;\r\n    display: block;\r\n    vertical-align: top;\r\n  }\r\n\r\n  ol {\r\n    transition: border-color 2s ease, all 0.1s ease;\r\n  }\r\n\r\n  ol.list {\r\n    padding-top: 2em;\r\n    padding-left: 15px;\r\n    max-width: 650px;\r\n    margin: 0 auto;\r\n  }\r\n\r\n  ol.list .text {\r\n    float: right;\r\n    width: 60%;\r\n  }\r\n\r\n  ol.list h3,\r\n  ol.list .actions,\r\n  ol.list label {\r\n    float: left;\r\n    width: 30%;\r\n  }\r\n\r\n  ol.list > li,\r\n  ol.list > h3 {\r\n    max-width: 600px;\r\n    margin: 0 auto;\r\n  }\r\n\r\n  ol.list > h2 {\r\n    padding-bottom: 6px;\r\n  }\r\n\r\n  ol.list.To-do {\r\n    border-left: 2px solid #FFB300;\r\n  }\r\n\r\n  ol.list.Gone {\r\n    border-left: 2px solid #FF3D00;\r\n  }\r\n\r\n  ol.list.progress {\r\n    border-left: 2px solid #29B6F6;\r\n  }\r\n\r\n  ol.list.Done {\r\n    border-left: 2px solid #8BC34A;\r\n  }\r\n\r\n  H2,\r\n  h1,\r\n  button {\r\n    margin-left: 5px;\r\n    font-family: 'Arbutus Slab', serif;\r\n  }\r\n\r\n  h2 {\r\n    color: #607D8B;\r\n  }\r\n\r\n  h2 .material-icons {\r\n    color: #B0BEC5;\r\n    line-height: 1.5;\r\n  }\r\n\r\n  .dd-handle .material-icons {\r\n    color: #B0BEC5;\r\n    font-size: 14px;\r\n    font-weight: 800;\r\n    line-height: 2rem;\r\n    position: relative;\r\n    right: 0;\r\n    color: #607D8B;\r\n    padding: 5px 16px;\r\n  }\r\n\r\n  button>.material-icons {\r\n    line-height: 0.2;\r\n    position:relative;\r\n    top:7px;\r\n  }\r\n\r\n  .dd-item:hover,\r\n  button:hover {\r\n    color: #00838F;\r\n    will-change: box-shadow;\r\n    transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);\r\n    box-shadow: 0 5px 6px 0 rgba(0, 0, 0, .14), 0 3px 1px -6px rgba(0, 0, 0, .2), 2px 5px 3px 0 rgba(0, 0, 0, .12);\r\n  }\r\n\r\n  button.addbutt {\r\n    background-color: #EEEEEE;\r\n    color: #607D8B;\r\n    width: 100%;\r\n  }\r\n\r\n  .list > button.addbutt {\r\n    max-width: 330px;\r\n  }\r\n\r\n  button:active, button:down, button:focus {box-shadow: 0 0 0 0, 0 0 0 0 rgba(0, 0, 0, .2), 0 0 0 0 rgba(0, 0, 0, .12);color:#00838F;}\r\n  button {\r\n    align-items: center;\r\n    background-color: #EEEEEE;\r\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\r\n    border: 1px solid #ccc;\r\n    border-radius: 2px;\r\n    color: #607D8B;\r\n    position: relative;\r\n    margin: 0;\r\n    min-width: 44px;\r\n    padding: 10px 16px;\r\n    display: inline-block;\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    text-transform: uppercase;\r\n    letter-spacing: 1;\r\n    overflow: hidden;\r\n    outline: none;\r\n    cursor: pointer;\r\n    text-decoration: none;\r\n      }\r\n\r\n  ol.kanban.To-do {\r\n    border-top: 5px solid #FFB300;\r\n  }\r\n\r\n  ol.kanban.Gone {\r\n    border-top: 5px solid #FF3D00;\r\n  }\r\n\r\n  ol.kanban.progress {\r\n    border-top: 5px solid #29B6F6;\r\n  }\r\n\r\n  ol.kanban.Done {\r\n    border-top: 5px solid #8BC34A;\r\n  }\r\n\r\n  ol.kanban {\r\n    border-top: 5px solid #78909C;\r\n    width: 20%;\r\n    height: auto;\r\n    margin: 1%;\r\n    max-width: 250px;\r\n    min-width: 120px;\r\n    display: inline-block;\r\n    vertical-align: top;\r\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\r\n    flex-direction: column;\r\n    min-height: 200px;\r\n    z-index: 1;\r\n    position: relative;\r\n    background: #fff;\r\n    padding: 1em;\r\n    border-radius: 2px;\r\n  }\r\n\r\n  .dd-item {\r\n    display: block;\r\n    position: relative;\r\n    list-style: none;\r\n    font-family: \"Roboto\", \"Helvetica\", \"Arial\", sans-serif;\r\n    min-height: 48px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    font-size: 16px;\r\n    min-height: 120px;\r\n    overflow: hidden;\r\n    z-index: 1;\r\n    position: relative;\r\n    background: #fff;\r\n    border-radius: 2px;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n  .title {\r\n    align-self: flex-end;\r\n    color: inherit;\r\n    display: block;\r\n    display: flex;\r\n    font-size: 24px;\r\n    line-height: normal;\r\n    overflow: hidden;\r\n    transform-origin: 149px 48px;\r\n    margin: 0;\r\n  }\r\n\r\n  .text {\r\n    color: grey;\r\n    border-top: 1px solid;\r\n    font-size: 1rem;\r\n    font-weight: 400;\r\n    line-height: 18px;\r\n    overflow: hidden;\r\n    padding: 16px;\r\n    width: 90%;\r\n  }\r\n\r\n  .actions {\r\n    border-top: 1px solid rgba(0, 0, 0, .1);\r\n    font-size: 8px;\r\n    line-height: normal;\r\n    width: 100%;\r\n    color: #B0BEC5;\r\n    padding: 8px;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n\r\n  /**\r\n   * Nestable\r\n   */\r\n\r\n  .dd {\r\n    position: relative;\r\n    display: block;\r\n    list-style: none;\r\n  }\r\n\r\n  .dd-list {\r\n    display: block;\r\n    position: relative;\r\n    margin: 0;\r\n    padding: 0;\r\n    list-style: none;\r\n  }\r\n\r\n  .dd-list .dd-list {\r\n    padding-left: 30px;\r\n  }\r\n\r\n  .dd-collapsed .dd-list {\r\n    display: none;\r\n  }\r\n\r\n  .dd-item {\r\n    display: block;\r\n    margin: 5px 0;\r\n    padding: 5px 10px;\r\n    color: #333;\r\n    text-decoration: none;\r\n    font-weight: bold;\r\n    border: 1px solid #ccc;\r\n    background: #fafafa;\r\n    border-radius: 3px;\r\n    box-sizing: border-box;\r\n    -moz-box-sizing: border-box;\r\n  }\r\n\r\n  .dd-item:hover {\r\n    background: #fff;\r\n  }\r\n\r\n  .dd-item > button {\r\n    display: block;\r\n    position: relative;\r\n    cursor: move;\r\n    float: left;\r\n    width: 25px;\r\n    height: 20px;\r\n    margin: 5px 0;\r\n    padding: 0;\r\n    text-indent: 100%;\r\n    white-space: nowrap;\r\n    overflow: hidden;\r\n    border: 0;\r\n    background: transparent;\r\n    font-size: 12px;\r\n    line-height: 1;\r\n    text-align: center;\r\n    font-weight: bold;\r\n  }\r\n\r\n  .dd-item > button:before {\r\n    content: '+';\r\n    display: block;\r\n    position: absolute;\r\n    width: 100%;\r\n    text-align: center;\r\n    text-indent: 0;\r\n  }\r\n\r\n  .dd-item > button[data-action=\"collapse\"]:before {\r\n    content: '<i class=\"material-icons\">filter_none</i>';\r\n  }\r\n\r\n  .dd-placeholder,\r\n  .dd-empty {\r\n    margin: 5px 0;\r\n    padding: 0;\r\n    min-height: 30px;\r\n    background: #E0E0E0;\r\n    border: 1px dashed #b6bcbf;\r\n    box-sizing: border-box;\r\n    -moz-box-sizing: border-box;\r\n  }\r\n\r\n  .dd-empty {\r\n    border: 1px dashed #bbb;\r\n    min-height: 100px;\r\n    background-color: #E0E0E0;\r\n    background-size: 60px 60px;\r\n    background-position: 0 0, 30px 30px;\r\n  }\r\n\r\n  .dd-dragel {\r\n    position: absolute;\r\n    pointer-events: none;\r\n    z-index: 9999;\r\n  }\r\n\r\n  .dd-dragel > .dd-item .dd-handle {\r\n    margin-top: 0;\r\n    cursor: move;\r\n  }\r\n\r\n  .dd-dragel .dd-item {\r\n    box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, .5);\r\n    cursor: move;\r\n  }\r\n\r\n#loading\r\n.loading {\r\n  position: fixed;\r\n  z-index: 999;\r\n  height: 2em;\r\n  width: 2em;\r\n  overflow: visible;\r\n  margin: auto;\r\n  top: 0;\r\n  left: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n}\r\n\r\n/* Transparent Overlay */\r\n.loading:before {\r\n  content: '';\r\n  display: block;\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: rgba(0,0,0,0.3);\r\n}\r\n\r\n/* :not(:required) hides these rules from IE9 and below */\r\n.loading:not(:required) {\r\n  /* hide \"loading...\" text */\r\n  font: 0/0 a;\r\n  color: transparent;\r\n  text-shadow: none;\r\n  background-color: transparent;\r\n  border: 0;\r\n}\r\n\r\n.loading:not(:required):after {\r\n  content: '';\r\n  display: block;\r\n  font-size: 10px;\r\n  width: 1em;\r\n  height: 1em;\r\n  margin-top: -0.5em;\r\n  -webkit-animation: spinner 1500ms infinite linear;\r\n  animation: spinner 1500ms infinite linear;\r\n  border-radius: 0.5em;\r\n  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;\r\n}\r\n\r\n/* Animation */\r\n\r\n@-webkit-keyframes spinner {\r\n  0% {\r\n    transform: rotate(0deg);\r\n  }\r\n  100% {\r\n    transform: rotate(360deg);\r\n  }\r\n}\r\n@keyframes spinner {\r\n  0% {\r\n    transform: rotate(0deg);\r\n  }\r\n  100% {\r\n    transform: rotate(360deg);\r\n  }\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n    font-family: Sans-serif;\n    font-size: 14;\n    width: 100%;\n    background-color: #E0E0E0;\n  }\n\n  h1 {\n    position: absolute;\n    left: 16px;\n    top: 16px;\n  }\n\n  h2{\n    color: #30BF10;\n    font-family: 'Arbutus Slab', serif;\n    font-size: 12px !important;\n    font-weight: 800;\n    line-height: 2rem;\n  }\n\n  menu {\n    position: absolute;\n    right: 16px;\n    top: 0px;\n  }\n\n  menu.kanban .viewlist,\n  menu.list .viewkanban {\n    display: inline;\n  }\n\n  menu.kanban .viewkanban,\n  menu.list .viewlist {\n    display: none;\n  }\n\n  .dd {\n    max-width: 100%;\n    top: 88px;\n    margin: 0 auto;\n    display: block;\n    vertical-align: top;\n  }\n\n  ol {\n    transition: border-color 2s ease, all 0.1s ease;\n  }\n\n  ol.list {\n    padding-top: 2em;\n    padding-left: 15px;\n    max-width: 650px;\n    margin: 0 auto;\n  }\n\n  ol.list .text {\n    float: right;\n    width: 60%;\n  }\n\n  ol.list h3,\n  ol.list .actions,\n  ol.list label {\n    float: left;\n    width: 30%;\n  }\n\n  ol.list > li,\n  ol.list > h3 {\n    max-width: 600px;\n    margin: 0 auto;\n  }\n\n  ol.list > h2 {\n    padding-bottom: 6px;\n  }\n\n  ol.list.To-do {\n    border-left: 2px solid #FFB300;\n  }\n\n  ol.list.Gone {\n    border-left: 2px solid #FF3D00;\n  }\n\n  ol.list.progress {\n    border-left: 2px solid #29B6F6;\n  }\n\n  ol.list.Done {\n    border-left: 2px solid #8BC34A;\n  }\n\n  H2,\n  h1,\n  button {\n    margin-left: 5px;\n    font-family: 'Arbutus Slab', serif;\n  }\n\n  h2 {\n    color: #607D8B;\n  }\n\n  h2 .material-icons {\n    color: #B0BEC5;\n    line-height: 1.5;\n  }\n\n  .dd-handle .material-icons {\n    color: #B0BEC5;\n    font-size: 14px;\n    font-weight: 800;\n    line-height: 2rem;\n    position: relative;\n    right: 0;\n    color: #607D8B;\n    padding: 5px 16px;\n  }\n\n  button>.material-icons {\n    line-height: 0.2;\n    position:relative;\n    top:7px;\n  }\n\n  .dd-item:hover,\n  button:hover {\n    color: #00838F;\n    will-change: box-shadow;\n    transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);\n    box-shadow: 0 5px 6px 0 rgba(0, 0, 0, .14), 0 3px 1px -6px rgba(0, 0, 0, .2), 2px 5px 3px 0 rgba(0, 0, 0, .12);\n  }\n\n  button.addbutt {\n    background-color: #EEEEEE;\n    color: #607D8B;\n    width: 100%;\n  }\n\n  .list > button.addbutt {\n    max-width: 330px;\n  }\n\n  button:active, button:down, button:focus {box-shadow: 0 0 0 0, 0 0 0 0 rgba(0, 0, 0, .2), 0 0 0 0 rgba(0, 0, 0, .12);color:#00838F;}\n  button {\n    align-items: center;\n    background-color: #EEEEEE;\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\n    border: 1px solid #ccc;\n    border-radius: 2px;\n    color: #607D8B;\n    position: relative;\n    margin: 0;\n    min-width: 44px;\n    padding: 10px 16px;\n    display: inline-block;\n    font-size: 14px;\n    font-weight: 600;\n    text-transform: uppercase;\n    letter-spacing: 1;\n    overflow: hidden;\n    outline: none;\n    cursor: pointer;\n    text-decoration: none;\n      }\n\n  ol.kanban.To-do {\n    border-top: 5px solid #FFB300;\n  }\n\n  ol.kanban.Gone {\n    border-top: 5px solid #FF3D00;\n  }\n\n  ol.kanban.progress {\n    border-top: 5px solid #29B6F6;\n  }\n\n  ol.kanban.Done {\n    border-top: 5px solid #8BC34A;\n  }\n\n  ol.kanban {\n    border-top: 5px solid #78909C;\n    width: 20%;\n    height: auto;\n    margin: 1%;\n    max-width: 250px;\n    min-width: 120px;\n    display: inline-block;\n    vertical-align: top;\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\n    flex-direction: column;\n    min-height: 200px;\n    z-index: 1;\n    position: relative;\n    background: #fff;\n    padding: 1em;\n    border-radius: 2px;\n  }\n\n  .dd-item {\n    display: block;\n    position: relative;\n    list-style: none;\n    font-family: \"Roboto\", \"Helvetica\", \"Arial\", sans-serif;\n    min-height: 48px;\n    display: flex;\n    flex-direction: column;\n    font-size: 16px;\n    min-height: 120px;\n    overflow: hidden;\n    z-index: 1;\n    position: relative;\n    background: #fff;\n    border-radius: 2px;\n    box-sizing: border-box;\n  }\n\n  .title {\n    align-self: flex-end;\n    color: inherit;\n    display: block;\n    display: flex;\n    font-size: 24px;\n    line-height: normal;\n    overflow: hidden;\n    transform-origin: 149px 48px;\n    margin: 0;\n  }\n\n  .text {\n    color: grey;\n    border-top: 1px solid;\n    font-size: 1rem;\n    font-weight: 400;\n    line-height: 18px;\n    overflow: hidden;\n    padding: 16px;\n    width: 90%;\n  }\n\n  .actions {\n    border-top: 1px solid rgba(0, 0, 0, .1);\n    font-size: 8px;\n    line-height: normal;\n    width: 100%;\n    color: #B0BEC5;\n    padding: 8px;\n    box-sizing: border-box;\n  }\n\n\n  /**\n   * Nestable\n   */\n\n  .dd {\n    position: relative;\n    display: block;\n    list-style: none;\n  }\n\n  .dd-list {\n    display: block;\n    position: relative;\n    margin: 0;\n    padding: 0;\n    list-style: none;\n  }\n\n  .dd-list .dd-list {\n    padding-left: 30px;\n  }\n\n  .dd-collapsed .dd-list {\n    display: none;\n  }\n\n  .dd-item {\n    display: block;\n    margin: 5px 0;\n    padding: 5px 10px;\n    color: #333;\n    text-decoration: none;\n    font-weight: bold;\n    border: 1px solid #ccc;\n    background: #fafafa;\n    border-radius: 3px;\n    box-sizing: border-box;\n    -moz-box-sizing: border-box;\n  }\n\n  .dd-item:hover {\n    background: #fff;\n  }\n\n  .dd-item > button {\n    display: block;\n    position: relative;\n    cursor: move;\n    float: left;\n    width: 25px;\n    height: 20px;\n    margin: 5px 0;\n    padding: 0;\n    text-indent: 100%;\n    white-space: nowrap;\n    overflow: hidden;\n    border: 0;\n    background: transparent;\n    font-size: 12px;\n    line-height: 1;\n    text-align: center;\n    font-weight: bold;\n  }\n\n  .dd-item > button:before {\n    content: '+';\n    display: block;\n    position: absolute;\n    width: 100%;\n    text-align: center;\n    text-indent: 0;\n  }\n\n  .dd-item > button[data-action=\"collapse\"]:before {\n    content: '<i class=\"material-icons\">filter_none</i>';\n  }\n\n  .dd-placeholder,\n  .dd-empty {\n    margin: 5px 0;\n    padding: 0;\n    min-height: 30px;\n    background: #E0E0E0;\n    border: 1px dashed #b6bcbf;\n    box-sizing: border-box;\n    -moz-box-sizing: border-box;\n  }\n\n  .dd-empty {\n    border: 1px dashed #bbb;\n    min-height: 100px;\n    background-color: #E0E0E0;\n    background-size: 60px 60px;\n    background-position: 0 0, 30px 30px;\n  }\n\n  .dd-dragel {\n    position: absolute;\n    pointer-events: none;\n    z-index: 9999;\n  }\n\n  .dd-dragel > .dd-item .dd-handle {\n    margin-top: 0;\n    cursor: move;\n  }\n\n  .dd-dragel .dd-item {\n    box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, .5);\n    cursor: move;\n  }\n\n#loading\n.loading {\n  position: fixed;\n  z-index: 999;\n  height: 2em;\n  width: 2em;\n  overflow: visible;\n  margin: auto;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n}\n\n/* Transparent Overlay */\n.loading:before {\n  content: '';\n  display: block;\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0,0,0,0.3);\n}\n\n/* :not(:required) hides these rules from IE9 and below */\n.loading:not(:required) {\n  /* hide \"loading...\" text */\n  font: 0/0 a;\n  color: transparent;\n  text-shadow: none;\n  background-color: transparent;\n  border: 0;\n}\n\n.loading:not(:required):after {\n  content: '';\n  display: block;\n  font-size: 10px;\n  width: 1em;\n  height: 1em;\n  margin-top: -0.5em;\n  -webkit-animation: spinner 1500ms infinite linear;\n  animation: spinner 1500ms infinite linear;\n  border-radius: 0.5em;\n  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;\n}\n\n/* Animation */\n\n@-webkit-keyframes spinner {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}\n@keyframes spinner {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11757,7 +12039,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\r\n    margin: 0;\r\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',\r\n      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',\r\n      sans-serif;\r\n    -webkit-font-smoothing: antialiased;\r\n    -moz-osx-font-smoothing: grayscale;\r\n  }\r\n  \r\n  code {\r\n    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',\r\n      monospace;\r\n  }\r\n  ", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n    margin: 0;\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',\n      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',\n      sans-serif;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n  }\n  \n  code {\n    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',\n      monospace;\n  }\n  ", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
