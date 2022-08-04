@@ -1,10 +1,67 @@
-import React, { useState, Component } from "react";
+import React, { useState, Component, useReducer } from "react";
 import ReactDOM from "react-dom";
 import Board, { moveCard } from "@lourenci/react-kanban";
 import "@lourenci/react-kanban/dist/styles.css";
+import styled from 'styled-components';
 import axios from 'axios';
 import Swal from 'sweetalert2'
 import './index.css';
+
+const StyledCardForm = styled.div`
+  flex: 0 0 auto;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  max-width: 900px;
+  overflow: hidden;
+  padding: 1em 2em;
+  box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.5);
+
+  h2 {
+    color: #343a40;
+    margin: 0;
+    padding-top: .25em;
+    border-bottom: 1px solid #aeaeae;
+    padding-bottom: .75em;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  
+    li:not(:last-child) {
+      margin-bottom: 15px;
+    }
+  }
+`;
+
+const StyledTextInput = styled.div`
+  color: #343a40;
+
+  label {
+    display: inline;
+  }
+
+  input {
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #ebecee;
+    padding: 10px;
+    margin: 10px 0;
+  }
+
+  input:focus {
+    border-color: #64b5f6;
+}
+`;
+
+const TextInput = ({ label, type = "text", id, defaultValue, ...props }) => (
+  <StyledTextInput>
+    {label && <label htmlFor={id}>{label}</label>}
+    <input id={id} type={type} defaultValue={defaultValue} {...props} />
+  </StyledTextInput>
+);
 
 //Componente que recibe el id del ticket y lo muestra en pantalla
 export default class Ticket extends React.Component {
@@ -51,7 +108,14 @@ export default class Ticket extends React.Component {
       .then((result) => {
           // Set the state of data.
           this.setState({ data: result['data']})
-          console.log(result['data']);
+          console.log(result);
+          //obtener keys del objeto result
+          var keys = Object.keys(result);
+          for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var value = result[key];
+            this.setState({ [key]: value });
+          }
           this.setState({ isLoading: false });
       })
       .catch((error) => {
@@ -63,13 +127,13 @@ export default class Ticket extends React.Component {
   
     handleInputChange(event) {
       const target = event.target;
-      const value = target.type === 'checkbox' ? target.checked : target.value;
+      const defaultValue = target.type === 'checkbox' ? target.checked : target.defaultValue;
       const name = target.name;
       
       this.setState({
-        [name]: value
+        [name]: defaultValue
       });
-      console.log('Change detected. State updated' + name + ' = ' + value);
+      console.log('Change detected. State updated' + name + ' = ' + defaultValue);
     }
 
     handleSubmit(event) {
@@ -77,21 +141,194 @@ export default class Ticket extends React.Component {
       event.preventDefault();
     }
 
+    
+
     render() {
+
+      function padTo2Digits(num) {
+        return num.toString().padStart(2, '0');
+      }
+  
+      function formatDate(date = new Date()) {
+        return [
+          date.getFullYear(),
+          padTo2Digits(date.getMonth() + 1),
+          padTo2Digits(date.getDate())
+        ].join('-');
+      }
+      
+      function zfill(number, width) {
+        var numberOutput = Math.abs(number); /* Valor absoluto del número */
+        var length = number.toString().length; /* Largo del número */ 
+        var zero = "0"; /* String de cero */  
+        
+        if (width <= length) {
+            if (number < 0) {
+                 return ("-" + numberOutput.toString()); 
+            } else {
+                 return numberOutput.toString(); 
+            }
+        } else {
+            if (number < 0) {
+                return ("-" + (zero.repeat(width - length)) + numberOutput.toString()); 
+            } else {
+                return ((zero.repeat(width - length)) + numberOutput.toString()); 
+            }
+        }
+      }
+    
+
       return (
         <div>
-           <h1>{"TICKET T"+this.state.id}</h1>
-          <form onSubmit={this.handleSubmit} >
-            <div className="form-group">
-              <label htmlFor="nameImput">Name</label>
-              <input type="text" name="name" value={this.state.name} onChange={this.handleChange} className="form-control" id="nameImput" placeholder="Name" />
-            </div>
-            <div className="form-group">
-              <label for="emailImput">Name</label>
-              <input name="email" type="email" value={this.state.email} onChange={this.handleChange} className="form-control" id="emailImput" placeholder="email@domain.com" />
-            </div>
-            <input type="submit" value="Submit" className="btn btn-primary" />
-          </form>
+          <StyledCardForm >
+    <h2>{"TICKET T"+zfill(this.state.id,5)}</h2>
+    <form>
+      <ul>
+        <li>
+          <TextInput
+            label="Fecha"
+            id="transDate"
+            type="date"
+            defaultValue={this.state.transDate}
+            placeholder={formatDate()}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            minLength="1"
+            maxLength="40"
+            required
+          />
+        </li>
+        <li>
+          <TextInput
+            label="Hora"
+            id="TransTime"
+            type="time"
+            defaultValue={this.state.transTime}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            //placeholder="**** **** **** ****"
+            minLength="12"
+            maxLength="19"
+            required
+          />
+        </li>
+        <li>
+          <TextInput
+            label="Estado"
+            id="status"
+            type="text"
+            defaultValue={this.state.status}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Estado"
+            minLength="2"
+            maxLength="2"
+            required
+          />
+        </li>
+        <li>
+          <TextInput
+            label="Prioridad"
+            id="priority"
+            type="text"
+            defaultValue={this.state.priority}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Prioridad"
+            minLength="2"
+            maxLength="2"
+            required
+          />
+        </li>
+        <li>
+          <TextInput
+            label="Complejidad"
+            id="complexity"
+            type="text"
+            defaultValue={this.state.complexity}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Complejidad"
+            minLength="2"
+            maxLength="2"
+            required
+            />
+        </li>
+        <li>
+          <TextInput
+            label="Descripción"
+            id="description"
+            type="text"
+            defaultValue={this.state.description}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Descripción"
+            minLength="2"
+            maxLength="2"
+            required
+          />
+        </li>
+        <li>
+          <TextInput
+            label="Tipo"
+            id="tipo"
+            type="text"
+            defaultValue={this.state.tipo}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Tipo"
+            minLength="2"
+            maxLength="2"
+            required
+          />
+        </li>
+        <li>
+          <TextInput
+            label="Solicitante"
+            id="solicitante"
+            type="text"
+            defaultValue={this.state.solicitante}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Solicitante"
+            minLength="2"
+            maxLength="2"
+            required
+          />
+        </li>
+        <li>
+          <TextInput
+            label="Asignado"
+            id="asignado"
+            type="text"
+            defaultValue={this.state.asignado}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Asignado"
+            minLength="2"
+            maxLength="2"
+            required
+          />
+        </li>
+        <li>
+          <TextInput
+            label="Responsable"
+            id="responsable"
+            type="text"
+            defaultValue={this.state.responsable}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Responsable"
+            minLength="2"
+            maxLength="2"
+            required
+          />
+        </li>
+        <li>
+          <TextInput
+            label="Incidente ID"
+            id="incidenteId"
+            type="autocomplete"
+            defaultValue={this.state.incidenteId}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Incidente ID"
+            minLength="2"
+            maxLength="2"
+            />
+        </li>
+      </ul>
+    </form>
+  </StyledCardForm>
         </div>
       )
     }
