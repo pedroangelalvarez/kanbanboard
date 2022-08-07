@@ -147,15 +147,13 @@ export default class Ticket extends React.Component {
           var tiusuarios = [];
           for (var i = 0; i < keys.length; i++) {
             var value = result['data'][keys[i]]['area'].toString().toUpperCase();
-            if (value === "SISTEMAS"){
-              console.log(result['data'][keys[i]]);
+            if (value === "sistemas"){
               tiusuarios.push(result['data'][keys[i]]);
             }
-            console.log(result['data'][keys[i]]);
             usuarios.push(result['data'][keys[i]]);
           }
-          this.setState({ usuariosDisponibles: usuarios});
-          this.setState({ TIDisponibles: tiusuarios});
+          this.setState({ usuariosDisponibles: usuarios})
+          this.setState({ TIDisponibles: tiusuarios})
       })
       .catch((error) => {
           console.log('Error: ', error);

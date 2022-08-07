@@ -1,5 +1,7 @@
 <?php
 use App\Models\Ticket;
+use App\Models\Incidente;
+use App\Models\Usuario;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,4 +45,9 @@ Route::get('/getincidente/{id}', function ($id) {
 
 Route::get('/incidente/{id}', function ($id){
     return view('incidente', ['id' => $id]);
+});
+
+Route::get('/getusuarios', function (Request $request) {
+    $usuario = Usuario::paginate(100);
+    return $usuario;
 });

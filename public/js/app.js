@@ -3034,8 +3034,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-
 var colorCard = "#f9fdf7";
 var columnList = [{
   name: "POR HACER",
@@ -4039,13 +4037,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lourenci/react-kanban */ "./node_modules/@lourenci/react-kanban/dist/index.js");
 /* harmony import */ var _lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _lourenci_react_kanban_dist_styles_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lourenci/react-kanban/dist/styles.css */ "./node_modules/@lourenci/react-kanban/dist/styles.css");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./index.css */ "./resources/js/components/Ticket/index.css");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _fontsource_karla__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fontsource/karla */ "./node_modules/@fontsource/karla/index.css");
+/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./index.css */ "./resources/js/components/Ticket/index.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 var _excluded = ["label", "type", "id", "defaultValue"];
@@ -4094,8 +4093,9 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var StyledCardForm = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  flex: 0 0 auto;\n  background-color: #e0e0e0;\n  border-radius: 8px;\n  max-width: 50em;\n  overflow: hidden;\n  padding: 1em 1em;\n  box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.5);\n\n  h2 {\n    color: #343a40;\n    margin: 0;\n    padding-top: .25em;\n    border-bottom: 1px solid #aeaeae;\n    padding-bottom: .75em;\n  }\n  \n  ul {\n    list-style: none;\n    padding: 0;\n  \n    li:not(:last-child) {\n      margin-bottom: 15px;\n    }\n  }\n"])));
-var StyledTextInput = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  color: #343a40;\n\n  label {\n    display: inline;\n  }\n\n  input {\n    box-sizing: border-box;\n    width: 100%;\n    border-radius: 4px;\n    outline: none;\n    border: 1px solid #ebecee;\n    padding: 10px;\n    margin: 10px 0;\n  }\n\n  input:focus {\n    border-color: #64b5f6;\n}\n"])));
+
+var StyledCardForm = styled_components__WEBPACK_IMPORTED_MODULE_9__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  flex: 0 0 auto;\n  background-color: #e0e0e0;\n  border-radius: 8px;\n  max-width: 50em;\n  overflow: hidden;\n  padding: 1em 1em;\n  font-family: Karla;\n  box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.5);\n\n  h2 {\n    color: #343a40;\n    margin: 0;\n    padding-top: .25em;\n    border-bottom: 1px solid #aeaeae;\n    padding-bottom: .75em;\n  }\n  \n  ul {\n    list-style: none;\n    padding: 0;\n  \n    li:not(:last-child) {\n      margin-bottom: 15px;\n    }\n  }\n"])));
+var StyledTextInput = styled_components__WEBPACK_IMPORTED_MODULE_9__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  color: #343a40;\n\n  label {\n    display: inline;\n    font-family: Karla;\n  }\n\n  input {\n    box-sizing: border-box;\n    width: 100%;\n    border-radius: 4px;\n    outline: none;\n    border: 1px solid #ebecee;\n    font-family: Karla;\n    padding: 10px;\n    margin: 10px 0;\n  }\n\n  input:focus {\n    border-color: #64b5f6;\n}\n"])));
 
 var TextInput = function TextInput(_ref) {
   var label = _ref.label,
@@ -4105,11 +4105,11 @@ var TextInput = function TextInput(_ref) {
       defaultValue = _ref.defaultValue,
       props = _objectWithoutProperties(_ref, _excluded);
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(StyledTextInput, {
-    children: [label && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("label", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(StyledTextInput, {
+    children: [label && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
       htmlFor: id,
       children: label
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("input", _objectSpread({
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", _objectSpread({
       id: id,
       type: type,
       defaultValue: defaultValue
@@ -4143,7 +4143,8 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
       asignado: '',
       responsable: '',
       incidenteId: '',
-      data: [],
+      usuariosDisponibles: [],
+      TIDisponibles: [],
       draggedOverCol: 0
     };
     _this.handleChange = _this.handleInputChange.bind(_assertThisInitialized(_this));
@@ -4172,10 +4173,7 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
         }
       }).then(function (result) {
         // Set the state of data.
-        _this2.setState({
-          data: result['data']
-        });
-
+        //this.setState({ data: result['data']})
         console.log(result); //obtener keys del objeto result
 
         var keys = Object.keys(result);
@@ -4192,8 +4190,48 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
         });
       })["catch"](function (error) {
         console.log('Error: ', error);
+        window.location.href = "/";
       });
-      console.log(this.state.data);
+      fetch('/getusuarios', {
+        credentials: 'include'
+      }).then(function (response) {
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.log('Error with session response');
+        }
+      }).then(function (result) {
+        // Set the state of data.
+        var keys = Object.keys(result['data']);
+        console.log(result['data']); //crear arreglo
+
+        var usuarios = [];
+        var tiusuarios = [];
+
+        for (var i = 0; i < keys.length; i++) {
+          var value = result['data'][keys[i]]['area'].toString().toUpperCase();
+
+          if (value === "SISTEMAS") {
+            console.log(result['data'][keys[i]]);
+            tiusuarios.push(result['data'][keys[i]]);
+          }
+
+          console.log(result['data'][keys[i]]);
+          usuarios.push(result['data'][keys[i]]);
+        }
+
+        _this2.setState({
+          usuariosDisponibles: usuarios
+        });
+
+        _this2.setState({
+          TIDisponibles: tiusuarios
+        });
+      })["catch"](function (error) {
+        console.log('Error: ', error);
+      });
+      console.log(this.state.usuariosDisponibles);
+      console.log(this.state.TIDisponibles);
     }
   }, {
     key: "handleInputChange",
@@ -4249,22 +4287,23 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
         }
       }
 
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(StyledCardForm, {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h2", {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(StyledCardForm, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h2", {
             children: "TICKET T" + zfill(this.state.id, 5)
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("form", {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("ul", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("form", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("ul", {
               style: {
                 'listStyleType': 'none',
-                'display': 'inline-block'
+                'display': 'inline-block',
+                'height': '70px'
               },
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
                 style: {
                   'minWidth': '5em',
                   'display': 'inline-block'
                 },
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Fecha",
                   id: "transDate",
                   type: "date",
@@ -4278,13 +4317,13 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                   width: "2em",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
                 style: {
                   'minWidth': '5em',
                   'margin': '0 0.5em',
                   'display': 'inline-block'
                 },
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Hora",
                   id: "TransTime",
                   type: "time",
@@ -4299,17 +4338,18 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                   required: true
                 })
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("ul", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("ul", {
               style: {
                 'minWidth': '40em',
-                'display': 'inline-block'
+                'display': 'inline-block',
+                'height': '70px'
               },
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
                 style: {
                   'maxWidth': '10em',
                   'display': 'inline-block'
                 },
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Estado",
                   id: "status",
                   type: "text",
@@ -4318,17 +4358,17 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                     return _this3.setState(_defineProperty({}, e.target.id, e.target.defaultValue));
                   },
                   placeholder: "Estado",
-                  minLength: "2",
-                  maxLength: "2",
+                  minLength: "4",
+                  maxLength: "5",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
                 style: {
                   'maxWidth': '10em',
                   'margin': '0 0.5em',
                   'display': 'inline-block'
                 },
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Prioridad",
                   id: "priority",
                   type: "text",
@@ -4337,18 +4377,18 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                     return _this3.setState(_defineProperty({}, e.target.id, e.target.defaultValue));
                   },
                   placeholder: "Prioridad",
-                  minLength: "2",
-                  maxLength: "2",
+                  minLength: "4",
+                  maxLength: "5",
                   width: "1.5em",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
                 style: {
                   'maxWidth': '10em',
                   'margin': '0 0.5em',
                   'display': 'inline-block'
                 },
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Complejidad",
                   id: "complexity",
                   type: "text",
@@ -4357,15 +4397,15 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                     return _this3.setState(_defineProperty({}, e.target.id, e.target.defaultValue));
                   },
                   placeholder: "Complejidad",
-                  minLength: "2",
-                  maxLength: "2",
+                  minLength: "4",
+                  maxLength: "5",
                   width: "1.5em",
                   required: true
                 })
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("ul", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("ul", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Descripci\xF3n",
                   id: "description",
                   type: "text",
@@ -4379,8 +4419,8 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                   width: "1.5em",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Tipo",
                   id: "tipo",
                   type: "text",
@@ -4393,8 +4433,8 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                   maxLength: "2",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Solicitante",
                   id: "solicitante",
                   type: "text",
@@ -4407,8 +4447,8 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                   maxLength: "2",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Asignado",
                   id: "asignado",
                   type: "text",
@@ -4421,8 +4461,8 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                   maxLength: "2",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Responsable",
                   id: "responsable",
                   type: "text",
@@ -4435,8 +4475,8 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                   maxLength: "2",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Incidente ID",
                   id: "incidenteId",
                   type: "autocomplete",

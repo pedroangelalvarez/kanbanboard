@@ -15,7 +15,6 @@ const StyledCardForm = styled.div`
   max-width: 50em;
   overflow: hidden;
   padding: 1em 1em;
-  font-family: Karla;
   box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.5);
 
   h2 {
@@ -41,7 +40,6 @@ const StyledTextInput = styled.div`
 
   label {
     display: inline;
-    font-family: Karla;
   }
 
   input {
@@ -50,7 +48,6 @@ const StyledTextInput = styled.div`
     border-radius: 4px;
     outline: none;
     border: 1px solid #ebecee;
-    font-family: Karla;
     padding: 10px;
     margin: 10px 0;
   }
@@ -86,8 +83,7 @@ export default class Ticket extends React.Component {
         asignado: '',
         responsable: '',
         incidenteId: '',
-        usuariosDisponibles: [],
-        TIDisponibles: [],
+        data: [],
         draggedOverCol: 0
       };
 
@@ -112,7 +108,7 @@ export default class Ticket extends React.Component {
       })
       .then((result) => {
           // Set the state of data.
-          //this.setState({ data: result['data']})
+          this.setState({ data: result['data']})
           console.log(result);
           //obtener keys del objeto result
           var keys = Object.keys(result);
@@ -125,44 +121,9 @@ export default class Ticket extends React.Component {
       })
       .catch((error) => {
           console.log('Error: ', error);
-          window.location.href="/";
       });
 
-      fetch('/getusuarios', {
-        credentials: 'include'
-      })
-      .then((response) => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            console.log('Error with session response');
-        }
-      })
-      .then((result) => {
-          // Set the state of data.
-          var keys = Object.keys(result['data']);
-          console.log(result['data']);
-          //crear arreglo
-          var usuarios = [];
-          var tiusuarios = [];
-          for (var i = 0; i < keys.length; i++) {
-            var value = result['data'][keys[i]]['area'].toString().toUpperCase();
-            if (value === "SISTEMAS"){
-              console.log(result['data'][keys[i]]);
-              tiusuarios.push(result['data'][keys[i]]);
-            }
-            console.log(result['data'][keys[i]]);
-            usuarios.push(result['data'][keys[i]]);
-          }
-          this.setState({ usuariosDisponibles: usuarios});
-          this.setState({ TIDisponibles: tiusuarios});
-      })
-      .catch((error) => {
-          console.log('Error: ', error);
-      });
-
-      console.log(this.state.usuariosDisponibles);
-      console.log(this.state.TIDisponibles);
+      console.log(this.state.data);
     }
   
     handleInputChange(event) {
@@ -223,7 +184,7 @@ export default class Ticket extends React.Component {
           <StyledCardForm >
     <h2>{"TICKET T"+zfill(this.state.id,5)}</h2>
     <form>
-    <ul style={{'listStyleType': 'none',  'display': 'inline-block', 'height': '70px'}}>
+      <ul style={{'listStyleType': 'none',  'display': 'inline-block'}}>
         <li style={{'minWidth': '5em','display': 'inline-block'}}>
           <TextInput
             label="Fecha"
@@ -253,7 +214,7 @@ export default class Ticket extends React.Component {
           />
         </li>
       </ul>
-      <ul style={{'minWidth': '40em', 'display': 'inline-block', 'height': '70px'}}>
+      <ul style={{'minWidth': '40em', 'display': 'inline-block'}}>
         <li style={{'maxWidth': '10em', 'display': 'inline-block'}}>
           <TextInput
             label="Estado"
@@ -262,8 +223,8 @@ export default class Ticket extends React.Component {
             defaultValue={this.state.status}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Estado"
-            minLength="4"
-            maxLength="5"
+            minLength="2"
+            maxLength="2"
             required
           />
         </li>
@@ -275,8 +236,8 @@ export default class Ticket extends React.Component {
             defaultValue={this.state.priority}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Prioridad"
-            minLength="4"
-            maxLength="5"
+            minLength="2"
+            maxLength="2"
             width = "1.5em"
             required
           />
@@ -289,8 +250,8 @@ export default class Ticket extends React.Component {
             defaultValue={this.state.complexity}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Complejidad"
-            minLength="4"
-            maxLength="5"
+            minLength="2"
+            maxLength="2"
             width = "1.5em"
             required
             />

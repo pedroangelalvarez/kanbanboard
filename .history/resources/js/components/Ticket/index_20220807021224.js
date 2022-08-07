@@ -41,7 +41,7 @@ const StyledTextInput = styled.div`
 
   label {
     display: inline;
-    font-family: Karla;
+    font-family: Karla
   }
 
   input {
@@ -50,7 +50,7 @@ const StyledTextInput = styled.div`
     border-radius: 4px;
     outline: none;
     border: 1px solid #ebecee;
-    font-family: Karla;
+    font-family: Karla
     padding: 10px;
     margin: 10px 0;
   }
@@ -86,8 +86,7 @@ export default class Ticket extends React.Component {
         asignado: '',
         responsable: '',
         incidenteId: '',
-        usuariosDisponibles: [],
-        TIDisponibles: [],
+        data: [],
         draggedOverCol: 0
       };
 
@@ -140,29 +139,16 @@ export default class Ticket extends React.Component {
       })
       .then((result) => {
           // Set the state of data.
-          var keys = Object.keys(result['data']);
-          console.log(result['data']);
-          //crear arreglo
-          var usuarios = [];
-          var tiusuarios = [];
-          for (var i = 0; i < keys.length; i++) {
-            var value = result['data'][keys[i]]['area'].toString().toUpperCase();
-            if (value === "SISTEMAS"){
-              console.log(result['data'][keys[i]]);
-              tiusuarios.push(result['data'][keys[i]]);
-            }
-            console.log(result['data'][keys[i]]);
-            usuarios.push(result['data'][keys[i]]);
-          }
-          this.setState({ usuariosDisponibles: usuarios});
-          this.setState({ TIDisponibles: tiusuarios});
+          console.log(result);
+          console.log("-------")
+          this.setState({ usuariosDisponibles: result['data']})
       })
       .catch((error) => {
           console.log('Error: ', error);
       });
 
       console.log(this.state.usuariosDisponibles);
-      console.log(this.state.TIDisponibles);
+    
     }
   
     handleInputChange(event) {

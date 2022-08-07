@@ -1,8 +1,6 @@
 import React, { useState, Component } from "react";
 import ReactDOM from "react-dom";
 import Board, { moveCard } from "@lourenci/react-kanban";
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import "@lourenci/react-kanban/dist/styles.css";
 import detalles from './index.css';
 import axios from 'axios';

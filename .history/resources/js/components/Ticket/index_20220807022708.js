@@ -141,28 +141,23 @@ export default class Ticket extends React.Component {
       .then((result) => {
           // Set the state of data.
           var keys = Object.keys(result['data']);
-          console.log(result['data']);
+          console.log(keys);
+          console.log("FIN KEYS");
           //crear arreglo
           var usuarios = [];
-          var tiusuarios = [];
           for (var i = 0; i < keys.length; i++) {
-            var value = result['data'][keys[i]]['area'].toString().toUpperCase();
-            if (value === "SISTEMAS"){
-              console.log(result['data'][keys[i]]);
-              tiusuarios.push(result['data'][keys[i]]);
-            }
-            console.log(result['data'][keys[i]]);
-            usuarios.push(result['data'][keys[i]]);
+            var value = result['data'][keys[i]].toString().toUpperCase();
+            console.log(value);
+            usuarios.push(value);
           }
-          this.setState({ usuariosDisponibles: usuarios});
-          this.setState({ TIDisponibles: tiusuarios});
+          this.setState({ usuariosDisponibles: result['data']})
       })
       .catch((error) => {
           console.log('Error: ', error);
       });
 
       console.log(this.state.usuariosDisponibles);
-      console.log(this.state.TIDisponibles);
+      console.log("-------")
     }
   
     handleInputChange(event) {
