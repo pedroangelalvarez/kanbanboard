@@ -11,9 +11,9 @@ const StyledCardForm = styled.div`
   flex: 0 0 auto;
   background-color: #e0e0e0;
   border-radius: 8px;
-  max-width: 900px;
+  max-width: 50em;
   overflow: hidden;
-  padding: 1em 2em;
+  padding: 1em 1em;
   box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.5);
 
   h2 {
@@ -113,7 +113,7 @@ export default class Ticket extends React.Component {
           var keys = Object.keys(result);
           for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            var value = result[key];
+            var value = result[key].toString().toUpperCase();
             this.setState({ [key]: value });
           }
           this.setState({ isLoading: false });
@@ -183,8 +183,8 @@ export default class Ticket extends React.Component {
           <StyledCardForm >
     <h2>{"TICKET T"+zfill(this.state.id,5)}</h2>
     <form>
-      <ul>
-        <li>
+      <ul style={{'listStyleType': 'none',  'display': 'inline-block'}}>
+        <li style={{'minWidth': '5em','display': 'inline-block'}}>
           <TextInput
             label="Fecha"
             id="transDate"
@@ -193,11 +193,12 @@ export default class Ticket extends React.Component {
             placeholder={formatDate()}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             minLength="1"
-            maxLength="40"
+            maxLength="20"
+            width = "2em"
             required
           />
         </li>
-        <li>
+        <li style={{'minWidth': '5em', 'margin': '0 0.5em','display': 'inline-block'}}>
           <TextInput
             label="Hora"
             id="TransTime"
@@ -205,12 +206,15 @@ export default class Ticket extends React.Component {
             defaultValue={this.state.transTime}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             //placeholder="**** **** **** ****"
-            minLength="12"
-            maxLength="19"
+            minLength="1"
+            maxLength="20"
+            width = "2em"
             required
           />
         </li>
-        <li>
+      </ul>
+      <ul style={{'minWidth': '40em', 'display': 'inline-block'}}>
+        <li style={{'maxWidth': '10em', 'display': 'inline-block'}}>
           <TextInput
             label="Estado"
             id="status"
@@ -223,7 +227,7 @@ export default class Ticket extends React.Component {
             required
           />
         </li>
-        <li>
+        <li style={{'maxWidth': '10em', 'margin': '0 0.5em','display': 'inline-block'}}>
           <TextInput
             label="Prioridad"
             id="priority"
@@ -233,10 +237,11 @@ export default class Ticket extends React.Component {
             placeholder="Prioridad"
             minLength="2"
             maxLength="2"
+            width = "1.5em"
             required
           />
         </li>
-        <li>
+        <li style={{'maxWidth': '10em', 'margin': '0 0.5em','display': 'inline-block'}}>
           <TextInput
             label="Complejidad"
             id="complexity"
@@ -246,9 +251,12 @@ export default class Ticket extends React.Component {
             placeholder="Complejidad"
             minLength="2"
             maxLength="2"
+            width = "1.5em"
             required
             />
         </li>
+        </ul>
+        <ul>
         <li>
           <TextInput
             label="Descripción"
@@ -259,6 +267,7 @@ export default class Ticket extends React.Component {
             placeholder="Descripción"
             minLength="2"
             maxLength="2"
+            width = "1.5em"
             required
           />
         </li>

@@ -7,14 +7,16 @@ import "@lourenci/react-kanban/dist/styles.css";
 import detalles from './index.css';
 import axios from 'axios';
 import Swal from 'sweetalert2'
+import "@fontsource/karla";
 
 let colorCard = "#f9fdf7";
 
 let columnList =[
-  { name: "POR HACER", stage: 1, color: "#e8e858" },
-  { name: "EN PROGRESO", stage: 2, color: "#b8bcf8" },
-  { name: "TERMINADO", stage: 3, color: "#1B65A7" },
-  { name: "CANCELADO", stage: 4, color: "#ee0a0a" }
+  { name: "POR HACER", stage: 1, color: "#C4E8C2" },
+  { name: "ASIGNADO", stage: 2, color: "#b8bcf8" },
+  { name: "EN PROGRESO", stage: 3, color: "#F8BC9A" },
+  { name: "COMPLETADO", stage: 4, color: "#6BBD99" },
+  { name: "CANCELADO", stage: 5, color: "#FF6B6B" }
 ]
 
 let projectList = [
@@ -319,7 +321,9 @@ class KanbanColumn extends React.Component {
 			'marginBottom': '5px',
 			'paddingLeft': '5px',
 			'paddingTop': '0px',
-			'width': '230px',
+      'fontFamily': 'Karla',
+      'height': '35em',
+			'width': '15em',
 			'textAlign': 'center',
 			'backgroundColor': (this.state.mouseIsHovering) ? '#d3d3d3' : this.props.color,
       "borderRadius": '8px',
@@ -327,8 +331,8 @@ class KanbanColumn extends React.Component {
       "borderWidth": 'medium',
 		}}
 				
-				onDragEnter={(e) => {this.setState({ mouseIsHovering: true }); this.props.onDragEnter(e, this.props.stage);}}                            //drag ENTER
-				onDragExit={(e) => {this.setState({ mouseIsHovering: false });}}  //drag EXIT
+				onDragEnter={(e) => { this.setState({ mouseIsHovering: true }); this.props.onDragEnter(e, this.props.stage);}}                            //drag ENTER
+				onDragExit={(e) => { this.setState({ mouseIsHovering: false });}}  //drag EXIT
 			>
 				<h4>{this.props.name} </h4>
 				{this.generateKanbanCards()}
@@ -380,6 +384,9 @@ class KanbanCard extends React.Component {
 			'marginBottom': '5px',
 		};*/
     
+    function onClickView(e){
+      e.target.style.cursor = 'pointer';
+    }
  
 
 		return (
@@ -398,6 +405,12 @@ class KanbanCard extends React.Component {
       "box-shadow": "6px 6px 8px #777"
 		}}
 				draggable={true}
+        
+        onDragEnter={(e) => {e.target.style.cursor = 'move';  }}
+        //Drag
+        onMouseDown={(e) => {e.target.style.cursor = 'default';  }}
+        onMouseMove={(e) => {e.target.style.cursor = 'move';  }}
+        onMouseUp={(e) => {e.target.style.cursor = 'pointer';  }}
         
 				onDragEnd={(e) => {this.props.onDragEnd(e, this.props.project);}} >
                     
