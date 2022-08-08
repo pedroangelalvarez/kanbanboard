@@ -259,6 +259,7 @@ export default class Ticket extends React.Component {
             label="Estado"
             id="status"
             type="text"
+            autoComplete="on" 
             defaultValue={this.state.status}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Estado"
@@ -272,6 +273,7 @@ export default class Ticket extends React.Component {
             label="Prioridad"
             id="priority"
             type="text"
+            autoComplete="on" 
             defaultValue={this.state.priority}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Prioridad"
@@ -286,6 +288,7 @@ export default class Ticket extends React.Component {
             label="Complejidad"
             id="complexity"
             type="text"
+            autoComplete="on" 
             defaultValue={this.state.complexity}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Complejidad"

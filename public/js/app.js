@@ -4353,6 +4353,7 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                   label: "Estado",
                   id: "status",
                   type: "text",
+                  autoComplete: "on",
                   defaultValue: this.state.status,
                   onChange: function onChange(e) {
                     return _this3.setState(_defineProperty({}, e.target.id, e.target.defaultValue));
@@ -4372,6 +4373,7 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                   label: "Prioridad",
                   id: "priority",
                   type: "text",
+                  autoComplete: "on",
                   defaultValue: this.state.priority,
                   onChange: function onChange(e) {
                     return _this3.setState(_defineProperty({}, e.target.id, e.target.defaultValue));
@@ -4392,6 +4394,7 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                   label: "Complejidad",
                   id: "complexity",
                   type: "text",
+                  autoComplete: "on",
                   defaultValue: this.state.complexity,
                   onChange: function onChange(e) {
                     return _this3.setState(_defineProperty({}, e.target.id, e.target.defaultValue));
