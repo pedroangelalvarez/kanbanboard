@@ -1,30 +1,106 @@
-import React, { useState, Component } from "react";
+import React, { useState, Component, useReducer } from "react";
 import ReactDOM from "react-dom";
 import Board, { moveCard } from "@lourenci/react-kanban";
 import "@lourenci/react-kanban/dist/styles.css";
+import styled from 'styled-components';
 import axios from 'axios';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import "@fontsource/karla";
+//import './index.css';
 
-//Componente que recibe el id del incidente y lo muestra en pantalla
-export default class Incidente extends React.Component {
+const StyledCardForm = styled.div`
+  flex: 0 0 auto;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  max-width: 50em;
+  overflow: hidden;
+  padding: 1em 1em;
+  font-family: Karla;
+  box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.5);
+
+  h2 {
+    color: #343a40;
+    margin: 0;
+    padding-top: .25em;
+    border-bottom: 1px solid #aeaeae;
+    padding-bottom: .75em;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  
+    li:not(:last-child) {
+      margin-bottom: 15px;
+    }
+  }
+`;
+
+const StyledTextInput = styled.div`
+  color: #343a40;
+
+  label {
+    display: inline;
+    font-family: Karla;
+  }
+
+  input {
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #ebecee;
+    font-family: Karla;
+    padding: 10px;
+    margin: 10px 0;
+  }
+
+  input:focus {
+    border-color: #64b5f6;
+}
+`;
+
+const TextInput = ({ label, type = "text", id, defaultValue, ...props }) => (
+  <StyledTextInput>
+    {label && <label htmlFor={id}>{label}</label>}
+    <input id={id} type={type} defaultValue={defaultValue} {...props} />
+  </StyledTextInput>
+);
+
+//Componente que recibe el id del ticket y lo muestra en pantalla
+export default class Incidemte extends React.Component {
 
     constructor(props) {
       super(props);
       this.state = {
         isLoading: true,
         id: 0,
-        data: [],
+        transDate: '',
+        transTime: '',
+        status: '',
+        priority: '',
+        complexity: '',
+        description: '',
+        tipo: '',
+        solicitante: '',
+        asignado: '',
+        responsable: '',
+        incidenteId: '',
+        usuariosDisponibles: [],
+        TIDisponibles: [],
         draggedOverCol: 0
       };
 
+      this.handleChange = this.handleInputChange.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
       var server_request_uri = location.pathname + location.search;
-      var incidenteid = server_request_uri.substring(11,server_request_uri.length);
-      console.log(incidenteid);
-      this.setState({ id: incidenteid })
-      fetch('/getincidente/'+incidenteid, {
+      var incidenteId = server_request_uri.substring(11,server_request_uri.length);
+      console.log(incidenteId);
+      this.setState({ id: incidenteId })
+      fetch('/getincidente/'+incidenteId, {
         credentials: 'include'
       })
       .then((response) => {
@@ -36,134 +112,273 @@ export default class Incidente extends React.Component {
       })
       .then((result) => {
           // Set the state of data.
-          this.setState({ data: result['data']})
-          console.log(result['data']);
+          //this.setState({ data: result['data']})
+          console.log(result);
+          //obtener keys del objeto result
+          var keys = Object.keys(result);
+          for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            var value = result[key].toincidenteIdString().toUpperCase();
+            this.setState({ [key]: value });
+          }
           this.setState({ isLoading: false });
+      })
+      .catch((error) => {
+          console.log('Error: ', error);
+          window.location.href="/";
+      });
+
+      fetch('/getusuarios', {
+        credentials: 'include'
+      })
+      .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            console.log('Error with session response');
+        }
+      })
+      .then((result) => {
+          // Set the state of data.
+          var keys = Object.keys(result['data']);
+          console.log(result['data']);
+          //crear arreglo
+          var usuarios = [];
+          var tiusuarios = [];
+          for (var i = 0; i < keys.length; i++) {
+            var value = result['data'][keys[i]]['area'].toString().toUpperCase();
+            if (value === "SISTEMAS"){
+              console.log(result['data'][keys[i]]);
+              tiusuarios.push(result['data'][keys[i]]);
+            }
+            console.log(result['data'][keys[i]]);
+            usuarios.push(result['data'][keys[i]]);
+          }
+          this.setState({ usuariosDisponibles: usuarios});
+          this.setState({ TIDisponibles: tiusuarios});
       })
       .catch((error) => {
           console.log('Error: ', error);
       });
 
-      console.log(this.state.data);
+      console.log(this.state.usuariosDisponibles);
+      console.log(this.state.TIDisponibles);
+    }
+  
+    handleInputChange(event) {
+      const target = event.target;
+      const defaultValue = target.type === 'checkbox' ? target.checked : target.defaultValue;
+      const name = target.name;
+      
+      this.setState({
+        [name]: defaultValue
+      });
+      console.log('Change detected. State updated' + name + ' = ' + defaultValue);
     }
 
-    componentDidUpdate() {
-
+    handleSubmit(event) {
+      alert('A form was submitted: ' + this.state.name + ' // ' + this.state.email);
+      event.preventDefault();
     }
 
-    componentWillUnmount() {
-
-    }
+    
 
     render() {
-        if (this.state.isLoading) {
-          return <h3>"Loading..."</h3>
-        }
 
-        let modalStyle = {
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            zIndex: '9999',
-            background: '#fff',
-            border: '1px solid gray',
-            boxShadow: '4px 4px 25px 1px #888888',
-            borderRadius: '2px'
-          }
-          
-          let modalHeaderStyle = {
-            width: '100%',
-            height: 40,
-            background: '#333333',
-            position: 'absolute',
-            borderBottom: '1px solid black',
-            top: 0,
-            cursor: 'move',
-            color: 'white'
-          }
-          
-          let modalFooterStyle = {
-            width: '100%',
-            height: 40,
-            borderTop: '1px solid black',
-            background: '#333',
-            position: 'absolute',
-            bottom: 0,
-            textAlign: 'right'
-          }
-          
-          let modalBodyStyle = {
-            paddingTop: 43,
-            paddingLeft: 10,
-            paddingRight: 10,
-            paddingBottom: 20,
-            background: '#242424',
-            height: '80%',
-            color: 'white'
-          }
-          
-          let closeButtonStyle = {
-              color: '#777',
-              font: '14px/100% arial, sans-serif',
-              position: 'absolute',
-              right: '5px',
-              textDecoration: 'none',
-              textShadow: '0 1px 0 #fff',
-              top: 5
-          }
-    
-          if (this.props.width && this.props.height) {
-            modalStyle.width = this.props.width + 'px'
-            modalStyle.height = this.props.height + 'px'
-            modalStyle.marginLeft = '-' + (this.props.width/2) + 'px',
-            modalStyle.marginTop = '-' + (this.props.height/2) + 'px',
-            modalStyle.transform = null
-          }
-    
-          if (this.props.style) {
-            for (let key in this.props.style) {
-              modalStyle[key] = this.props.style[key]
+      function padTo2Digits(num) {
+        return num.toString().padStart(2, '0');
+      }
+  
+      function formatDate(date = new Date()) {
+        return [
+          date.getFullYear(),
+          padTo2Digits(date.getMonth() + 1),
+          padTo2Digits(date.getDate())
+        ].join('-');
+      }
+      
+      function zfill(number, width) {
+        var numberOutput = Math.abs(number); /* Valor absoluto del número */
+        var length = number.toString().length; /* Largo del número */ 
+        var zero = "0"; /* String de cero */  
+        
+        if (width <= length) {
+            if (number < 0) {
+                 return ("-" + numberOutput.toString()); 
+            } else {
+                 return numberOutput.toString(); 
             }
-          }
-    
-          let backdropStyle = {
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            top: '0px',
-            left: '0px',
-            zIndex: '9998',
-            background: 'rgba(0, 0, 0, 0.3)'
-          }
-    
-          if (this.props.backdropStyle) {
-            for (let key in this.props.backdropStyle) {
-              backdropStyle[key] = this.props.backdropStyle[key]
+        } else {
+            if (number < 0) {
+                return ("-" + (zero.repeat(width - length)) + numberOutput.toString()); 
+            } else {
+                return ((zero.repeat(width - length)) + numberOutput.toString()); 
             }
         }
-    
-        return (
-            <div>
-                <div >
-                            <div className={this.props.containerClassName}>
-                            <div className={this.props.className} style={modalStyle}>
-                            <div className={"modalHeader"} style={modalHeaderStyle}>
-                                <a onClick={e => this.close(e)} href="#" className={"close-thin"}></a>
-                            </div>
-                            <div className={"modalBody"} style={modalBodyStyle}>
-                            {this.props.children}
-                            </div>
-                            <div className={"modalFooter"} style={modalFooterStyle}>
-                                <a onClick={(e) => {this.close(e); window.location.reload(false);}} className='mm-close'>Close</a>
-                            </div>
-                            </div>
-                            {!this.props.noBackdrop &&
-                                <div className={this.props.backdropClassName} style={backdropStyle}
-                                    onClick={e => this.close(e)}/>}
-                        </div>
-                </div>
-            </div>
-        );
       }
+    
+
+      return (
+        <div>
+          <StyledCardForm >
+    <h2>{"INCIDENTE INC"+zfill(this.state.id,4)}</h2>
+44<form>
+    <ul style={{'listStyleType': 'none',  'display': 'inline-block', 'height': '70px'}}>
+        <li style={{'minWidth': '5em','display': 'inline-block'}}>
+          <TextInput
+            label="Fecha"
+            id="transDate"
+            type="date"
+            defaultValue={this.state.transDate}
+            placeholder={formatDate()}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            minLength="1"
+            maxLength="20"
+            width = "2em"
+            required
+          />
+        </li>
+        <li style={{'minWidth': '5em', 'margin': '0 0.5em','display': 'inline-block'}}>
+          <TextInput
+            label="Hora"
+            id="TransTime"
+            type="time"
+            defaultValue={this.state.transTime}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            //placeholder="**** **** **** ****"
+            minLength="1"
+            maxLength="20"
+            width = "2em"
+            required
+          />
+        </li>
+      </ul>
+      <ul style={{'minWidth': '40em', 'display': 'inline-block', 'height': '70px'}}>
+        <li style={{'maxWidth': '10em', 'display': 'inline-block'}}>
+          <TextInput
+            label="Estado"
+            id="status"
+            type="text"
+            defaultValue={this.state.status}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Estado"
+            minLength="4"
+            maxLength="5"
+            required
+          />
+        </li>
+        <li style={{'maxWidth': '10em', 'margin': '0 0.5em','display': 'inline-block'}}>
+          <TextInput
+            label="Prioridad"
+            id="priority"
+            type="text"
+            defaultValue={this.state.priority}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Prioridad"
+            minLength="4"
+            maxLength="5"
+            width = "1.5em"
+            required
+          />
+        </li>
+        <li style={{'maxWidth': '10em', 'margin': '0 0.5em','display': 'inline-block'}}>
+          <TextInput
+            label="Complejidad"
+            id="complexity"
+            type="text"
+            defaultValue={this.state.complexity}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Complejidad"
+            minLength="4"
+            maxLength="5"
+            width = "1.5em"
+            required
+            />
+        </li>
+        </ul>
+        <ul>
+        <li>
+          <TextInput
+            label="Descripción"
+            id="description"
+            type="text"
+            defaultValue={this.state.description}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Descripción"
+            minLength="2"
+            maxLength="2"
+            width = "1.5em"
+            required
+          />
+        </li>
+        <li>
+          <TextInput
+            label="Tipo"
+            id="tipo"
+            type="text"
+            defaultValue={this.state.tipo}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Tipo"
+            minLength="2"
+            maxLength="2"
+            required
+          />
+        </li>
+        <li>
+          <TextInput
+            label="Solicitante"
+            id="solicitante"
+            type="text"
+            defaultValue={this.state.solicitante}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Solicitante"
+            minLength="2"
+            maxLength="2"
+            required
+          />
+        </li>
+        <li>
+          <TextInput
+            label="Asignado"
+            id="asignado"
+            type="text"
+            defaultValue={this.state.asignado}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Asignado"
+            minLength="2"
+            maxLength="2"
+            required
+          />
+        </li>
+        <li>
+          <TextInput
+            label="Responsable"
+            id="responsable"
+            type="text"
+            defaultValue={this.state.responsable}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Responsable"
+            minLength="2"
+            maxLength="2"
+            required
+          />
+        </li>
+        <li>
+          <TextInput
+            label="Incidente ID"
+            id="incidenteId"
+            type="autocomplete"
+            defaultValue={this.state.incidenteId}
+            onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
+            placeholder="Incidente ID"
+            minLength="2"
+            maxLength="2"
+            />
+        </li>
+      </ul>
+    </form>
+  </StyledCardForm>
+        </div>
+      )
+    }
 }

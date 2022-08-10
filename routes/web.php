@@ -34,13 +34,13 @@ Route::get('/ticket/{id}', function ($id){
 });
 
 Route::get('/getincidentes', function (Request $request) {
-    $tickets = Ticket::paginate(100);
-    return $tickets;
+    $incidentes = Incidente::paginate(100);
+    return $incidentes;
 });
 
 Route::get('/getincidente/{id}', function ($id) {
-    $ticket = Ticket::find($id);
-    return $ticket;
+    $incidente = Incidente::find($id);
+    return $incidente;
 });
 
 Route::get('/incidente/{id}', function ($id){
