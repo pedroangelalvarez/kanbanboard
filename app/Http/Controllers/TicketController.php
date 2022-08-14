@@ -24,17 +24,6 @@ class TicketController extends Controller
      */
     public function create()
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
         $request->validate([
             'id'=>'required',
             'transDate'=>'required',
@@ -48,6 +37,34 @@ class TicketController extends Controller
             //'asignado'=>'required',
             'responsable'=>'required',
             //'incidenteId'=>'required'
+        ]);
+
+        Ticket::create($request->post());
+
+        return response()->json([
+            'message'=>'Ticket Created Successfully!!'
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'transDate'=>'required',
+            'transTime'=>'required',
+            'status'=>'required',
+            'priority'=>'required',
+            'complexity'=>'required',
+            'description'=>'required',
+            'tipo'=>'required',
+            'solicitante'=>'required',
+            'asignado'=>'nullable',
+            'responsable'=>'required',
         ]);
 
         Ticket::create($request->post());
@@ -88,10 +105,10 @@ class TicketController extends Controller
      * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Ticket $ticket)
+    public function update(Request $request, $id)
     {
+        /*
         $request->validate([
-            'id'=>'required',
             'transDate'=>'required',
             'transTime'=>'required',
             'status'=>'required',
@@ -100,19 +117,50 @@ class TicketController extends Controller
             'description'=>'required',
             'tipo'=>'required',
             'solicitante'=>'required',
-            //'asignado'=>'required',
+            'asignado'=>'nullable',
             'responsable'=>'required',
-            //'incidenteId'=>'required'
+            'incidenteId'=>'nullable'
         ]);
+        */
 
         try{
 
-            $ticket->fill($request->post())->update();
+            $ticket=Ticket::find($id);
+            $ticket->update($request->all());
 
+            return $ticket;
+
+        }catch(\Exception $e){
+            \Log::error($e->getMessage());
+            return response()->json([
+                'message'=>$e->getMessage()
+            ],500);
+        }
+    }
+
+    /**
+     * Modify the specified resource in storage.
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Ticket  $ticket
+     * @return \Illuminate\Http\Response
+     */
+    public function modify(Request $request, Ticket $ticket)
+    {
+        $request->validate([
+            'transDate'=>'required',
+            'transTime'=>'required',
+            'status'=>'required',
+            'priority'=>'required',
+            'complexity'=>'required',
+            'description'=>'required',
+            'tipo'=>'required',
+            'solicitante'=>'required'
+        ]);
+        try{
+            $ticket->fill($request->post())->update();
             return response()->json([
                 'message'=>'Ticket Updated Successfully!!'
             ]);
-
         }catch(\Exception $e){
             \Log::error($e->getMessage());
             return response()->json([

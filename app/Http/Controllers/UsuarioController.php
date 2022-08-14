@@ -85,7 +85,6 @@ class UsuarioController extends Controller
     public function update(Request $request, Usuario $usuario)
     {
         $request->validate([
-            'id'=>'required',
             'nombre'=>'required',
             'apellido'=>'required',
             'email'=>'required',

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import "@fontsource/karla";
-//import './index.css';
+import './index.css';
 
 const StyledCardForm = styled.div`
   flex: 0 0 auto;
@@ -85,7 +85,7 @@ export default class Incidemte extends React.Component {
         solicitante: '',
         asignado: '',
         responsable: '',
-        incidenteId: '',
+        solucion: '',
         usuariosDisponibles: [],
         TIDisponibles: [],
         draggedOverCol: 0
@@ -118,14 +118,14 @@ export default class Incidemte extends React.Component {
           var keys = Object.keys(result);
           for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            var value = result[key].toincidenteIdString().toUpperCase();
+            var value = result[key].toString().toUpperCase();
             this.setState({ [key]: value });
           }
           this.setState({ isLoading: false });
       })
       .catch((error) => {
           console.log('Error: ', error);
-          window.location.href="/";
+          //window.location.href="/";
       });
 
       fetch('/getusuarios', {
@@ -263,7 +263,7 @@ export default class Incidemte extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Estado"
             minLength="4"
-            maxLength="5"
+            maxLength="6"
             required
           />
         </li>
@@ -365,12 +365,12 @@ export default class Incidemte extends React.Component {
         </li>
         <li>
           <TextInput
-            label="Incidente ID"
-            id="incidenteId"
+            label="Solucion"
+            id="solucion"
             type="autocomplete"
-            defaultValue={this.state.incidenteId}
+            defaultValue={this.state.solucion}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
-            placeholder="Incidente ID"
+            placeholder="Solucion"
             minLength="2"
             maxLength="2"
             />

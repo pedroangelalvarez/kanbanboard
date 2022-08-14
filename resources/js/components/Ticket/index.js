@@ -264,7 +264,7 @@ export default class Ticket extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Estado"
             minLength="4"
-            maxLength="5"
+            maxLength="6"
             required
           />
         </li>

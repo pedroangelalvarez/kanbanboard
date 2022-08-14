@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\IncidenteController;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,6 +19,7 @@ use App\Http\Controllers\IncidenteController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 
 Route::resource('incidentes',IncidenteController::class);
 

@@ -24,7 +24,42 @@ class IncidenteController extends Controller
      */
     public function create()
     {
-        //
+        $request->validate([
+            'id'=>'required',
+            'transDate'=>'required',
+            'transTime'=>'required',
+            'status'=>'required',
+            'priority'=>'required',
+            'complexity'=>'required',
+            'description'=>'required',
+            'tipo'=>'required',
+            'solicitante'=>'required',
+            //'asignado'=>'required',
+            'responsable'=>'required'
+
+        ]);
+        /*
+        try{
+            $imageName = Str::random().'.'.$request->image->getClientOriginalExtension();
+            Storage::disk('public')->putFileAs('product/image', $request->image,$imageName);
+            Product::create($request->post()+['image'=>$imageName]);
+
+            return response()->json([
+                'message'=>'Product Created Successfully!!'
+            ]);
+        }catch(\Exception $e){
+            \Log::error($e->getMessage());
+            return response()->json([
+                'message'=>'Something goes wrong while creating a product!!'
+            ],500);
+        }
+        */
+        Incidente::create($request->post());
+
+        return response()->json([
+            'message'=>'Incidente Created Successfully!!'
+        ]);
+        
     }
 
     /**
@@ -107,7 +142,6 @@ class IncidenteController extends Controller
     public function update(Request $request, Incidente $incidente)
     {
         $request->validate([
-            'id'=>'required',
             'transDate'=>'required',
             'transTime'=>'required',
             'status'=>'required',
@@ -136,6 +170,43 @@ class IncidenteController extends Controller
             ],500);
         }
     }
+
+    /**
+     * Modify the specified resource in storage.
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Incidente  $incidente
+     * @return \Illuminate\Http\Response
+     */ 
+    public function modify(Request $request, Incidente $incidente)
+    {
+        $request->validate([
+            'transDate'=>'required',
+            'transTime'=>'required',
+            'status'=>'required',
+            'priority'=>'required',
+            'complexity'=>'required',
+            'description'=>'required',
+            'tipo'=>'required',
+            'solicitante'=>'required',
+            //'asignado'=>'required',
+            'responsable'=>'required'
+            //'incidenteId'=>'required'
+        ]);
+
+        try{
+            $incidente->fill($request->post())->update();
+            return response()->json([
+                'message'=>'Incidente Updated Successfully!!'
+            ]);
+        }catch(\Exception $e){
+            \Log::error($e->getMessage());
+            return response()->json([
+                'message'=>'Something goes wrong while updating a incidente!!'
+            ],500);
+        }
+    }
+
+
 
     /**
      * Remove the specified resource from storage.

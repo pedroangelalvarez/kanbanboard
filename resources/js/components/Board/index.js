@@ -25,7 +25,7 @@ let projectList = [
     date:'2022-03-01',
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
-    project_stage: 1,
+    status: 1,
     color: colorCard
   },
 
@@ -36,7 +36,7 @@ let projectList = [
     date:'2022-03-01',
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
-    project_stage: 1,
+    status: 1,
     color: colorCard
   },
 
@@ -47,7 +47,7 @@ let projectList = [
     date:'2022-03-01',
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
-    project_stage: 1,
+    status: 1,
     color: colorCard
   },
 
@@ -58,7 +58,7 @@ let projectList = [
     date:'2022-04-01',
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
-    project_stage: 2,
+    status: 2,
     color: colorCard
   },
 
@@ -69,7 +69,7 @@ let projectList = [
     date:'2022-03-01',
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
-    project_stage: 3,
+    status: 3,
     color: colorCard
   },
 
@@ -80,7 +80,7 @@ let projectList = [
     date:'2022-03-01',
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
-    project_stage: 3,
+    status: 3,
     color: colorCard
   },
 
@@ -91,7 +91,7 @@ let projectList = [
     date:'2022-04-01',
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
-    project_stage: 4,
+    status: 4,
     color: colorCard
   }
 ];
@@ -153,12 +153,24 @@ export default class IBoard extends React.Component {
     for(let i = 0; i < this.state.data.length; i++) {
         let obj = this.state.data[i];
         var item = {}
+        var estado = 1;
+        if(obj.status.toUpperCase() == "PENDIENTE"){
+          estado = 1;
+        }else if(obj.toUpperCase() == "ASIGNADO"){
+          estado = 2;
+        }else if(obj.toUpperCase() == "EN PROGRESO"){
+          estado = 3;
+        }else if(obj.toUpperCase() == "COMPLETADO"){
+          estado = 4;
+        }else if(obj.toUpperCase() == "CANCELADO"){
+          estado = 5;
+        }
         item ["id"] = obj.id;
         item ["order"] = "1";
         item ["name"] = obj.description; //"Ticket "+(obj.id).toString() 
         item ["date"] = obj.transDate;
         item ["description"] = obj.tipo;
-        item ["project_stage"] = obj.id;
+        item ["status"] = estado;
         item ["color"] = colorCard;
         console.log(item);
         registros.push(item);
@@ -202,12 +214,41 @@ export default class IBoard extends React.Component {
   }
 
   //this is called when a Kanban card dropped over a column (called by card)
-  handleOnDragEnd(e, project) {
-    const updatedProjects = this.state.projects.slice(0);
-    updatedProjects.find((projectObject) => {
-      return projectObject.name === project.name;
-    }).project_stage = this.state.draggedOverCol;
-    this.setState({ projects: updatedProjects });
+  async handleOnDragEnd(e, project) {
+    e.preventDefault();
+
+      const updatedProjects = this.state.projects.slice(0);
+      updatedProjects.find((projectObject) => {
+        return projectObject.name === project.name;
+      }).status = this.state.draggedOverCol;
+      console.log("el ticket "+project.id+" se movio a la columna "+this.state.draggedOverCol);
+      //Actualizando el ticket en la base de datos
+      const formData = new FormData()
+    formData.append('_method', 'PATCH');
+    for (const key in project) {
+      if (key !== 'id') {
+        formData.append(key, project[key]);
+      }
+    }
+
+    await axios.post('/api/tickets/'+project.id, formData).then(({data})=>{
+      Swal.fire({
+        icon:"success",
+        text:data.message
+      })
+      navigate("/")
+    }).catch(({response})=>{
+      if(response.status===422){
+        setValidationError(response.data.errors)
+      }else{
+        Swal.fire({
+          text:response.data.message,
+          icon:"error"
+        })
+      }
+    });
+
+      this.setState({ projects: updatedProjects });
   }
 
   render() {
@@ -224,7 +265,7 @@ export default class IBoard extends React.Component {
 							name={ column.name }
 							stage={ column.stage }
               color={ column.color }
-							projects={ this.state.projects.filter((project) => {return parseInt(project.project_stage, 10) === column.stage;}) }
+							projects={ this.state.projects.filter((project) => {return parseInt(project.status, 10) === column.stage;}) }
 							onDragEnter={ this.handleOnDragEnter }        //DRAG ENTER
 							onDragEnd={ this.handleOnDragEnd }            //DRAG END
 							key={ column.stage }
@@ -247,7 +288,7 @@ class KanbanColumn extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.state = { mouseIsHovering: false };
+    this.setState({mouseIsHovering: false});
   }
 
   generateKanbanCards() {
@@ -412,20 +453,36 @@ class KanbanCard extends React.Component {
         
 				onDragEnd={(e) => {this.props.onDragEnd(e, this.props.project);}} >
                     
-				<div><h id="idprojname">[<a href={"/ticket/"+this.props.project.id} target="_blank" rel="noopener noreferrer"><u>Ticket {this.props.project.id}</u></a>] {this.props.project.name}</h><h2> {this.props.project.date}</h2></div>
+				<div>
+          {(this.props.project.status===5) ? (
+            <h id="idprojname" style={{'textDecoration':'line-through'}}>[
+              <a href={"/ticket/"+this.props.project.id} target="_blank" rel="noopener noreferrer">
+                <u>Ticket {this.props.project.id}</u>
+              </a>] 
+                {this.props.project.name}</h>
+          ) : (
+            <h id="idprojname">[
+              <a href={"/ticket/"+this.props.project.id} target="_blank" rel="noopener noreferrer">
+                <u>Ticket {this.props.project.id}</u>
+              </a>] 
+                {this.props.project.name}</h>
+          )}
+          <h2>{this.props.project.date}</h2>
+          <h3>{this.props.project.status}</h3>
+        </div>
 				{(this.state.collapsed)
 					? null
 					: (<div>
                  {/* https://es.reactjs.org/docs/forms.html  -->*/}
               <form>
                    
-                   <strong>Title: </strong>
+                   <strong>Titulo: </strong>
                    <p maxlength= '150' onChange={this.handleChangeTitle} >
                      {this.props.project.name}
                    </p> 
                    <strong>
                      : </strong>
-                   <p maxlength= '250' onChange={this.handleChangeDescription}>
+                   <p maxLength= '250' onChange={this.handleChangeDescription}>
                    { this.props.project.description }
                    </p>
                   

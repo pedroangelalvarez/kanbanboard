@@ -3062,7 +3062,7 @@ var projectList = [{
   name: "Project 1",
   date: '2022-03-01',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
-  project_stage: 1,
+  status: 1,
   color: colorCard
 }, {
   id: 2,
@@ -3070,7 +3070,7 @@ var projectList = [{
   name: "Project 2",
   date: '2022-03-01',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
-  project_stage: 1,
+  status: 1,
   color: colorCard
 }, {
   id: 3,
@@ -3078,7 +3078,7 @@ var projectList = [{
   name: "Project 3",
   date: '2022-03-01',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
-  project_stage: 1,
+  status: 1,
   color: colorCard
 }, {
   id: 4,
@@ -3086,7 +3086,7 @@ var projectList = [{
   name: "Project 4",
   date: '2022-04-01',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
-  project_stage: 2,
+  status: 2,
   color: colorCard
 }, {
   id: 5,
@@ -3094,7 +3094,7 @@ var projectList = [{
   name: "Project 5",
   date: '2022-03-01',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
-  project_stage: 3,
+  status: 3,
   color: colorCard
 }, {
   id: 6,
@@ -3102,7 +3102,7 @@ var projectList = [{
   name: "Project 6",
   date: '2022-03-01',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
-  project_stage: 3,
+  status: 3,
   color: colorCard
 }, {
   id: 7,
@@ -3110,7 +3110,7 @@ var projectList = [{
   name: "Project 7",
   date: '2022-04-01',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
-  project_stage: 4,
+  status: 4,
   color: colorCard
 }];
 
@@ -3205,13 +3205,27 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
       for (var i = 0; i < this.state.data.length; i++) {
         var obj = this.state.data[i];
         var item = {};
+        var estado = 1;
+
+        if (obj.status.toUpperCase() == "PENDIENTE") {
+          estado = 1;
+        } else if (obj.toUpperCase() == "ASIGNADO") {
+          estado = 2;
+        } else if (obj.toUpperCase() == "EN PROGRESO") {
+          estado = 3;
+        } else if (obj.toUpperCase() == "COMPLETADO") {
+          estado = 4;
+        } else if (obj.toUpperCase() == "CANCELADO") {
+          estado = 5;
+        }
+
         item["id"] = obj.id;
         item["order"] = "1";
         item["name"] = obj.description; //"Ticket "+(obj.id).toString() 
 
         item["date"] = obj.transDate;
         item["description"] = obj.tipo;
-        item["project_stage"] = obj.id;
+        item["status"] = estado;
         item["color"] = colorCard;
         console.log(item);
         registros.push(item);
@@ -3262,15 +3276,69 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
 
   }, {
     key: "handleOnDragEnd",
-    value: function handleOnDragEnd(e, project) {
-      var updatedProjects = this.state.projects.slice(0);
-      updatedProjects.find(function (projectObject) {
-        return projectObject.name === project.name;
-      }).project_stage = this.state.draggedOverCol;
-      this.setState({
-        projects: updatedProjects
-      });
-    }
+    value: function () {
+      var _handleOnDragEnd = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(e, project) {
+        var updatedProjects, formData, key;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                e.preventDefault();
+                updatedProjects = this.state.projects.slice(0);
+                updatedProjects.find(function (projectObject) {
+                  return projectObject.name === project.name;
+                }).status = this.state.draggedOverCol;
+                console.log("el ticket " + project.id + " se movio a la columna " + this.state.draggedOverCol); //Actualizando el ticket en la base de datos
+
+                formData = new FormData();
+                formData.append('_method', 'PATCH');
+
+                for (key in project) {
+                  if (key !== 'id') {
+                    formData.append(key, project[key]);
+                  }
+                }
+
+                _context2.next = 9;
+                return axios__WEBPACK_IMPORTED_MODULE_5___default().post('/api/tickets/' + project.id, formData).then(function (_ref3) {
+                  var data = _ref3.data;
+                  sweetalert2__WEBPACK_IMPORTED_MODULE_6___default().fire({
+                    icon: "success",
+                    text: data.message
+                  });
+                  navigate("/");
+                })["catch"](function (_ref4) {
+                  var response = _ref4.response;
+
+                  if (response.status === 422) {
+                    setValidationError(response.data.errors);
+                  } else {
+                    sweetalert2__WEBPACK_IMPORTED_MODULE_6___default().fire({
+                      text: response.data.message,
+                      icon: "error"
+                    });
+                  }
+                });
+
+              case 9:
+                this.setState({
+                  projects: updatedProjects
+                });
+
+              case 10:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function handleOnDragEnd(_x, _x2) {
+        return _handleOnDragEnd.apply(this, arguments);
+      }
+
+      return handleOnDragEnd;
+    }()
   }, {
     key: "render",
     value: function render() {
@@ -3294,7 +3362,7 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
               stage: column.stage,
               color: column.color,
               projects: _this3.state.projects.filter(function (project) {
-                return parseInt(project.project_stage, 10) === column.stage;
+                return parseInt(project.status, 10) === column.stage;
               }),
               onDragEnter: _this3.handleOnDragEnter //DRAG ENTER
               ,
@@ -3336,9 +3404,9 @@ var KanbanColumn = /*#__PURE__*/function (_React$Component2) {
   _createClass(KanbanColumn, [{
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
-      this.state = {
+      this.setState({
         mouseIsHovering: false
-      };
+      });
     }
   }, {
     key: "generateKanbanCards",
@@ -3540,7 +3608,20 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
           _this8.props.onDragEnd(e, _this8.props.project);
         },
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("h", {
+          children: [this.props.project.status === 5 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("h", {
+            id: "idprojname",
+            style: {
+              'textDecoration': 'line-through'
+            },
+            children: ["[", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("a", {
+              href: "/ticket/" + this.props.project.id,
+              target: "_blank",
+              rel: "noopener noreferrer",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("u", {
+                children: ["Ticket ", this.props.project.id]
+              })
+            }), "]", this.props.project.name]
+          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("h", {
             id: "idprojname",
             children: ["[", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("a", {
               href: "/ticket/" + this.props.project.id,
@@ -3549,14 +3630,16 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("u", {
                 children: ["Ticket ", this.props.project.id]
               })
-            }), "] ", this.props.project.name]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("h2", {
-            children: [" ", this.props.project.date]
+            }), "]", this.props.project.name]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h2", {
+            children: this.props.project.date
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h3", {
+            children: this.props.project.status
           })]
         }), this.state.collapsed ? null : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("form", {
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("strong", {
-              children: "Title: "
+              children: "Titulo: "
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
               maxlength: "150",
               onChange: this.handleChangeTitle,
@@ -3564,7 +3647,7 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("strong", {
               children: ": "
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
-              maxlength: "250",
+              maxLength: "250",
               onChange: this.handleChangeDescription,
               children: this.props.project.description
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("br", {})]
@@ -3707,13 +3790,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lourenci/react-kanban */ "./node_modules/@lourenci/react-kanban/dist/index.js");
 /* harmony import */ var _lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _lourenci_react_kanban_dist_styles_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lourenci/react-kanban/dist/styles.css */ "./node_modules/@lourenci/react-kanban/dist/styles.css");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _fontsource_karla__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fontsource/karla */ "./node_modules/@fontsource/karla/index.css");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./index.css */ "./resources/js/components/Incidente/index.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 var _excluded = ["label", "type", "id", "defaultValue"];
@@ -3759,12 +3843,12 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
- //import './index.css';
 
 
 
-var StyledCardForm = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  flex: 0 0 auto;\n  background-color: #e0e0e0;\n  border-radius: 8px;\n  max-width: 50em;\n  overflow: hidden;\n  padding: 1em 1em;\n  font-family: Karla;\n  box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.5);\n\n  h2 {\n    color: #343a40;\n    margin: 0;\n    padding-top: .25em;\n    border-bottom: 1px solid #aeaeae;\n    padding-bottom: .75em;\n  }\n  \n  ul {\n    list-style: none;\n    padding: 0;\n  \n    li:not(:last-child) {\n      margin-bottom: 15px;\n    }\n  }\n"])));
-var StyledTextInput = styled_components__WEBPACK_IMPORTED_MODULE_8__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  color: #343a40;\n\n  label {\n    display: inline;\n    font-family: Karla;\n  }\n\n  input {\n    box-sizing: border-box;\n    width: 100%;\n    border-radius: 4px;\n    outline: none;\n    border: 1px solid #ebecee;\n    font-family: Karla;\n    padding: 10px;\n    margin: 10px 0;\n  }\n\n  input:focus {\n    border-color: #64b5f6;\n}\n"])));
+
+var StyledCardForm = styled_components__WEBPACK_IMPORTED_MODULE_9__["default"].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  flex: 0 0 auto;\n  background-color: #e0e0e0;\n  border-radius: 8px;\n  max-width: 50em;\n  overflow: hidden;\n  padding: 1em 1em;\n  font-family: Karla;\n  box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.5);\n\n  h2 {\n    color: #343a40;\n    margin: 0;\n    padding-top: .25em;\n    border-bottom: 1px solid #aeaeae;\n    padding-bottom: .75em;\n  }\n  \n  ul {\n    list-style: none;\n    padding: 0;\n  \n    li:not(:last-child) {\n      margin-bottom: 15px;\n    }\n  }\n"])));
+var StyledTextInput = styled_components__WEBPACK_IMPORTED_MODULE_9__["default"].div(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  color: #343a40;\n\n  label {\n    display: inline;\n    font-family: Karla;\n  }\n\n  input {\n    box-sizing: border-box;\n    width: 100%;\n    border-radius: 4px;\n    outline: none;\n    border: 1px solid #ebecee;\n    font-family: Karla;\n    padding: 10px;\n    margin: 10px 0;\n  }\n\n  input:focus {\n    border-color: #64b5f6;\n}\n"])));
 
 var TextInput = function TextInput(_ref) {
   var label = _ref.label,
@@ -3774,11 +3858,11 @@ var TextInput = function TextInput(_ref) {
       defaultValue = _ref.defaultValue,
       props = _objectWithoutProperties(_ref, _excluded);
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(StyledTextInput, {
-    children: [label && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("label", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(StyledTextInput, {
+    children: [label && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
       htmlFor: id,
       children: label
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("input", _objectSpread({
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", _objectSpread({
       id: id,
       type: type,
       defaultValue: defaultValue
@@ -3811,7 +3895,7 @@ var Incidemte = /*#__PURE__*/function (_React$Component) {
       solicitante: '',
       asignado: '',
       responsable: '',
-      incidenteId: '',
+      solucion: '',
       usuariosDisponibles: [],
       TIDisponibles: [],
       draggedOverCol: 0
@@ -3849,7 +3933,7 @@ var Incidemte = /*#__PURE__*/function (_React$Component) {
 
         for (var i = 0; i < keys.length; i++) {
           var key = keys[i];
-          var value = result[key].toincidenteIdString().toUpperCase();
+          var value = result[key].toString().toUpperCase();
 
           _this2.setState(_defineProperty({}, key, value));
         }
@@ -3858,8 +3942,7 @@ var Incidemte = /*#__PURE__*/function (_React$Component) {
           isLoading: false
         });
       })["catch"](function (error) {
-        console.log('Error: ', error);
-        window.location.href = "/";
+        console.log('Error: ', error); //window.location.href="/";
       });
       fetch('/getusuarios', {
         credentials: 'include'
@@ -3956,23 +4039,23 @@ var Incidemte = /*#__PURE__*/function (_React$Component) {
         }
       }
 
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(StyledCardForm, {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("h2", {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(StyledCardForm, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h2", {
             children: "INCIDENTE INC" + zfill(this.state.id, 4)
-          }), "44", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("form", {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("ul", {
+          }), "44", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("form", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("ul", {
               style: {
                 'listStyleType': 'none',
                 'display': 'inline-block',
                 'height': '70px'
               },
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
                 style: {
                   'minWidth': '5em',
                   'display': 'inline-block'
                 },
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Fecha",
                   id: "transDate",
                   type: "date",
@@ -3986,13 +4069,13 @@ var Incidemte = /*#__PURE__*/function (_React$Component) {
                   width: "2em",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
                 style: {
                   'minWidth': '5em',
                   'margin': '0 0.5em',
                   'display': 'inline-block'
                 },
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Hora",
                   id: "TransTime",
                   type: "time",
@@ -4007,18 +4090,18 @@ var Incidemte = /*#__PURE__*/function (_React$Component) {
                   required: true
                 })
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("ul", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("ul", {
               style: {
                 'minWidth': '40em',
                 'display': 'inline-block',
                 'height': '70px'
               },
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
                 style: {
                   'maxWidth': '10em',
                   'display': 'inline-block'
                 },
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Estado",
                   id: "status",
                   type: "text",
@@ -4028,16 +4111,16 @@ var Incidemte = /*#__PURE__*/function (_React$Component) {
                   },
                   placeholder: "Estado",
                   minLength: "4",
-                  maxLength: "5",
+                  maxLength: "6",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
                 style: {
                   'maxWidth': '10em',
                   'margin': '0 0.5em',
                   'display': 'inline-block'
                 },
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Prioridad",
                   id: "priority",
                   type: "text",
@@ -4051,13 +4134,13 @@ var Incidemte = /*#__PURE__*/function (_React$Component) {
                   width: "1.5em",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
                 style: {
                   'maxWidth': '10em',
                   'margin': '0 0.5em',
                   'display': 'inline-block'
                 },
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Complejidad",
                   id: "complexity",
                   type: "text",
@@ -4072,9 +4155,9 @@ var Incidemte = /*#__PURE__*/function (_React$Component) {
                   required: true
                 })
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("ul", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("ul", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Descripci\xF3n",
                   id: "description",
                   type: "text",
@@ -4088,8 +4171,8 @@ var Incidemte = /*#__PURE__*/function (_React$Component) {
                   width: "1.5em",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Tipo",
                   id: "tipo",
                   type: "text",
@@ -4102,8 +4185,8 @@ var Incidemte = /*#__PURE__*/function (_React$Component) {
                   maxLength: "2",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Solicitante",
                   id: "solicitante",
                   type: "text",
@@ -4116,8 +4199,8 @@ var Incidemte = /*#__PURE__*/function (_React$Component) {
                   maxLength: "2",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Asignado",
                   id: "asignado",
                   type: "text",
@@ -4130,8 +4213,8 @@ var Incidemte = /*#__PURE__*/function (_React$Component) {
                   maxLength: "2",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Responsable",
                   id: "responsable",
                   type: "text",
@@ -4144,16 +4227,16 @@ var Incidemte = /*#__PURE__*/function (_React$Component) {
                   maxLength: "2",
                   required: true
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("li", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(TextInput, {
-                  label: "Incidente ID",
-                  id: "incidenteId",
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
+                  label: "Solucion",
+                  id: "solucion",
                   type: "autocomplete",
-                  defaultValue: this.state.incidenteId,
+                  defaultValue: this.state.solucion,
                   onChange: function onChange(e) {
                     return _this3.setState(_defineProperty({}, e.target.id, e.target.defaultValue));
                   },
-                  placeholder: "Incidente ID",
+                  placeholder: "Solucion",
                   minLength: "2",
                   maxLength: "2"
                 })
@@ -4585,7 +4668,7 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                   },
                   placeholder: "Estado",
                   minLength: "4",
-                  maxLength: "5",
+                  maxLength: "6",
                   required: true
                 })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
@@ -4809,6 +4892,30 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "body {\r\n    font-family: Sans-serif;\r\n    font-size: 14;\r\n    width: 100%;\r\n    background-color: #E0E0E0;\r\n  }\r\n\r\n  h1 {\r\n    position: absolute;\r\n    left: 16px;\r\n    top: 16px;\r\n  }\r\n\r\n  h2{\r\n    color: #30BF10;\r\n    font-family: 'Arbutus Slab', serif;\r\n    font-size: 12px !important;\r\n    font-weight: 800;\r\n    line-height: 2rem;\r\n  }\r\n\r\n  menu {\r\n    position: absolute;\r\n    right: 16px;\r\n    top: 0px;\r\n  }\r\n\r\n  menu.kanban .viewlist,\r\n  menu.list .viewkanban {\r\n    display: inline;\r\n  }\r\n\r\n  menu.kanban .viewkanban,\r\n  menu.list .viewlist {\r\n    display: none;\r\n  }\r\n\r\n  .dd {\r\n    max-width: 100%;\r\n    top: 88px;\r\n    margin: 0 auto;\r\n    display: block;\r\n    vertical-align: top;\r\n  }\r\n\r\n  ol {\r\n    transition: border-color 2s ease, all 0.1s ease;\r\n  }\r\n\r\n  ol.list {\r\n    padding-top: 2em;\r\n    padding-left: 15px;\r\n    max-width: 650px;\r\n    margin: 0 auto;\r\n  }\r\n\r\n  ol.list .text {\r\n    float: right;\r\n    width: 60%;\r\n  }\r\n\r\n  ol.list h3,\r\n  ol.list .actions,\r\n  ol.list label {\r\n    float: left;\r\n    width: 30%;\r\n  }\r\n\r\n  ol.list > li,\r\n  ol.list > h3 {\r\n    max-width: 600px;\r\n    margin: 0 auto;\r\n  }\r\n\r\n  ol.list > h2 {\r\n    padding-bottom: 6px;\r\n  }\r\n\r\n  ol.list.To-do {\r\n    border-left: 2px solid #FFB300;\r\n  }\r\n\r\n  ol.list.Gone {\r\n    border-left: 2px solid #FF3D00;\r\n  }\r\n\r\n  ol.list.progress {\r\n    border-left: 2px solid #29B6F6;\r\n  }\r\n\r\n  ol.list.Done {\r\n    border-left: 2px solid #8BC34A;\r\n  }\r\n\r\n  H2,\r\n  h1,\r\n  button {\r\n    margin-left: 5px;\r\n    font-family: 'Arbutus Slab', serif;\r\n  }\r\n\r\n  h2 {\r\n    color: #607D8B;\r\n  }\r\n\r\n  h2 .material-icons {\r\n    color: #B0BEC5;\r\n    line-height: 1.5;\r\n  }\r\n\r\n  .dd-handle .material-icons {\r\n    color: #B0BEC5;\r\n    font-size: 14px;\r\n    font-weight: 800;\r\n    line-height: 2rem;\r\n    position: relative;\r\n    right: 0;\r\n    color: #607D8B;\r\n    padding: 5px 16px;\r\n  }\r\n\r\n  button>.material-icons {\r\n    line-height: 0.2;\r\n    position:relative;\r\n    top:7px;\r\n  }\r\n\r\n  .dd-item:hover,\r\n  button:hover {\r\n    color: #00838F;\r\n    will-change: box-shadow;\r\n    transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);\r\n    box-shadow: 0 5px 6px 0 rgba(0, 0, 0, .14), 0 3px 1px -6px rgba(0, 0, 0, .2), 2px 5px 3px 0 rgba(0, 0, 0, .12);\r\n  }\r\n\r\n  button.addbutt {\r\n    background-color: #EEEEEE;\r\n    color: #607D8B;\r\n    width: 100%;\r\n  }\r\n\r\n  .list > button.addbutt {\r\n    max-width: 330px;\r\n  }\r\n\r\n  button:active, button:down, button:focus {box-shadow: 0 0 0 0, 0 0 0 0 rgba(0, 0, 0, .2), 0 0 0 0 rgba(0, 0, 0, .12);color:#00838F;}\r\n  button {\r\n    align-items: center;\r\n    background-color: #EEEEEE;\r\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\r\n    border: 1px solid #ccc;\r\n    border-radius: 2px;\r\n    color: #607D8B;\r\n    position: relative;\r\n    margin: 0;\r\n    min-width: 44px;\r\n    padding: 10px 16px;\r\n    display: inline-block;\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    text-transform: uppercase;\r\n    letter-spacing: 1;\r\n    overflow: hidden;\r\n    outline: none;\r\n    cursor: pointer;\r\n    text-decoration: none;\r\n      }\r\n\r\n  ol.kanban.To-do {\r\n    border-top: 5px solid #FFB300;\r\n  }\r\n\r\n  ol.kanban.Gone {\r\n    border-top: 5px solid #FF3D00;\r\n  }\r\n\r\n  ol.kanban.progress {\r\n    border-top: 5px solid #29B6F6;\r\n  }\r\n\r\n  ol.kanban.Done {\r\n    border-top: 5px solid #8BC34A;\r\n  }\r\n\r\n  ol.kanban {\r\n    border-top: 5px solid #78909C;\r\n    width: 20%;\r\n    height: auto;\r\n    margin: 1%;\r\n    max-width: 250px;\r\n    min-width: 120px;\r\n    display: inline-block;\r\n    vertical-align: top;\r\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\r\n    flex-direction: column;\r\n    min-height: 200px;\r\n    z-index: 1;\r\n    position: relative;\r\n    background: #fff;\r\n    padding: 1em;\r\n    border-radius: 2px;\r\n  }\r\n\r\n  .dd-item {\r\n    display: block;\r\n    position: relative;\r\n    list-style: none;\r\n    font-family: \"Roboto\", \"Helvetica\", \"Arial\", sans-serif;\r\n    min-height: 48px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    font-size: 16px;\r\n    min-height: 120px;\r\n    overflow: hidden;\r\n    z-index: 1;\r\n    position: relative;\r\n    background: #fff;\r\n    border-radius: 2px;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n  .title {\r\n    align-self: flex-end;\r\n    color: inherit;\r\n    display: block;\r\n    display: flex;\r\n    font-size: 24px;\r\n    line-height: normal;\r\n    overflow: hidden;\r\n    transform-origin: 149px 48px;\r\n    margin: 0;\r\n  }\r\n\r\n  .text {\r\n    color: grey;\r\n    border-top: 1px solid;\r\n    font-size: 1rem;\r\n    font-weight: 400;\r\n    line-height: 18px;\r\n    overflow: hidden;\r\n    padding: 16px;\r\n    width: 90%;\r\n  }\r\n\r\n  .actions {\r\n    border-top: 1px solid rgba(0, 0, 0, .1);\r\n    font-size: 8px;\r\n    line-height: normal;\r\n    width: 100%;\r\n    color: #B0BEC5;\r\n    padding: 8px;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n\r\n  /**\r\n   * Nestable\r\n   */\r\n\r\n  .dd {\r\n    position: relative;\r\n    display: block;\r\n    list-style: none;\r\n  }\r\n\r\n  .dd-list {\r\n    display: block;\r\n    position: relative;\r\n    margin: 0;\r\n    padding: 0;\r\n    list-style: none;\r\n  }\r\n\r\n  .dd-list .dd-list {\r\n    padding-left: 30px;\r\n  }\r\n\r\n  .dd-collapsed .dd-list {\r\n    display: none;\r\n  }\r\n\r\n  .dd-item {\r\n    display: block;\r\n    margin: 5px 0;\r\n    padding: 5px 10px;\r\n    color: #333;\r\n    text-decoration: none;\r\n    font-weight: bold;\r\n    border: 1px solid #ccc;\r\n    background: #fafafa;\r\n    border-radius: 3px;\r\n    box-sizing: border-box;\r\n    -moz-box-sizing: border-box;\r\n  }\r\n\r\n  .dd-item:hover {\r\n    background: #fff;\r\n  }\r\n\r\n  .dd-item > button {\r\n    display: block;\r\n    position: relative;\r\n    cursor: move;\r\n    float: left;\r\n    width: 25px;\r\n    height: 20px;\r\n    margin: 5px 0;\r\n    padding: 0;\r\n    text-indent: 100%;\r\n    white-space: nowrap;\r\n    overflow: hidden;\r\n    border: 0;\r\n    background: transparent;\r\n    font-size: 12px;\r\n    line-height: 1;\r\n    text-align: center;\r\n    font-weight: bold;\r\n  }\r\n\r\n  .dd-item > button:before {\r\n    content: '+';\r\n    display: block;\r\n    position: absolute;\r\n    width: 100%;\r\n    text-align: center;\r\n    text-indent: 0;\r\n  }\r\n\r\n  .dd-item > button[data-action=\"collapse\"]:before {\r\n    content: '<i class=\"material-icons\">filter_none</i>';\r\n  }\r\n\r\n  .dd-placeholder,\r\n  .dd-empty {\r\n    margin: 5px 0;\r\n    padding: 0;\r\n    min-height: 30px;\r\n    background: #E0E0E0;\r\n    border: 1px dashed #b6bcbf;\r\n    box-sizing: border-box;\r\n    -moz-box-sizing: border-box;\r\n  }\r\n\r\n  .dd-empty {\r\n    border: 1px dashed #bbb;\r\n    min-height: 100px;\r\n    background-color: #E0E0E0;\r\n    background-size: 60px 60px;\r\n    background-position: 0 0, 30px 30px;\r\n  }\r\n\r\n  .dd-dragel {\r\n    position: absolute;\r\n    pointer-events: none;\r\n    z-index: 9999;\r\n  }\r\n\r\n  .dd-dragel > .dd-item .dd-handle {\r\n    margin-top: 0;\r\n    cursor: move;\r\n  }\r\n\r\n  .dd-dragel .dd-item {\r\n    box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, .5);\r\n    cursor: move;\r\n  }\r\n\r\n#loading\r\n.loading {\r\n  position: fixed;\r\n  z-index: 999;\r\n  height: 2em;\r\n  width: 2em;\r\n  overflow: visible;\r\n  margin: auto;\r\n  top: 0;\r\n  left: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n}\r\n\r\n/* Transparent Overlay */\r\n.loading:before {\r\n  content: '';\r\n  display: block;\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: rgba(0,0,0,0.3);\r\n}\r\n\r\n/* :not(:required) hides these rules from IE9 and below */\r\n.loading:not(:required) {\r\n  /* hide \"loading...\" text */\r\n  font: 0/0 a;\r\n  color: transparent;\r\n  text-shadow: none;\r\n  background-color: transparent;\r\n  border: 0;\r\n}\r\n\r\n.loading:not(:required):after {\r\n  content: '';\r\n  display: block;\r\n  font-size: 10px;\r\n  width: 1em;\r\n  height: 1em;\r\n  margin-top: -0.5em;\r\n  -webkit-animation: spinner 1500ms infinite linear;\r\n  animation: spinner 1500ms infinite linear;\r\n  border-radius: 0.5em;\r\n  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;\r\n}\r\n\r\n/* Animation */\r\n\r\n@-webkit-keyframes spinner {\r\n  0% {\r\n    transform: rotate(0deg);\r\n  }\r\n  100% {\r\n    transform: rotate(360deg);\r\n  }\r\n}\r\n@keyframes spinner {\r\n  0% {\r\n    transform: rotate(0deg);\r\n  }\r\n  100% {\r\n    transform: rotate(360deg);\r\n  }\r\n}", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/Incidente/index.css":
+/*!***************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/Incidente/index.css ***!
+  \***************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "body {\r\n\tpadding: 30px 20%;\r\n  }\r\n  h1 {\r\n\tfont-size: 2em;\r\n\ttext-align: center;\r\n  }", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -37008,6 +37115,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_index_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./index.css */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/Board/index.css");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_index_css__WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_index_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./resources/js/components/Incidente/index.css":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/Incidente/index.css ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_index_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./index.css */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/Incidente/index.css");
 
             
 
