@@ -133,6 +133,7 @@ export default class IBoard extends React.Component {
       })
       navigate("/")
     }).catch(({response})=>{
+      console.log(response);
       if(response.status===422){
         setValidationError(response.data.errors)
       }else{
@@ -153,25 +154,38 @@ export default class IBoard extends React.Component {
     for(let i = 0; i < this.state.data.length; i++) {
         let obj = this.state.data[i];
         var item = {}
-        var estado = 1;
-        if(obj.status.toUpperCase() == "PENDIENTE"){
-          estado = 1;
-        }else if(obj.toUpperCase() == "ASIGNADO"){
-          estado = 2;
-        }else if(obj.toUpperCase() == "EN PROGRESO"){
-          estado = 3;
-        }else if(obj.toUpperCase() == "COMPLETADO"){
-          estado = 4;
-        }else if(obj.toUpperCase() == "CANCELADO"){
-          estado = 5;
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                if(key == "status"){
+                  var estado = 1;
+                  if(obj[key] == "PENDIENTE"){
+                    estado = 1;
+                  }else if(obj[key] == "ASIGNADO"){
+                    estado = 2;
+                  }else if(obj[key] == "EN PROGRESO"){
+                    estado = 3;
+                  }else if(obj[key] == "COMPLETADO"){
+                    estado = 4;
+                  }else if(obj[key] == "CANCELADO"){
+                    estado = 5;
+                  }
+                  item[key] = estado;
+                }else{
+                  item[key] = obj[key];
+                }
+                
+            }
         }
-        item ["id"] = obj.id;
         item ["order"] = "1";
+        item ["color"] = colorCard;
+        /*
+        item ["id"] = obj.id;
         item ["name"] = obj.description; //"Ticket "+(obj.id).toString() 
         item ["date"] = obj.transDate;
         item ["description"] = obj.tipo;
         item ["status"] = estado;
-        item ["color"] = colorCard;
+        
+        */
         console.log(item);
         registros.push(item);
     }
@@ -219,36 +233,88 @@ export default class IBoard extends React.Component {
 
       const updatedProjects = this.state.projects.slice(0);
       updatedProjects.find((projectObject) => {
-        return projectObject.name === project.name;
+        return projectObject.description === project.description;
       }).status = this.state.draggedOverCol;
       console.log("el ticket "+project.id+" se movio a la columna "+this.state.draggedOverCol);
+      this.setState({ projects: updatedProjects });
+      console.log(this.state.projects);
       //Actualizando el ticket en la base de datos
-      const formData = new FormData()
+    const formData = new FormData()
     formData.append('_method', 'PATCH');
     for (const key in project) {
       if (key !== 'id') {
-        formData.append(key, project[key]);
+        if (key=="status"){
+          var estado = "";
+          if(project[key] == 1){
+            estado = "Pendiente";
+          }else if(project[key] == 2){
+            estado = "Asignado";
+          }else if(project[key] == 3){
+            estado = "En Progreso";
+          }else if(project[key] == 4){
+            estado = "Completado";
+          }else if(project[key] == 5){
+            estado = "Cancelado";
+          }
+          formData.append(key, estado);
+        }else{
+          formData.append(key, project[key]);
+        }
       }
     }
 
-    await axios.post('/api/tickets/'+project.id, formData).then(({data})=>{
-      Swal.fire({
-        icon:"success",
-        text:data.message
-      })
-      navigate("/")
-    }).catch(({response})=>{
-      if(response.status===422){
-        setValidationError(response.data.errors)
-      }else{
-        Swal.fire({
-          text:response.data.message,
-          icon:"error"
-        })
+    //Crear json para enviar al servidor
+    const jsonObject = {};
+    for (const key in project) {
+      if (key !== 'id') {
+        if (key=="status"){
+          var estado = "";
+          if(project[key] == 1){
+            estado = "Pendiente";
+          }else if(project[key] == 2){
+            estado = "Asignado";
+          }else if(project[key] == 3){
+            estado = "En Progreso";
+          }else if(project[key] == 4){
+            estado = "Completado";
+          }else if(project[key] == 5){
+            estado = "Cancelado";
+          }
+          jsonObject[key] = estado;
+        } else if(key!=="order" || key!=="color"){
+          jsonObject[key] = project[key];
+        }
+        /*
+        } else {
+          jsonObject[key] = project[key];
+        }
+        */
       }
-    });
+    }
 
-      this.setState({ projects: updatedProjects });
+
+    
+    console.log(jsonObject);
+    var axios = require('axios');
+    var data = JSON.stringify(jsonObject);
+    
+    var config = {
+      method: 'patch',
+      url: 'localhost:8000/api/tickets/1',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+      
   }
 
   render() {
@@ -296,7 +362,7 @@ class KanbanColumn extends React.Component {
       return ( 
         <KanbanCard
 					project={project}
-					key={project.name}
+					key={project.description}
 					onDragEnd={this.props.onDragEnd}                       //drag END 
 				/>
       );
@@ -441,7 +507,7 @@ class KanbanCard extends React.Component {
       "borderRadius": "8px",
       "borderStyle": "solid",
       "borderWidth": "thin",
-      "box-shadow": "6px 6px 8px #777"
+      "boxShadow": "6px 6px 8px #777"
 		}}
 				draggable={true}
         
@@ -459,13 +525,13 @@ class KanbanCard extends React.Component {
               <a href={"/ticket/"+this.props.project.id} target="_blank" rel="noopener noreferrer">
                 <u>Ticket {this.props.project.id}</u>
               </a>] 
-                {this.props.project.name}</h>
+                {this.props.project.description}</h>
           ) : (
             <h id="idprojname">[
               <a href={"/ticket/"+this.props.project.id} target="_blank" rel="noopener noreferrer">
                 <u>Ticket {this.props.project.id}</u>
               </a>] 
-                {this.props.project.name}</h>
+                {this.props.project.description}</h>
           )}
           <h2>{this.props.project.date}</h2>
           <h3>{this.props.project.status}</h3>
@@ -477,13 +543,13 @@ class KanbanCard extends React.Component {
               <form>
                    
                    <strong>Titulo: </strong>
-                   <p maxlength= '150' onChange={this.handleChangeTitle} >
-                     {this.props.project.name}
+                   <p maxLength= '150' onChange={this.handleChangeTitle} >
+                     {this.props.project.description}
                    </p> 
                    <strong>
                      : </strong>
                    <p maxLength= '250' onChange={this.handleChangeDescription}>
-                   { this.props.project.description }
+                   { this.props.project.tipo }
                    </p>
                   
                    <br/>

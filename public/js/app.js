@@ -3168,6 +3168,7 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
                   navigate("/");
                 })["catch"](function (_ref2) {
                   var response = _ref2.response;
+                  console.log(response);
 
                   if (response.status === 422) {
                     setValidationError(response.data.errors);
@@ -3205,28 +3206,42 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
       for (var i = 0; i < this.state.data.length; i++) {
         var obj = this.state.data[i];
         var item = {};
-        var estado = 1;
 
-        if (obj.status.toUpperCase() == "PENDIENTE") {
-          estado = 1;
-        } else if (obj.toUpperCase() == "ASIGNADO") {
-          estado = 2;
-        } else if (obj.toUpperCase() == "EN PROGRESO") {
-          estado = 3;
-        } else if (obj.toUpperCase() == "COMPLETADO") {
-          estado = 4;
-        } else if (obj.toUpperCase() == "CANCELADO") {
-          estado = 5;
+        for (var key in obj) {
+          if (obj.hasOwnProperty(key)) {
+            if (key == "status") {
+              var estado = 1;
+
+              if (obj[key] == "PENDIENTE") {
+                estado = 1;
+              } else if (obj[key] == "ASIGNADO") {
+                estado = 2;
+              } else if (obj[key] == "EN PROGRESO") {
+                estado = 3;
+              } else if (obj[key] == "COMPLETADO") {
+                estado = 4;
+              } else if (obj[key] == "CANCELADO") {
+                estado = 5;
+              }
+
+              item[key] = estado;
+            } else {
+              item[key] = obj[key];
+            }
+          }
         }
 
-        item["id"] = obj.id;
         item["order"] = "1";
-        item["name"] = obj.description; //"Ticket "+(obj.id).toString() 
-
-        item["date"] = obj.transDate;
-        item["description"] = obj.tipo;
-        item["status"] = estado;
         item["color"] = colorCard;
+        /*
+        item ["id"] = obj.id;
+        item ["name"] = obj.description; //"Ticket "+(obj.id).toString() 
+        item ["date"] = obj.transDate;
+        item ["description"] = obj.tipo;
+        item ["status"] = estado;
+        
+        */
+
         console.log(item);
         registros.push(item);
       }
@@ -3278,7 +3293,8 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
     key: "handleOnDragEnd",
     value: function () {
       var _handleOnDragEnd = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(e, project) {
-        var updatedProjects, formData, key;
+        var updatedProjects, formData, key, estado, jsonObject, _key, axios, data, config;
+
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -3286,46 +3302,92 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
                 e.preventDefault();
                 updatedProjects = this.state.projects.slice(0);
                 updatedProjects.find(function (projectObject) {
-                  return projectObject.name === project.name;
+                  return projectObject.description === project.description;
                 }).status = this.state.draggedOverCol;
-                console.log("el ticket " + project.id + " se movio a la columna " + this.state.draggedOverCol); //Actualizando el ticket en la base de datos
+                console.log("el ticket " + project.id + " se movio a la columna " + this.state.draggedOverCol);
+                this.setState({
+                  projects: updatedProjects
+                });
+                console.log(this.state.projects); //Actualizando el ticket en la base de datos
 
                 formData = new FormData();
                 formData.append('_method', 'PATCH');
 
                 for (key in project) {
                   if (key !== 'id') {
-                    formData.append(key, project[key]);
+                    if (key == "status") {
+                      estado = "";
+
+                      if (project[key] == 1) {
+                        estado = "Pendiente";
+                      } else if (project[key] == 2) {
+                        estado = "Asignado";
+                      } else if (project[key] == 3) {
+                        estado = "En Progreso";
+                      } else if (project[key] == 4) {
+                        estado = "Completado";
+                      } else if (project[key] == 5) {
+                        estado = "Cancelado";
+                      }
+
+                      formData.append(key, estado);
+                    } else {
+                      formData.append(key, project[key]);
+                    }
+                  }
+                } //Crear json para enviar al servidor
+
+
+                jsonObject = {};
+
+                for (_key in project) {
+                  if (_key !== 'id') {
+                    if (_key == "status") {
+                      estado = "";
+
+                      if (project[_key] == 1) {
+                        estado = "Pendiente";
+                      } else if (project[_key] == 2) {
+                        estado = "Asignado";
+                      } else if (project[_key] == 3) {
+                        estado = "En Progreso";
+                      } else if (project[_key] == 4) {
+                        estado = "Completado";
+                      } else if (project[_key] == 5) {
+                        estado = "Cancelado";
+                      }
+
+                      jsonObject[_key] = estado;
+                    } else if (_key !== "order" || _key !== "color") {
+                      jsonObject[_key] = project[_key];
+                    }
+                    /*
+                    } else {
+                      jsonObject[key] = project[key];
+                    }
+                    */
+
                   }
                 }
 
-                _context2.next = 9;
-                return axios__WEBPACK_IMPORTED_MODULE_5___default().post('/api/tickets/' + project.id, formData).then(function (_ref3) {
-                  var data = _ref3.data;
-                  sweetalert2__WEBPACK_IMPORTED_MODULE_6___default().fire({
-                    icon: "success",
-                    text: data.message
-                  });
-                  navigate("/");
-                })["catch"](function (_ref4) {
-                  var response = _ref4.response;
-
-                  if (response.status === 422) {
-                    setValidationError(response.data.errors);
-                  } else {
-                    sweetalert2__WEBPACK_IMPORTED_MODULE_6___default().fire({
-                      text: response.data.message,
-                      icon: "error"
-                    });
-                  }
+                console.log(jsonObject);
+                axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+                data = JSON.stringify(jsonObject);
+                config = {
+                  method: 'patch',
+                  url: 'localhost:8000/api/tickets/1',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  data: data
+                };
+                axios(config).then(function (response) {
+                  console.log(JSON.stringify(response.data));
+                })["catch"](function (error) {
+                  console.log(error);
                 });
 
-              case 9:
-                this.setState({
-                  projects: updatedProjects
-                });
-
-              case 10:
+              case 16:
               case "end":
                 return _context2.stop();
             }
@@ -3419,7 +3481,7 @@ var KanbanColumn = /*#__PURE__*/function (_React$Component2) {
           project: project,
           onDragEnd: _this5.props.onDragEnd //drag END 
 
-        }, project.name);
+        }, project.description);
       });
     }
   }, {
@@ -3588,7 +3650,7 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
           "borderRadius": "8px",
           "borderStyle": "solid",
           "borderWidth": "thin",
-          "box-shadow": "6px 6px 8px #777"
+          "boxShadow": "6px 6px 8px #777"
         },
         draggable: true,
         onDragEnter: function onDragEnter(e) {
@@ -3620,7 +3682,7 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("u", {
                 children: ["Ticket ", this.props.project.id]
               })
-            }), "]", this.props.project.name]
+            }), "]", this.props.project.description]
           }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("h", {
             id: "idprojname",
             children: ["[", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("a", {
@@ -3630,7 +3692,7 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("u", {
                 children: ["Ticket ", this.props.project.id]
               })
-            }), "]", this.props.project.name]
+            }), "]", this.props.project.description]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h2", {
             children: this.props.project.date
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h3", {
@@ -3641,15 +3703,15 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("strong", {
               children: "Titulo: "
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
-              maxlength: "150",
+              maxLength: "150",
               onChange: this.handleChangeTitle,
-              children: this.props.project.name
+              children: this.props.project.description
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("strong", {
               children: ": "
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
               maxLength: "250",
               onChange: this.handleChangeDescription,
-              children: this.props.project.description
+              children: this.props.project.tipo
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("br", {})]
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {

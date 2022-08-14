@@ -124,16 +124,28 @@ class TicketController extends Controller
         */
 
         try{
+            
+            $ticket = Ticket::where("id", $id)->update([
+                'transDate'=>$request->transDate,
+                'transTime'=>$request->transTime,
+                'status'=>$request->status,
+                'priority'=>$request->priority,
+                'complexity'=>$request->complexity,
+                'description'=>$request->description,
+                'tipo'=>$request->tipo,
+                'solicitante'=>$request->solicitante,
+                'asignado'=>$request->asignado,
+                'responsable'=>$request->responsable,
+                'incidenteId'=>$request->incidenteId
+            ]);
 
-            $ticket=Ticket::find($id);
-            $ticket->update($request->all());
-
-            return $ticket;
+            //return $ticket;
+            return response()->json(["ticket" => $ticket]);
 
         }catch(\Exception $e){
             \Log::error($e->getMessage());
             return response()->json([
-                'message'=>$e->getMessage()
+                'message'=>$request
             ],500);
         }
     }
