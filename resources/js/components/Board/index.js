@@ -158,15 +158,15 @@ export default class IBoard extends React.Component {
             if (obj.hasOwnProperty(key)) {
                 if(key == "status"){
                   var estado = 1;
-                  if(obj[key] == "PENDIENTE"){
+                  if(obj[key].toUpperCase() == "PENDIENTE"){
                     estado = 1;
-                  }else if(obj[key] == "ASIGNADO"){
+                  }else if(obj[key].toUpperCase() == "ASIGNADO"){
                     estado = 2;
-                  }else if(obj[key] == "EN PROGRESO"){
+                  }else if(obj[key].toUpperCase() == "EN PROGRESO"){
                     estado = 3;
-                  }else if(obj[key] == "COMPLETADO"){
+                  }else if(obj[key].toUpperCase() == "COMPLETADO"){
                     estado = 4;
-                  }else if(obj[key] == "CANCELADO"){
+                  }else if(obj[key].toUpperCase() == "CANCELADO"){
                     estado = 5;
                   }
                   item[key] = estado;
@@ -300,7 +300,7 @@ export default class IBoard extends React.Component {
     
     var config = {
       method: 'patch',
-      url: 'localhost:8000/api/tickets/1',
+      url: '/api/tickets/1',
       headers: { 
         'Content-Type': 'application/json'
       },
@@ -533,26 +533,19 @@ class KanbanCard extends React.Component {
               </a>] 
                 {this.props.project.description}</h>
           )}
-          <h2>{this.props.project.date}</h2>
-          <h3>{this.props.project.status}</h3>
+          <h2>{this.props.project.transDate}{' '}{this.props.project.transTime}</h2>
         </div>
 				{(this.state.collapsed)
 					? null
 					: (<div>
                  {/* https://es.reactjs.org/docs/forms.html  -->*/}
               <form>
-                   
-                   <strong>Titulo: </strong>
                    <p maxLength= '150' onChange={this.handleChangeTitle} >
-                     {this.props.project.description}
+                     {"Solicitante: " + this.props.project.solicitante}
                    </p> 
-                   <strong>
-                     : </strong>
                    <p maxLength= '250' onChange={this.handleChangeDescription}>
-                   { this.props.project.tipo }
+                   {"Tipo: "+this.props.project.tipo }
                    </p>
-                  
-                   <br/>
                </form>  
              </div>
             )

@@ -3212,15 +3212,15 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
             if (key == "status") {
               var estado = 1;
 
-              if (obj[key] == "PENDIENTE") {
+              if (obj[key].toUpperCase() == "PENDIENTE") {
                 estado = 1;
-              } else if (obj[key] == "ASIGNADO") {
+              } else if (obj[key].toUpperCase() == "ASIGNADO") {
                 estado = 2;
-              } else if (obj[key] == "EN PROGRESO") {
+              } else if (obj[key].toUpperCase() == "EN PROGRESO") {
                 estado = 3;
-              } else if (obj[key] == "COMPLETADO") {
+              } else if (obj[key].toUpperCase() == "COMPLETADO") {
                 estado = 4;
-              } else if (obj[key] == "CANCELADO") {
+              } else if (obj[key].toUpperCase() == "CANCELADO") {
                 estado = 5;
               }
 
@@ -3375,7 +3375,7 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
                 data = JSON.stringify(jsonObject);
                 config = {
                   method: 'patch',
-                  url: 'localhost:8000/api/tickets/1',
+                  url: '/api/tickets/1',
                   headers: {
                     'Content-Type': 'application/json'
                   },
@@ -3693,26 +3693,20 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
                 children: ["Ticket ", this.props.project.id]
               })
             }), "]", this.props.project.description]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h2", {
-            children: this.props.project.date
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h3", {
-            children: this.props.project.status
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("h2", {
+            children: [this.props.project.transDate, ' ', this.props.project.transTime]
           })]
         }), this.state.collapsed ? null : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("form", {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("strong", {
-              children: "Titulo: "
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
               maxLength: "150",
               onChange: this.handleChangeTitle,
-              children: this.props.project.description
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("strong", {
-              children: ": "
+              children: "Solicitante: " + this.props.project.solicitante
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
               maxLength: "250",
               onChange: this.handleChangeDescription,
-              children: this.props.project.tipo
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("br", {})]
+              children: "Tipo: " + this.props.project.tipo
+            })]
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
           style: {
