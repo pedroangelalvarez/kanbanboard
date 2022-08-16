@@ -3058,7 +3058,7 @@ var columnList = [{
 }];
 var projectList = [{
   id: 1,
-  order: 1,
+  priority: 1,
   name: "Project 1",
   date: '2022-03-01',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
@@ -3066,7 +3066,7 @@ var projectList = [{
   color: colorCard
 }, {
   id: 2,
-  order: 1,
+  priority: 1,
   name: "Project 2",
   date: '2022-03-01',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
@@ -3074,7 +3074,7 @@ var projectList = [{
   color: colorCard
 }, {
   id: 3,
-  order: 1,
+  priority: 1,
   name: "Project 3",
   date: '2022-03-01',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
@@ -3082,7 +3082,7 @@ var projectList = [{
   color: colorCard
 }, {
   id: 4,
-  order: 1,
+  priority: 1,
   name: "Project 4",
   date: '2022-04-01',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
@@ -3090,7 +3090,7 @@ var projectList = [{
   color: colorCard
 }, {
   id: 5,
-  order: 1,
+  priority: 1,
   name: "Project 5",
   date: '2022-03-01',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
@@ -3098,7 +3098,7 @@ var projectList = [{
   color: colorCard
 }, {
   id: 6,
-  order: 1,
+  priority: 1,
   name: "Project 6",
   date: '2022-03-01',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
@@ -3106,7 +3106,7 @@ var projectList = [{
   color: colorCard
 }, {
   id: 7,
-  order: 1,
+  priority: 1,
   name: "Project 7",
   date: '2022-04-01',
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
@@ -3137,67 +3137,42 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
 
     return _this;
   }
+  /*
+  async updateTicket(){
+      const formData = new FormData()
+    formData.append('_method', 'PATCH');
+    formData.append('transDate', transDate);
+    formData.append('priority', priority);
+    formData.append('complexity', complexity);
+    formData.append('description', description);
+    formData.append('tipo', tipo);
+    formData.append('solicitante', solicitante);
+    formData.append('asignado', asignado);
+    formData.append('responsable', responsable);
+    formData.append('incidenteId', incidenteId);
+      await axios.post('/api/tickets/${id}', formData).then(({data})=>{
+      Swal.fire({
+        icon:"success",
+        text:data.message
+      })
+      navigate("/")
+    }).catch(({response})=>{
+      console.log(response);
+      if(response.status===422){
+        setValidationError(response.data.errors)
+      }else{
+        Swal.fire({
+          text:response.data.message,
+          icon:"error"
+        })
+      }
+    })
+      alert('Saved!');
+  }
+  */
+
 
   _createClass(IBoard, [{
-    key: "updateTicket",
-    value: function () {
-      var _updateTicket = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var formData;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                formData = new FormData();
-                formData.append('_method', 'PATCH');
-                formData.append('transDate', transDate);
-                formData.append('priority', priority);
-                formData.append('complexity', complexity);
-                formData.append('description', description);
-                formData.append('tipo', tipo);
-                formData.append('solicitante', solicitante);
-                formData.append('asignado', asignado);
-                formData.append('responsable', responsable);
-                formData.append('incidenteId', incidenteId);
-                _context.next = 13;
-                return axios__WEBPACK_IMPORTED_MODULE_5___default().post('/api/tickets/${id}', formData).then(function (_ref) {
-                  var data = _ref.data;
-                  sweetalert2__WEBPACK_IMPORTED_MODULE_6___default().fire({
-                    icon: "success",
-                    text: data.message
-                  });
-                  navigate("/");
-                })["catch"](function (_ref2) {
-                  var response = _ref2.response;
-                  console.log(response);
-
-                  if (response.status === 422) {
-                    setValidationError(response.data.errors);
-                  } else {
-                    sweetalert2__WEBPACK_IMPORTED_MODULE_6___default().fire({
-                      text: response.data.message,
-                      icon: "error"
-                    });
-                  }
-                });
-
-              case 13:
-                alert('Saved!');
-
-              case 14:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function updateTicket() {
-        return _updateTicket.apply(this, arguments);
-      }
-
-      return updateTicket;
-    }()
-  }, {
     key: "ingresarPizarra",
     value: function ingresarPizarra() {
       //Inicializo json
@@ -3231,7 +3206,6 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
           }
         }
 
-        item["order"] = "1";
         item["color"] = colorCard;
         /*
         item ["id"] = obj.id;
@@ -3292,12 +3266,11 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "handleOnDragEnd",
     value: function () {
-      var _handleOnDragEnd = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(e, project) {
-        var updatedProjects, formData, key, estado, jsonObject, _key, axios, data, config;
-
-        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      var _handleOnDragEnd = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e, project) {
+        var updatedProjects, formData, key, estado, jsonObject, axios, data, config;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context.prev = _context.next) {
               case 0:
                 e.preventDefault();
                 updatedProjects = this.state.projects.slice(0);
@@ -3339,37 +3312,21 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
 
 
                 jsonObject = {};
+                estado = "";
 
-                for (_key in project) {
-                  if (_key !== 'id') {
-                    if (_key == "status") {
-                      estado = "";
-
-                      if (project[_key] == 1) {
-                        estado = "Pendiente";
-                      } else if (project[_key] == 2) {
-                        estado = "Asignado";
-                      } else if (project[_key] == 3) {
-                        estado = "En Progreso";
-                      } else if (project[_key] == 4) {
-                        estado = "Completado";
-                      } else if (project[_key] == 5) {
-                        estado = "Cancelado";
-                      }
-
-                      jsonObject[_key] = estado;
-                    } else if (_key !== "order" || _key !== "color") {
-                      jsonObject[_key] = project[_key];
-                    }
-                    /*
-                    } else {
-                      jsonObject[key] = project[key];
-                    }
-                    */
-
-                  }
+                if (project["status"] == 1) {
+                  estado = "Pendiente";
+                } else if (project["status"] == 2) {
+                  estado = "Asignado";
+                } else if (project["status"] == 3) {
+                  estado = "En Progreso";
+                } else if (project["status"] == 4) {
+                  estado = "Completado";
+                } else if (project["status"] == 5) {
+                  estado = "Cancelado";
                 }
 
+                jsonObject["status"] = estado;
                 console.log(jsonObject);
                 axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
                 data = JSON.stringify(jsonObject);
@@ -3387,12 +3344,12 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
                   console.log(error);
                 });
 
-              case 16:
+              case 18:
               case "end":
-                return _context2.stop();
+                return _context.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee, this);
       }));
 
       function handleOnDragEnd(_x, _x2) {
@@ -3670,7 +3627,11 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
           _this8.props.onDragEnd(e, _this8.props.project);
         },
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-          children: [this.props.project.status === 5 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("h", {
+          style: {
+            'marginTop': '0px',
+            'marginBottom': '0px'
+          },
+          children: [this.props.project.status === 5 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
             id: "idprojname",
             style: {
               'textDecoration': 'line-through'
@@ -3683,7 +3644,7 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
                 children: ["Ticket ", this.props.project.id]
               })
             }), "]", this.props.project.description]
-          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("h", {
+          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
             id: "idprojname",
             children: ["[", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("a", {
               href: "/ticket/" + this.props.project.id,
@@ -3693,16 +3654,34 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
                 children: ["Ticket ", this.props.project.id]
               })
             }), "]", this.props.project.description]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("h2", {
-            children: [this.props.project.transDate, ' ', this.props.project.transTime]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h2", {
+            style: {
+              'marginTop': '0px',
+              'marginBottom': '0px'
+            },
+            children: this.props.project.transDate
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h2", {
+            style: {
+              'marginTop': '0px',
+              'marginBottom': '0px'
+            },
+            children: this.props.project.transTime
           })]
         }), this.state.collapsed ? null : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("form", {
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
+              style: {
+                'marginTop': '0px',
+                'marginBottom': '0px'
+              },
               maxLength: "150",
               onChange: this.handleChangeTitle,
               children: "Solicitante: " + this.props.project.solicitante
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
+              style: {
+                'marginTop': '0px',
+                'marginBottom': '0px'
+              },
               maxLength: "250",
               onChange: this.handleChangeDescription,
               children: "Tipo: " + this.props.project.tipo
@@ -4708,15 +4687,16 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                 'display': 'inline-block',
                 'height': '70px'
               },
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("li", {
                 style: {
                   'maxWidth': '10em',
                   'display': 'inline-block'
                 },
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Estado",
                   id: "status",
                   type: "text",
+                  list: "listaEstados",
                   autoComplete: "on",
                   defaultValue: this.state.status,
                   onChange: function onChange(e) {
@@ -4724,19 +4704,33 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                   },
                   placeholder: "Estado",
                   minLength: "4",
-                  maxLength: "6",
+                  maxLength: "12",
                   required: true
-                })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("datalist", {
+                  id: "listaEstados",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
+                    value: "Pendiente"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
+                    value: "Asignado"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
+                    value: "En Progreso"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
+                    value: "Completado"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
+                    value: "Cancelado"
+                  })]
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("li", {
                 style: {
                   'maxWidth': '10em',
                   'margin': '0 0.5em',
                   'display': 'inline-block'
                 },
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(TextInput, {
                   label: "Prioridad",
                   id: "priority",
                   type: "text",
+                  list: "listaPrioridades",
                   autoComplete: "on",
                   defaultValue: this.state.priority,
                   onChange: function onChange(e) {
@@ -4747,7 +4741,16 @@ var Ticket = /*#__PURE__*/function (_React$Component) {
                   maxLength: "5",
                   width: "1.5em",
                   required: true
-                })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("datalist", {
+                  id: "listaPrioridades",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
+                    value: "Alto"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
+                    value: "Medio"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
+                    value: "Bajo"
+                  })]
+                })]
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
                 style: {
                   'maxWidth': '10em',

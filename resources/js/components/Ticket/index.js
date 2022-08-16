@@ -259,20 +259,30 @@ export default class Ticket extends React.Component {
             label="Estado"
             id="status"
             type="text"
+            list="listaEstados"
             autoComplete="on" 
             defaultValue={this.state.status}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Estado"
             minLength="4"
-            maxLength="6"
+            maxLength="12"
             required
           />
+          <datalist id="listaEstados">
+            <option value="Pendiente"></option>
+            <option value="Asignado"></option>
+            <option value="En Progreso"></option>
+            <option value="Completado"></option>
+            <option value="Cancelado"></option>
+          </datalist>
+
         </li>
         <li style={{'maxWidth': '10em', 'margin': '0 0.5em','display': 'inline-block'}}>
           <TextInput
             label="Prioridad"
             id="priority"
             type="text"
+            list="listaPrioridades"
             autoComplete="on" 
             defaultValue={this.state.priority}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
@@ -282,6 +292,11 @@ export default class Ticket extends React.Component {
             width = "1.5em"
             required
           />
+          <datalist id="listaPrioridades">
+            <option value="Alto"></option>
+            <option value="Medio"></option>
+            <option value="Bajo"></option>
+          </datalist>
         </li>
         <li style={{'maxWidth': '10em', 'margin': '0 0.5em','display': 'inline-block'}}>
           <TextInput

@@ -124,23 +124,33 @@ class TicketController extends Controller
         */
 
         try{
+            if (count($request->all()) == 1){
+                $keys = array_keys($request->all());
+                $values = array_values($request->all());
+                $ticket = Ticket::where('id',$id);
+                $ticket->update([$keys[0]=>$values[0]]);
+            }
+            else{
+                $ticket = Ticket::where("id", $id)->update([
+                    'transDate'=>$request->transDate,
+                    'transTime'=>$request->transTime,
+                    'status'=>$request->status,
+                    'priority'=>$request->priority,
+                    'complexity'=>$request->complexity,
+                    'description'=>$request->description,
+                    'tipo'=>$request->tipo,
+                    'solicitante'=>$request->solicitante,
+                    'asignado'=>$request->asignado,
+                    'responsable'=>$request->responsable,
+                    'incidenteId'=>$request->incidenteId
+                ]);
+            }
             
-            $ticket = Ticket::where("id", $id)->update([
-                'transDate'=>$request->transDate,
-                'transTime'=>$request->transTime,
-                'status'=>$request->status,
-                'priority'=>$request->priority,
-                'complexity'=>$request->complexity,
-                'description'=>$request->description,
-                'tipo'=>$request->tipo,
-                'solicitante'=>$request->solicitante,
-                'asignado'=>$request->asignado,
-                'responsable'=>$request->responsable,
-                'incidenteId'=>$request->incidenteId
-            ]);
 
             //return $ticket;
-            return response()->json(["ticket" => $ticket]);
+            return response()->json([
+                'message'=>'Ticket Updated Successfully!!'
+            ]);
 
         }catch(\Exception $e){
             \Log::error($e->getMessage());

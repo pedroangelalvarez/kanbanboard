@@ -20,7 +20,7 @@ let columnList =[
 let projectList = [
   {
     id:1,
-    order:1,
+    priority:1,
     name: "Project 1",
     date:'2022-03-01',
     description:
@@ -31,7 +31,7 @@ let projectList = [
 
   { 
     id:2,
-    order:1,
+    priority:1,
     name: "Project 2",
     date:'2022-03-01',
     description:
@@ -42,7 +42,7 @@ let projectList = [
 
   { 
     id:3,
-    order:1,
+    priority:1,
     name: "Project 3",
     date:'2022-03-01',
     description:
@@ -53,7 +53,7 @@ let projectList = [
 
   { 
     id:4,
-    order:1,
+    priority:1,
     name: "Project 4",
     date:'2022-04-01',
     description:
@@ -64,7 +64,7 @@ let projectList = [
 
   { 
     id:5,
-    order:1,
+    priority:1,
     name: "Project 5",
     date:'2022-03-01',
     description:
@@ -75,7 +75,7 @@ let projectList = [
 
   { 
     id:6,
-    order:1,
+    priority:1,
     name: "Project 6",
     date:'2022-03-01',
     description:
@@ -86,7 +86,7 @@ let projectList = [
 
   { 
     id:7,
-    order:1,
+    priority:1,
     name: "Project 7",
     date:'2022-04-01',
     description:
@@ -112,6 +112,7 @@ export default class IBoard extends React.Component {
     this.columns = columnList;                                       //<---------column list
   }
 
+  /*
   async updateTicket(){
 
     const formData = new FormData()
@@ -146,6 +147,7 @@ export default class IBoard extends React.Component {
 
     alert('Saved!');
   }
+  */
 
   ingresarPizarra(){
     //Inicializo json
@@ -176,7 +178,6 @@ export default class IBoard extends React.Component {
                 
             }
         }
-        item ["order"] = "1";
         item ["color"] = colorCard;
         /*
         item ["id"] = obj.id;
@@ -265,34 +266,19 @@ export default class IBoard extends React.Component {
 
     //Crear json para enviar al servidor
     const jsonObject = {};
-    for (const key in project) {
-      if (key !== 'id') {
-        if (key=="status"){
-          var estado = "";
-          if(project[key] == 1){
+    var estado = "";
+          if(project["status"] == 1){
             estado = "Pendiente";
-          }else if(project[key] == 2){
+          }else if(project["status"] == 2){
             estado = "Asignado";
-          }else if(project[key] == 3){
+          }else if(project["status"] == 3){
             estado = "En Progreso";
-          }else if(project[key] == 4){
+          }else if(project["status"] == 4){
             estado = "Completado";
-          }else if(project[key] == 5){
+          }else if(project["status"] == 5){
             estado = "Cancelado";
           }
-          jsonObject[key] = estado;
-        } else if(key!=="order" || key!=="color"){
-          jsonObject[key] = project[key];
-        }
-        /*
-        } else {
-          jsonObject[key] = project[key];
-        }
-        */
-      }
-    }
-
-
+    jsonObject["status"] = estado;
     
     console.log(jsonObject);
     var axios = require('axios');
@@ -519,31 +505,32 @@ class KanbanCard extends React.Component {
         
 				onDragEnd={(e) => {this.props.onDragEnd(e, this.props.project);}} >
                     
-				<div>
+				<div style={{'marginTop': '0px', 'marginBottom': '0px'}}>
           {(this.props.project.status===5) ? (
-            <h id="idprojname" style={{'textDecoration':'line-through'}}>[
+            <div id="idprojname" style={{'textDecoration':'line-through'}}>[
               <a href={"/ticket/"+this.props.project.id} target="_blank" rel="noopener noreferrer">
                 <u>Ticket {this.props.project.id}</u>
               </a>] 
-                {this.props.project.description}</h>
+                {this.props.project.description}</div>
           ) : (
-            <h id="idprojname">[
+            <div id="idprojname">[
               <a href={"/ticket/"+this.props.project.id} target="_blank" rel="noopener noreferrer">
                 <u>Ticket {this.props.project.id}</u>
               </a>] 
-                {this.props.project.description}</h>
+                {this.props.project.description}</div>
           )}
-          <h2>{this.props.project.transDate}{' '}{this.props.project.transTime}</h2>
+          <h2 style={{'marginTop': '0px', 'marginBottom': '0px'}}>{this.props.project.transDate}</h2>
+          <h2 style={{'marginTop': '0px', 'marginBottom': '0px'}}>{this.props.project.transTime}</h2>
         </div>
 				{(this.state.collapsed)
 					? null
 					: (<div>
                  {/* https://es.reactjs.org/docs/forms.html  -->*/}
               <form>
-                   <p maxLength= '150' onChange={this.handleChangeTitle} >
+                   <p style={{'marginTop': '0px', 'marginBottom': '0px'}} maxLength= '150' onChange={this.handleChangeTitle} >
                      {"Solicitante: " + this.props.project.solicitante}
                    </p> 
-                   <p maxLength= '250' onChange={this.handleChangeDescription}>
+                   <p style={{'marginTop': '0px', 'marginBottom': '0px'}} maxLength= '250' onChange={this.handleChangeDescription}>
                    {"Tipo: "+this.props.project.tipo }
                    </p>
                </form>  
