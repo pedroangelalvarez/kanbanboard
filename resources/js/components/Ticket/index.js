@@ -288,7 +288,7 @@ export default class Ticket extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Prioridad"
             minLength="4"
-            maxLength="5"
+            maxLength="6"
             width = "1.5em"
             required
           />
@@ -309,7 +309,7 @@ export default class Ticket extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Complejidad"
             minLength="4"
-            maxLength="5"
+            maxLength="6"
             width = "1.5em"
             required
             />
@@ -330,7 +330,7 @@ export default class Ticket extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Descripción"
             minLength="2"
-            maxLength="2"
+            maxLength="20"
             width = "1.5em"
             required
           />
@@ -345,7 +345,7 @@ export default class Ticket extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Tipo"
             minLength="2"
-            maxLength="2"
+            maxLength="8"
             required
           />
           <datalist id="listaTipos">
@@ -363,7 +363,7 @@ export default class Ticket extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Solicitante"
             minLength="2"
-            maxLength="2"
+            maxLength="10"
             required
           />
         </li>
@@ -376,7 +376,7 @@ export default class Ticket extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Asignado"
             minLength="2"
-            maxLength="2"
+            maxLength="10"
             required
           />
         </li>
@@ -389,7 +389,7 @@ export default class Ticket extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Responsable"
             minLength="2"
-            maxLength="2"
+            maxLength="10"
             required
           />
         </li>
@@ -402,7 +402,7 @@ export default class Ticket extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Incidente ID"
             minLength="2"
-            maxLength="2"
+            maxLength="6"
             />
         </li>
       </ul>

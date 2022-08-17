@@ -259,41 +259,65 @@ export default class Incidemte extends React.Component {
             label="Estado"
             id="status"
             type="text"
+            list="listaEstados"
+            autoComplete="on" 
             defaultValue={this.state.status}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Estado"
             minLength="4"
-            maxLength="6"
+            maxLength="12"
             required
           />
+          <datalist id="listaEstados">
+            <option value="Pendiente"></option>
+            <option value="Asignado"></option>
+            <option value="En Progreso"></option>
+            <option value="Completado"></option>
+            <option value="Cancelado"></option>
+          </datalist>
+
         </li>
         <li style={{'maxWidth': '10em', 'margin': '0 0.5em','display': 'inline-block'}}>
           <TextInput
             label="Prioridad"
             id="priority"
             type="text"
+            list="listaPrioridades"
+            autoComplete="on" 
             defaultValue={this.state.priority}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Prioridad"
             minLength="4"
-            maxLength="5"
+            maxLength="6"
             width = "1.5em"
             required
           />
+          <datalist id="listaPrioridades">
+            <option value="Alto"></option>
+            <option value="Medio"></option>
+            <option value="Bajo"></option>
+          </datalist>
         </li>
         <li style={{'maxWidth': '10em', 'margin': '0 0.5em','display': 'inline-block'}}>
           <TextInput
             label="Complejidad"
             id="complexity"
             type="text"
+            list="listaComplejidades"
+            autoComplete="on" 
             defaultValue={this.state.complexity}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Complejidad"
             minLength="4"
-            maxLength="5"
+            maxLength="6"
             width = "1.5em"
             required
             />
+          <datalist id="listaComplejidades">
+            <option value="Alta"></option>
+            <option value="Media"></option>
+            <option value="Baja"></option>
+          </datalist>
         </li>
         </ul>
         <ul>
@@ -306,7 +330,7 @@ export default class Incidemte extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Descripción"
             minLength="2"
-            maxLength="2"
+            maxLength="20"
             width = "1.5em"
             required
           />
@@ -316,13 +340,19 @@ export default class Incidemte extends React.Component {
             label="Tipo"
             id="tipo"
             type="text"
+            list="listaTipos"
             defaultValue={this.state.tipo}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Tipo"
             minLength="2"
-            maxLength="2"
+            maxLength="6"
             required
           />
+          <datalist id="listaTipos">
+            <option value="Red"></option>
+            <option value="Software"></option>
+            <option value="Hardware"></option>
+          </datalist>
         </li>
         <li>
           <TextInput
@@ -333,7 +363,7 @@ export default class Incidemte extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Solicitante"
             minLength="2"
-            maxLength="2"
+            maxLength="12"
             required
           />
         </li>
@@ -346,7 +376,7 @@ export default class Incidemte extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Asignado"
             minLength="2"
-            maxLength="2"
+            maxLength="12"
             required
           />
         </li>
@@ -359,7 +389,7 @@ export default class Incidemte extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Responsable"
             minLength="2"
-            maxLength="2"
+            maxLength="12"
             required
           />
         </li>
@@ -372,7 +402,7 @@ export default class Incidemte extends React.Component {
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Solucion"
             minLength="2"
-            maxLength="2"
+            maxLength="20"
             />
         </li>
       </ul>
