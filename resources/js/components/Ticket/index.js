@@ -303,6 +303,7 @@ export default class Ticket extends React.Component {
             label="Complejidad"
             id="complexity"
             type="text"
+            list="listaComplejidades"
             autoComplete="on" 
             defaultValue={this.state.complexity}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
@@ -312,6 +313,11 @@ export default class Ticket extends React.Component {
             width = "1.5em"
             required
             />
+          <datalist id="listaComplejidades">
+            <option value="Alta"></option>
+            <option value="Media"></option>
+            <option value="Baja"></option>
+          </datalist>
         </li>
         </ul>
         <ul>
@@ -334,6 +340,7 @@ export default class Ticket extends React.Component {
             label="Tipo"
             id="tipo"
             type="text"
+            list="listaTipos"
             defaultValue={this.state.tipo}
             onChange={e => this.setState({[e.target.id]: e.target.defaultValue})}
             placeholder="Tipo"
@@ -341,6 +348,11 @@ export default class Ticket extends React.Component {
             maxLength="2"
             required
           />
+          <datalist id="listaTipos">
+            <option value="Red"></option>
+            <option value="Software"></option>
+            <option value="Hardware"></option>
+          </datalist>
         </li>
         <li>
           <TextInput
