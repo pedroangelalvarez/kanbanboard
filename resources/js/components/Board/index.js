@@ -104,12 +104,14 @@ export default class IBoard extends React.Component {
       isLoading: true,
       projects: [],
       data: [],
+      fechaInicio: "",
       draggedOverCol: 0
     };
 
     this.handleOnDragEnter = this.handleOnDragEnter.bind(this);
     this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
     this.columns = columnList;                                       //<---------column list
+    this.fechaInicio = Date.now();
   }
 
   /*
@@ -179,8 +181,9 @@ export default class IBoard extends React.Component {
             }
         }
         item ["color"] = colorCard;
-        /*
+        
         item ["id"] = obj.id;
+        /*
         item ["name"] = obj.description; //"Ticket "+(obj.id).toString() 
         item ["date"] = obj.transDate;
         item ["description"] = obj.tipo;
@@ -217,6 +220,7 @@ export default class IBoard extends React.Component {
         console.log('Error: ', error);
     });
 
+    console.log("Datos de la pizarra: ");
     console.log(this.state.data);
 
     //this.setState({ projects: projectList, isLoading: false });
@@ -286,7 +290,7 @@ export default class IBoard extends React.Component {
     
     var config = {
       method: 'patch',
-      url: '/api/tickets/1',
+      url: '/api/tickets/'+project.id,
       headers: { 
         'Content-Type': 'application/json'
       },
@@ -300,6 +304,7 @@ export default class IBoard extends React.Component {
     .catch(function (error) {
       console.log(error);
     });
+
       
   }
 
@@ -413,7 +418,8 @@ class KanbanColumn extends React.Component {
 			'paddingLeft': '5px',
 			'paddingTop': '0px',
       'fontFamily': 'Karla',
-      'height': '35em',
+      'height': '100%',
+      'minHeight': '35em',
 			'width': '15em',
 			'textAlign': 'center',
 			'backgroundColor': (this.state.mouseIsHovering) ? '#d3d3d3' : this.props.color,

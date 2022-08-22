@@ -118,14 +118,14 @@ export default class Ticket extends React.Component {
           var keys = Object.keys(result);
           for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            var value = result[key].toString().toUpperCase();
+            var value = result[key];
             this.setState({ [key]: value });
           }
           this.setState({ isLoading: false });
       })
       .catch((error) => {
           console.log('Error: ', error);
-          window.location.href="/";
+          //window.location.href="/";
       });
 
       fetch('/getusuarios', {
@@ -141,15 +141,14 @@ export default class Ticket extends React.Component {
       .then((result) => {
           // Set the state of data.
           var keys = Object.keys(result['data']);
-          console.log(result['data']);
+          console.log("-------------------")
           //crear arreglo
           var usuarios = [];
           var tiusuarios = [];
           for (var i = 0; i < keys.length; i++) {
-            var value = result['data'][keys[i]]['area'].toString().toUpperCase();
+            var value = result['data'][i]['area'].toString().toUpperCase();
             if (value === "SISTEMAS"){
-              console.log(result['data'][keys[i]]);
-              tiusuarios.push(result['data'][keys[i]]);
+              tiusuarios.push(result['data'][i]);
             }
             console.log(result['data'][keys[i]]);
             usuarios.push(result['data'][keys[i]]);

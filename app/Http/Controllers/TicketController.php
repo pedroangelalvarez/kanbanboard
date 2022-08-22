@@ -12,9 +12,21 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Ticket::select('id','transDate','transTime','status','priority','complexity','description','tipo','solicitante','asignado','responsable','incidenteId')->get();
+        //Get parameters from the request
+        $params = $request->input();
+        //Verify params is null
+        if(isset($params['solicitante']) && isset($params['transDate']) && isset($params['transTime'])  ){
+            $ticket = Ticket::where('solicitante', $params['solicitante'])
+                            ->where('transDate', $params['transDate'])
+                            ->where('transTime', $params['transTime'])
+                            ->get();
+            return response()->json($ticket);
+        }
+        else {
+            return Ticket::select('id','transDate','transTime','closeDate','closeTime','status','priority','complexity','description','tipo','solicitante','asignado','responsable','incidenteId')->get();
+        }
     }
 
     /**
@@ -25,18 +37,19 @@ class TicketController extends Controller
     public function create()
     {
         $request->validate([
-            'id'=>'required',
             'transDate'=>'required',
             'transTime'=>'required',
+            'closeDate'=>'nullable',
+            'closeTime'=>'nullable',
             'status'=>'required',
             'priority'=>'required',
             'complexity'=>'required',
             'description'=>'required',
             'tipo'=>'required',
             'solicitante'=>'required',
-            //'asignado'=>'required',
+            'asignado'=>'nullable',
             'responsable'=>'required',
-            //'incidenteId'=>'required'
+            'incidenteId'=>'nullable'
         ]);
 
         Ticket::create($request->post());
@@ -57,6 +70,8 @@ class TicketController extends Controller
         $request->validate([
             'transDate'=>'required',
             'transTime'=>'required',
+            'closeDate'=>'nullable',
+            'closeTime'=>'nullable',
             'status'=>'required',
             'priority'=>'required',
             'complexity'=>'required',
@@ -65,6 +80,7 @@ class TicketController extends Controller
             'solicitante'=>'required',
             'asignado'=>'nullable',
             'responsable'=>'required',
+            'incidenteId'=>'nullable'
         ]);
 
         Ticket::create($request->post());

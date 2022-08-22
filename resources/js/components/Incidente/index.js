@@ -118,7 +118,7 @@ export default class Incidemte extends React.Component {
           var keys = Object.keys(result);
           for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            var value = result[key].toString().toUpperCase();
+            var value = result[key];
             this.setState({ [key]: value });
           }
           this.setState({ isLoading: false });
@@ -139,21 +139,20 @@ export default class Incidemte extends React.Component {
         }
       })
       .then((result) => {
-          // Set the state of data.
-          var keys = Object.keys(result['data']);
-          console.log(result['data']);
-          //crear arreglo
-          var usuarios = [];
-          var tiusuarios = [];
-          for (var i = 0; i < keys.length; i++) {
-            var value = result['data'][keys[i]]['area'].toString().toUpperCase();
-            if (value === "SISTEMAS"){
-              console.log(result['data'][keys[i]]);
-              tiusuarios.push(result['data'][keys[i]]);
-            }
-            console.log(result['data'][keys[i]]);
-            usuarios.push(result['data'][keys[i]]);
-          }
+           // Set the state of data.
+           var keys = Object.keys(result['data']);
+           console.log("-------------------")
+           //crear arreglo
+           var usuarios = [];
+           var tiusuarios = [];
+           for (var i = 0; i < keys.length; i++) {
+             var value = result['data'][i]['area'].toString().toUpperCase();
+             if (value === "SISTEMAS"){
+               tiusuarios.push(result['data'][i]);
+             }
+             console.log(result['data'][keys[i]]);
+             usuarios.push(result['data'][keys[i]]);
+           }
           this.setState({ usuariosDisponibles: usuarios});
           this.setState({ TIDisponibles: tiusuarios});
       })
@@ -222,7 +221,7 @@ export default class Incidemte extends React.Component {
         <div>
           <StyledCardForm >
     <h2>{"INCIDENTE INC"+zfill(this.state.id,4)}</h2>
-44<form>
+    <form>
     <ul style={{'listStyleType': 'none',  'display': 'inline-block', 'height': '70px'}}>
         <li style={{'minWidth': '5em','display': 'inline-block'}}>
           <TextInput

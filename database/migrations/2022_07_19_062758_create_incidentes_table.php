@@ -17,6 +17,8 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->date('transDate');
             $table->time('transTime');
+            $table->date('closeDate')->nullable();
+            $table->time('closeTime')->nullable();
             $table->string('status');
             $table->string('priority');
             $table->string('complexity');
@@ -25,8 +27,8 @@ return new class extends Migration
             $table->string('solicitante');
             $table->string('asignado');
             $table->string('responsable');
-            $table->text('causa');
-            $table->text('solucion');
+            $table->text('causa')->nullable();
+            $table->text('solucion')->nullable();
             //$table->timestamps();
         });
     }

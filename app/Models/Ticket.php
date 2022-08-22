@@ -10,5 +10,5 @@ class Ticket extends Model
     public $timestamps = false;
     use HasFactory;
 
-    protected $fillable = ['id', 'transDate', 'transTime', 'status', 'priority', 'complexity', 'description', 'tipo', 'solicitante', 'asignado', 'responsable', 'incidenteId'];
+    protected $fillable = ['id', 'transDate', 'transTime', 'closeDate', 'closeTime', 'status', 'priority', 'complexity', 'description', 'tipo', 'solicitante', 'asignado', 'responsable', 'incidenteId'];
 }

@@ -25,17 +25,20 @@ class IncidenteController extends Controller
     public function create()
     {
         $request->validate([
-            'id'=>'required',
             'transDate'=>'required',
             'transTime'=>'required',
+            'closeDate'=>'nullable',
+            'closeTime'=>'nullable',
             'status'=>'required',
             'priority'=>'required',
             'complexity'=>'required',
             'description'=>'required',
             'tipo'=>'required',
             'solicitante'=>'required',
-            //'asignado'=>'required',
-            'responsable'=>'required'
+            'asignado'=>'nullable',
+            'responsable'=>'required',
+            'causa'=>'nullable',
+            'solucion'=>'nullable'
 
         ]);
         /*
@@ -71,17 +74,19 @@ class IncidenteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id'=>'required',
             'transDate'=>'required',
             'transTime'=>'required',
+            'closeDate'=>'nullable',
             'status'=>'required',
             'priority'=>'required',
             'complexity'=>'required',
             'description'=>'required',
             'tipo'=>'required',
             'solicitante'=>'required',
-            //'asignado'=>'required',
-            'responsable'=>'required'
+            'asignado'=>'nullable',
+            'responsable'=>'required',
+            'causa'=>'nullable',
+            'solucion'=>'nullable'
 
         ]);
         /*
@@ -100,10 +105,10 @@ class IncidenteController extends Controller
             ],500);
         }
         */
-        Incidente::create($request->post());
+        $identificador = Incidente::create($request->post())-> id;
 
         return response()->json([
-            'message'=>'Incidente Created Successfully!!'
+            $identificador
         ]);
         
     }
@@ -141,6 +146,7 @@ class IncidenteController extends Controller
      */
     public function update(Request $request, Incidente $incidente)
     {
+        /*
         $request->validate([
             'transDate'=>'required',
             'transTime'=>'required',
@@ -154,14 +160,38 @@ class IncidenteController extends Controller
             'responsable'=>'required'
             //'incidenteId'=>'required'
         ]);
+        */
 
         try{
-
-            $incidente->fill($request->post())->update();
-
-            return response()->json([
-                'message'=>'Incidente Updated Successfully!!'
-            ]);
+                if (count($request->all()) == 1){
+                    $keys = array_keys($request->all());
+                    $values = array_values($request->all());
+                    $ticket = Incidencia::where('id',$id);
+                    $ticket->update([$keys[0]=>$values[0]]);
+                }
+                else{
+                    $ticket = Incidencia::where("id", $id)->update([
+                        'transDate'=>$request->transDate,
+                        'transTime'=>$request->transTime,
+                        'status'=>$request->status,
+                        'priority'=>$request->priority,
+                        'complexity'=>$request->complexity,
+                        'description'=>$request->description,
+                        'tipo'=>$request->tipo,
+                        'solicitante'=>$request->solicitante,
+                        'asignado'=>$request->asignado,
+                        'responsable'=>$request->responsable,
+                        'causa'=>$request->causa,
+                        'solucion'=>$request->incidenteId
+                    ]);
+                }
+                
+    
+                //return $ticket;
+                return response()->json([
+                    'message'=>'Incidente Updated Successfully!!'
+                ]);
+    
 
         }catch(\Exception $e){
             \Log::error($e->getMessage());
