@@ -83,10 +83,17 @@ class TicketController extends Controller
             'incidenteId'=>'nullable'
         ]);
 
+        /*
         Ticket::create($request->post());
 
         return response()->json([
             'message'=>'Ticket Created Successfully!!'
+        ]);
+        */
+        $identificador = Ticket::create($request->post())-> id;
+
+        return response()->json([
+            $identificador
         ]);
     }
 
