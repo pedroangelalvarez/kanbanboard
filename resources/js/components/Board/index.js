@@ -273,13 +273,36 @@ export default class IBoard extends React.Component {
     .then(function (response) {
       console.log(JSON.stringify(response.data));
     })
-    .catch(function (error) {
+  .catch(function (error) {
       console.log(error);
     });
 
   }
 
-  //this is called when a Kanban card dropped over a column (called by card)
+  async updateAsignacion(id,asignado){
+    const jsonObject = {};
+    jsonObject["asignado"] = asignado;
+    console.log("El ticket : "+id+" ha sido asignado a: "+asignado);
+    var axios = require('axios');
+    var data = JSON.stringify(jsonObject);
+    var config = {
+      method: 'patch',
+      url: '/api/tickets/'+id,
+      headers :{
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    axios(config).then(function (response){
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error){
+      console.log(error);
+    }); 
+
+
+  }
+//this is called when a Kanban card dropped over a column (called by card)
   async handleOnDragEnd(e, project) {
     e.preventDefault();
       //this.setState({ statusPrevio: project.status });
@@ -303,10 +326,10 @@ export default class IBoard extends React.Component {
       this.updateTicket(project.id, project["status"]);
 
     } else if(this.state.draggedOverCol === 2 || project.asignado === ""){
-      const updatedProjects = this.state.projects.slice(0);
-    updatedProjects.find((projectObject) => {
+      //const updatedProjects = this.state.projects.slice(0);
+    /*updatedProjects.find((projectObject) => {
       return projectObject.id === project.id;
-    }).status = this.state.draggedOverCol;
+    }).status = this.state.draggedOverCol;*/
 
     this.setState({popupActive: true});
     console.log("Activando pop up")
@@ -317,10 +340,18 @@ export default class IBoard extends React.Component {
   }
 
   updateAsignado(id, asignado){
+    const updatedProjects = this.state.projects.slice(0);
+    updatedProjects.find((projectObject) => {
+      return projectObject.id === id;
+    }).asignado = asignado;
+    updateProjects.find((projectObject) => {
+      return projectObject.id === id;
+    }).status = this.state.draggedOverCol;
     this.setState({ projects: updatedProjects });
-    console.log(this.state.projects);
+    console.log(this.state.draggedOverCol);
     //Actualizando el ticket en la base de datos
     this.updateTicket(id, project["status"]);
+    this.updateAsignacion(id, asignado);
   }
 
   render() {
