@@ -105,7 +105,11 @@ export default class IBoard extends React.Component {
       projects: [],
       data: [],
       fechaInicio: "",
-      draggedOverCol: 0
+      draggedOverCol: 0,
+      popupActive: false,
+      statusPrevio: 0,
+      ticketActivo: 0,
+      popupData: [],
     };
 
     this.handleOnDragEnter = this.handleOnDragEnter.bind(this);
@@ -229,60 +233,28 @@ export default class IBoard extends React.Component {
   //this is called when a Kanban card is dragged over a column (called by column)
   handleOnDragEnter(e, stageValue) {
     this.setState({ draggedOverCol: stageValue });
-    console.log(this.setState.data);
+    console.log(this.state.data);
+    //Change cursor of mouse
+    e.target.style.cursor = "move";
   }
 
-  //this is called when a Kanban card dropped over a column (called by card)
-  async handleOnDragEnd(e, project) {
-    e.preventDefault();
-
-      const updatedProjects = this.state.projects.slice(0);
-      updatedProjects.find((projectObject) => {
-        return projectObject.description === project.description;
-      }).status = this.state.draggedOverCol;
-      console.log("el ticket "+project.id+" se movio a la columna "+this.state.draggedOverCol);
-      this.setState({ projects: updatedProjects });
-      console.log(this.state.projects);
-      //Actualizando el ticket en la base de datos
-    const formData = new FormData()
-    formData.append('_method', 'PATCH');
-    for (const key in project) {
-      if (key !== 'id') {
-        if (key=="status"){
-          var estado = "";
-          if(project[key] == 1){
-            estado = "Pendiente";
-          }else if(project[key] == 2){
-            estado = "Asignado";
-          }else if(project[key] == 3){
-            estado = "En Progreso";
-          }else if(project[key] == 4){
-            estado = "Completado";
-          }else if(project[key] == 5){
-            estado = "Cancelado";
-          }
-          formData.append(key, estado);
-        }else{
-          formData.append(key, project[key]);
-        }
-      }
+  async updateTicket(id, status){
+    var estado = "";
+    if(status == 1){
+      estado = "Pendiente";
+    }else if(status == 2){
+      estado = "Asignado";
+    }else if(status == 3){
+      estado = "En Progreso";
+    }else if(status == 4){
+      estado = "Completado";
+    }else if(status == 5){
+      estado = "Cancelado";
     }
-
     //Crear json para enviar al servidor
     const jsonObject = {};
-    var estado = "";
-          if(project["status"] == 1){
-            estado = "Pendiente";
-          }else if(project["status"] == 2){
-            estado = "Asignado";
-          }else if(project["status"] == 3){
-            estado = "En Progreso";
-          }else if(project["status"] == 4){
-            estado = "Completado";
-          }else if(project["status"] == 5){
-            estado = "Cancelado";
-          }
     jsonObject["status"] = estado;
+    console.log("El ticket :" + id + " se actualizara a estado: " + estado);
     
     console.log(jsonObject);
     var axios = require('axios');
@@ -290,7 +262,7 @@ export default class IBoard extends React.Component {
     
     var config = {
       method: 'patch',
-      url: '/api/tickets/'+project.id,
+      url: '/api/tickets/'+id,
       headers: { 
         'Content-Type': 'application/json'
       },
@@ -305,7 +277,50 @@ export default class IBoard extends React.Component {
       console.log(error);
     });
 
+  }
+
+  //this is called when a Kanban card dropped over a column (called by card)
+  async handleOnDragEnd(e, project) {
+    e.preventDefault();
+      //this.setState({ statusPrevio: project.status });
+    const proyectoActivo = this.state.projects.slice(0).find((entry) => {
+        return entry.id === project.id;
+    });
+    this.setState({ statusPrevio: proyectoActivo.status });
+
+    console.log("el ticket "+project.id+" se movio de la columna "+this.state.statusPrevio+" a la columna "+this.state.draggedOverCol);
+
+    if (this.state.statusPrevio === this.state.draggedOverCol) {
+        return;
+    } else if(this.state.draggedOverCol === 1 || this.state.draggedOverCol === 5){
+      const updatedProjects = this.state.projects.slice(0);
+      updatedProjects.find((projectObject) => {
+        return projectObject.id === project.id;
+      }).status = this.state.draggedOverCol;
+  
+      this.setState({ projects: updatedProjects });
+      console.log(this.state.projects);
+      this.updateTicket(project.id, project["status"]);
+
+    } else if(this.state.draggedOverCol === 2 || project.asignado === ""){
+      const updatedProjects = this.state.projects.slice(0);
+    updatedProjects.find((projectObject) => {
+      return projectObject.id === project.id;
+    }).status = this.state.draggedOverCol;
+
+    this.setState({popupActive: true});
+    console.log("Activando pop up")
+
+    }
+
       
+  }
+
+  updateAsignado(id, asignado){
+    this.setState({ projects: updatedProjects });
+    console.log(this.state.projects);
+    //Actualizando el ticket en la base de datos
+    this.updateTicket(id, project["status"]);
   }
 
   render() {
@@ -314,8 +329,20 @@ export default class IBoard extends React.Component {
     }
 
     return (
-        <div>
-      <div >
+        <div >
+          {(this.state.popupActive)
+					? <div style={{'position': 'relative','background': 'rgba(0, 0, 0, 1)'}}>
+            <div style={{'position': 'absolute',  'top': '50%',  'left': '50%', 'margin':'-25px 0 0 -25px' , 'zIndex': '101'}}>
+            <form onSubmit={this.handleSubmit}>
+              <label>
+                <p>Asignar ticket {this.state.ticketActivo}:</p>
+                <input type="text" value={this.state.value} onChange={this.updateAsignado} />
+              </label>
+              <input type="submit" value="Submit" />
+            </form>
+            </div>
+          </div>
+          : <div>
 				{this.columns.map((column) => {                          //<---------MAPING COLUMNS
 					return (
 						<KanbanColumn
@@ -330,6 +357,8 @@ export default class IBoard extends React.Component {
 					);
 				})}
       </div>
+      }
+
         </div>
     );
   }
@@ -460,12 +489,6 @@ class KanbanCard extends React.Component {
     //this.setState({value: event.target.value});
     //alert('An essay was submitted: ' + this.state.value);
     //alert('Description submitted ');
-  }
-  
-  fnSave(value) {
-    //this.setState({value: event.target.value});
-    //alert('An essay was submitted: ' + this.state.value);
-    alert('Saved!'+value.toString());
   }
   
   render() {   //render card

@@ -3130,7 +3130,11 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
       projects: [],
       data: [],
       fechaInicio: "",
-      draggedOverCol: 0
+      draggedOverCol: 0,
+      popupActive: false,
+      statusPrevio: 0,
+      ticketActivo: 0,
+      popupData: []
     };
     _this.handleOnDragEnter = _this.handleOnDragEnter.bind(_assertThisInitialized(_this));
     _this.handleOnDragEnd = _this.handleOnDragEnd.bind(_assertThisInitialized(_this));
@@ -3263,58 +3267,89 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
       this.setState({
         draggedOverCol: stageValue
       });
-      console.log(this.setState.data);
-    } //this is called when a Kanban card dropped over a column (called by card)
+      console.log(this.state.data); //Change cursor of mouse
 
+      e.target.style.cursor = "move";
+    }
   }, {
-    key: "handleOnDragEnd",
+    key: "updateTicket",
     value: function () {
-      var _handleOnDragEnd = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e, project) {
-        var updatedProjects, formData, key, estado, jsonObject, axios, data, config;
+      var _updateTicket = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(id, estado) {
+        var jsonObject, axios, data, config;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                e.preventDefault();
+                //Crear json para enviar al servidor
+                jsonObject = {};
+                jsonObject["status"] = estado;
+                console.log("El ticket :" + id + " se actualizara a estado: " + estado);
+                console.log(jsonObject);
+                axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+                data = JSON.stringify(jsonObject);
+                config = {
+                  method: 'patch',
+                  url: '/api/tickets/' + id,
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  data: data
+                };
+                axios(config).then(function (response) {
+                  console.log(JSON.stringify(response.data));
+                })["catch"](function (error) {
+                  console.log(error);
+                });
+
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function updateTicket(_x, _x2) {
+        return _updateTicket.apply(this, arguments);
+      }
+
+      return updateTicket;
+    }() //this is called when a Kanban card dropped over a column (called by card)
+
+  }, {
+    key: "handleOnDragEnd",
+    value: function () {
+      var _handleOnDragEnd = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(e, project) {
+        var proyectoActivo, updatedProjects, estado;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                e.preventDefault(); //this.setState({ statusPrevio: project.status });
+
+                proyectoActivo = this.state.projects.slice(0).find(function (entry) {
+                  return entry.id === project.id;
+                });
+                this.setState({
+                  statusPrevio: proyectoActivo.status
+                });
+                console.log("el ticket " + project.id + " se movio de la columna " + this.state.statusPrevio + " a la columna " + this.state.draggedOverCol);
                 updatedProjects = this.state.projects.slice(0);
                 updatedProjects.find(function (projectObject) {
-                  return projectObject.description === project.description;
+                  return projectObject.id === project.id;
                 }).status = this.state.draggedOverCol;
-                console.log("el ticket " + project.id + " se movio a la columna " + this.state.draggedOverCol);
+
+                if (this.state.draggedOverCol === 2) {
+                  this.setState({
+                    popupActive: true
+                  });
+                  console.log("Activando pop up");
+                }
+
                 this.setState({
                   projects: updatedProjects
                 });
-                console.log(this.state.projects); //Actualizando el ticket en la base de datos
-
-                formData = new FormData();
-                formData.append('_method', 'PATCH');
-
-                for (key in project) {
-                  if (key !== 'id') {
-                    if (key == "status") {
-                      estado = "";
-
-                      if (project[key] == 1) {
-                        estado = "Pendiente";
-                      } else if (project[key] == 2) {
-                        estado = "Asignado";
-                      } else if (project[key] == 3) {
-                        estado = "En Progreso";
-                      } else if (project[key] == 4) {
-                        estado = "Completado";
-                      } else if (project[key] == 5) {
-                        estado = "Cancelado";
-                      }
-
-                      formData.append(key, estado);
-                    } else {
-                      formData.append(key, project[key]);
-                    }
-                  }
-                } //Crear json para enviar al servidor
-
-
-                jsonObject = {};
+                console.log(this.state.projects);
                 estado = "";
 
                 if (project["status"] == 1) {
@@ -3329,33 +3364,19 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
                   estado = "Cancelado";
                 }
 
-                jsonObject["status"] = estado;
-                console.log(jsonObject);
-                axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-                data = JSON.stringify(jsonObject);
-                config = {
-                  method: 'patch',
-                  url: '/api/tickets/' + project.id,
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  data: data
-                };
-                axios(config).then(function (response) {
-                  console.log(JSON.stringify(response.data));
-                })["catch"](function (error) {
-                  console.log(error);
-                });
+                console.log("El ticket :" + project.id + " se actualizara a estado: " + project["status"]); //Actualizando el ticket en la base de datos
 
-              case 18:
+                this.updateTicket(project.id, estado);
+
+              case 13:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, this);
+        }, _callee2, this);
       }));
 
-      function handleOnDragEnd(_x, _x2) {
+      function handleOnDragEnd(_x3, _x4) {
         return _handleOnDragEnd.apply(this, arguments);
       }
 
@@ -3376,7 +3397,36 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
       }
 
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+        children: this.state.popupActive ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+          style: {
+            'position': 'relative',
+            'background': 'rgba(0, 0, 0, 1)'
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+            style: {
+              'position': 'absolute',
+              'top': '50%',
+              'left': '50%',
+              'margin': '-25px 0 0 -25px',
+              'zIndex': '101'
+            },
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("form", {
+              onSubmit: this.handleSubmit,
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("label", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("p", {
+                  children: ["Asignar ticket ", this.state.ticketActivo, ":"]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
+                  type: "text",
+                  value: this.state.value,
+                  onChange: this.handleChange
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
+                type: "submit",
+                value: "Submit"
+              })]
+            })
+          })
+        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
           children: this.columns.map(function (column) {
             //<---------MAPING COLUMNS
             return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(KanbanColumn, {
@@ -3570,13 +3620,6 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
     value: function handleChangeDescription(event) {//this.setState({value: event.target.value});
       //alert('An essay was submitted: ' + this.state.value);
       //alert('Description submitted ');
-    }
-  }, {
-    key: "fnSave",
-    value: function fnSave(value) {
-      //this.setState({value: event.target.value});
-      //alert('An essay was submitted: ' + this.state.value);
-      alert('Saved!' + value.toString());
     }
   }, {
     key: "render",
