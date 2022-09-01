@@ -2949,9 +2949,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var _Board__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Board */ "./resources/js/components/Board/index.js");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _TicketBoard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../TicketBoard */ "./resources/js/components/TicketBoard/index.js");
+/* harmony import */ var _IncidentBoard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../IncidentBoard */ "./resources/js/components/IncidentBoard/index.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 var _templateObject;
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
@@ -2961,11 +2962,13 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 
-var StyledApp = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].main(_templateObject || (_templateObject = _taggedTemplateLiteral(["\ndisplay: flex;\nflex-direction: row;\nflex-wrap: wrap;\npadding: 3em;\njustify-content: space-around;\n\n  & > div:not(:last-child) {\n    margin-bottom: 2em;\n  }\n"])));
+
+
+var StyledApp = styled_components__WEBPACK_IMPORTED_MODULE_5__["default"].main(_templateObject || (_templateObject = _taggedTemplateLiteral(["\ndisplay: flex;\nflex-direction: row;\nflex-wrap: wrap;\npadding: 3em;\njustify-content: space-around;\n\n  & > div:not(:last-child) {\n    margin-bottom: 2em;\n  }\n"])));
 
 function App() {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(StyledApp, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Board__WEBPACK_IMPORTED_MODULE_2__["default"], {})
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(StyledApp, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_IncidentBoard__WEBPACK_IMPORTED_MODULE_3__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_TicketBoard__WEBPACK_IMPORTED_MODULE_2__["default"], {})]
   });
 }
 
@@ -2973,10 +2976,10 @@ function App() {
 
 /***/ }),
 
-/***/ "./resources/js/components/Board/index.js":
-/*!************************************************!*\
-  !*** ./resources/js/components/Board/index.js ***!
-  \************************************************/
+/***/ "./resources/js/components/IncidentBoard/index.js":
+/*!********************************************************!*\
+  !*** ./resources/js/components/IncidentBoard/index.js ***!
+  \********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2989,7 +2992,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lourenci/react-kanban */ "./node_modules/@lourenci/react-kanban/dist/index.js");
 /* harmony import */ var _lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _lourenci_react_kanban_dist_styles_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lourenci/react-kanban/dist/styles.css */ "./node_modules/@lourenci/react-kanban/dist/styles.css");
-/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./index.css */ "./resources/js/components/Board/index.css");
+/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./index.css */ "./resources/js/components/IncidentBoard/index.css");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
@@ -3133,7 +3136,7 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
       draggedOverCol: 0,
       popupActive: false,
       statusPrevio: 0,
-      ticketActivo: 0,
+      incidenteActivo: 0,
       popupData: []
     };
     _this.handleOnDragEnter = _this.handleOnDragEnter.bind(_assertThisInitialized(_this));
@@ -3145,7 +3148,7 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
   }
   /*
   async updateTicket(){
-     const formData = new FormData()
+      const formData = new FormData()
     formData.append('_method', 'PATCH');
     formData.append('transDate', transDate);
     formData.append('priority', priority);
@@ -3156,7 +3159,7 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
     formData.append('asignado', asignado);
     formData.append('responsable', responsable);
     formData.append('incidenteId', incidenteId);
-     await axios.post('/api/tickets/${id}', formData).then(({data})=>{
+      await axios.post('/api/tickets/${id}', formData).then(({data})=>{
       Swal.fire({
         icon:"success",
         text:data.message
@@ -3173,7 +3176,7 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
         })
       }
     })
-     alert('Saved!');
+      alert('Saved!');
   }
   */
 
@@ -3237,7 +3240,7 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
       var _this2 = this;
 
       // Retrieve project data from the database.
-      fetch('/gettickets', {
+      fetch('/getincidentes', {
         credentials: 'include'
       }).then(function (response) {
         if (response.ok) {
@@ -3272,9 +3275,9 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
       e.target.style.cursor = "move";
     }
   }, {
-    key: "updateTicket",
+    key: "updateIncidente",
     value: function () {
-      var _updateTicket = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(id, status) {
+      var _updateIncidente = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(id, status) {
         var estado, jsonObject, axios, data, config;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
@@ -3297,13 +3300,13 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
 
                 jsonObject = {};
                 jsonObject["status"] = estado;
-                console.log("El ticket :" + id + " se actualizara a estado: " + estado);
+                console.log("El incidente :" + id + " se actualizara a estado: " + estado);
                 console.log(jsonObject);
                 axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
                 data = JSON.stringify(jsonObject);
                 config = {
                   method: 'patch',
-                  url: '/api/tickets/' + id,
+                  url: '/api/incidentes/' + id,
                   headers: {
                     'Content-Type': 'application/json'
                   },
@@ -3323,11 +3326,11 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
         }, _callee);
       }));
 
-      function updateTicket(_x, _x2) {
-        return _updateTicket.apply(this, arguments);
+      function updateIncidente(_x, _x2) {
+        return _updateIncidente.apply(this, arguments);
       }
 
-      return updateTicket;
+      return updateIncidente;
     }()
   }, {
     key: "updateAsignacion",
@@ -3340,12 +3343,12 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
               case 0:
                 jsonObject = {};
                 jsonObject["asignado"] = asignado;
-                console.log("El ticket : " + id + " ha sido asignado a: " + asignado);
+                console.log("El incidente : " + id + " ha sido asignado a: " + asignado);
                 axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
                 data = JSON.stringify(jsonObject);
                 config = {
                   method: 'patch',
-                  url: '/api/tickets/' + id,
+                  url: '/api/incidentes/' + id,
                   headers: {
                     'Content-Type': 'application/json'
                   },
@@ -3376,7 +3379,8 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
     key: "handleOnDragEnd",
     value: function () {
       var _handleOnDragEnd = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(e, project) {
-        var proyectoActivo, updatedProjects;
+        var proyectoActivo, updatedProjects, _updatedProjects;
+
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
@@ -3389,7 +3393,7 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
                 this.setState({
                   statusPrevio: proyectoActivo.status
                 });
-                console.log("el ticket " + project.id + " se movio de la columna " + this.state.statusPrevio + " a la columna " + this.state.draggedOverCol);
+                console.log("el incidente " + project.id + " se movio de la columna " + this.state.statusPrevio + " a la columna " + this.state.draggedOverCol);
 
                 if (!(this.state.statusPrevio === this.state.draggedOverCol)) {
                   _context3.next = 8;
@@ -3408,17 +3412,25 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
                     projects: updatedProjects
                   });
                   console.log(this.state.projects);
-                  this.updateTicket(project.id, project["status"]);
+                  this.updateIncidente(project.id, project["status"]);
                 } else if (this.state.draggedOverCol === 2 || project.asignado === "") {
-                  //const updatedProjects = this.state.projects.slice(0);
-
-                  /*updatedProjects.find((projectObject) => {
-                    return projectObject.id === project.id;
-                  }).status = this.state.draggedOverCol;*/
+                  this.setState({
+                    incidenteActivo: project.id
+                  });
                   this.setState({
                     popupActive: true
                   });
                   console.log("Activando pop up");
+                } else {
+                  _updatedProjects = this.state.projects.slice(0);
+                  _updatedProjects.find(function (projectObject) {
+                    return projectObject.id === project.id;
+                  }).status = this.state.draggedOverCol;
+                  this.setState({
+                    projects: _updatedProjects
+                  });
+                  console.log(this.state.projects);
+                  this.updateIncidente(project.id, project["status"]);
                 }
 
               case 9:
@@ -3450,7 +3462,7 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
       });
       console.log(this.state.draggedOverCol); //Actualizando el ticket en la base de datos
 
-      this.updateTicket(id, project["status"]);
+      this.updateIncidente(id, this.state.draggedOverCol);
       this.updateAsignacion(id, asignado);
     }
   }, {
@@ -3485,7 +3497,7 @@ var IBoard = /*#__PURE__*/function (_React$Component) {
               onSubmit: this.handleSubmit,
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("label", {
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("p", {
-                  children: ["Asignar ticket ", this.state.ticketActivo, ":"]
+                  children: ["Asignar incidente ", this.state.incidenteActivo, ":"]
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
                   type: "text",
                   value: this.state.value,
@@ -3755,21 +3767,21 @@ var KanbanCard = /*#__PURE__*/function (_React$Component3) {
               'textDecoration': 'line-through'
             },
             children: ["[", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("a", {
-              href: "/ticket/" + this.props.project.id,
+              href: "/incidente/" + this.props.project.id,
               target: "_blank",
               rel: "noopener noreferrer",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("u", {
-                children: ["Ticket ", this.props.project.id]
+                children: ["Incidente ", this.props.project.id]
               })
             }), "]", this.props.project.description]
           }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
             id: "idprojname",
             children: ["[", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("a", {
-              href: "/ticket/" + this.props.project.id,
+              href: "/incidente/" + this.props.project.id,
               target: "_blank",
               rel: "noopener noreferrer",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("u", {
-                children: ["Ticket ", this.props.project.id]
+                children: ["Incidente ", this.props.project.id]
               })
             }), "]", this.props.project.description]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h2", {
@@ -4528,6 +4540,969 @@ react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime
 
 /***/ }),
 
+/***/ "./resources/js/components/TicketBoard/index.js":
+/*!******************************************************!*\
+  !*** ./resources/js/components/TicketBoard/index.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ IBoard)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var _lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lourenci/react-kanban */ "./node_modules/@lourenci/react-kanban/dist/index.js");
+/* harmony import */ var _lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_lourenci_react_kanban__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _lourenci_react_kanban_dist_styles_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lourenci/react-kanban/dist/styles.css */ "./node_modules/@lourenci/react-kanban/dist/styles.css");
+/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./index.css */ "./resources/js/components/TicketBoard/index.css");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _fontsource_karla__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @fontsource/karla */ "./node_modules/@fontsource/karla/index.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+
+
+
+
+
+
+
+var colorCard = "#f9fdf7";
+var columnList = [{
+  name: "POR HACER",
+  stage: 1,
+  color: "#C4E8C2"
+}, {
+  name: "ASIGNADO",
+  stage: 2,
+  color: "#b8bcf8"
+}, {
+  name: "EN PROGRESO",
+  stage: 3,
+  color: "#F8BC9A"
+}, {
+  name: "COMPLETADO",
+  stage: 4,
+  color: "#6BBD99"
+}, {
+  name: "CANCELADO",
+  stage: 5,
+  color: "#FF6B6B"
+}];
+var projectList = [{
+  id: 1,
+  priority: 1,
+  name: "Project 1",
+  date: '2022-03-01',
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
+  status: 1,
+  color: colorCard
+}, {
+  id: 2,
+  priority: 1,
+  name: "Project 2",
+  date: '2022-03-01',
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
+  status: 1,
+  color: colorCard
+}, {
+  id: 3,
+  priority: 1,
+  name: "Project 3",
+  date: '2022-03-01',
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
+  status: 1,
+  color: colorCard
+}, {
+  id: 4,
+  priority: 1,
+  name: "Project 4",
+  date: '2022-04-01',
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
+  status: 2,
+  color: colorCard
+}, {
+  id: 5,
+  priority: 1,
+  name: "Project 5",
+  date: '2022-03-01',
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
+  status: 3,
+  color: colorCard
+}, {
+  id: 6,
+  priority: 1,
+  name: "Project 6",
+  date: '2022-03-01',
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
+  status: 3,
+  color: colorCard
+}, {
+  id: 7,
+  priority: 1,
+  name: "Project 7",
+  date: '2022-04-01',
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam posuere dui vel urna egestas rutrum. ",
+  status: 4,
+  color: colorCard
+}];
+
+var IBoard = /*#__PURE__*/function (_React$Component) {
+  _inherits(IBoard, _React$Component);
+
+  var _super = _createSuper(IBoard);
+
+  function IBoard(props) {
+    var _this;
+
+    _classCallCheck(this, IBoard);
+
+    _this = _super.call(this, props);
+    _this.state = {
+      isLoading: true,
+      projects: [],
+      data: [],
+      fechaInicio: "",
+      draggedOverCol: 0,
+      popupActive: false,
+      statusPrevio: 0,
+      ticketActivo: 0,
+      popupData: []
+    };
+    _this.handleOnDragEnter = _this.handleOnDragEnter.bind(_assertThisInitialized(_this));
+    _this.handleOnDragEnd = _this.handleOnDragEnd.bind(_assertThisInitialized(_this));
+    _this.columns = columnList; //<---------column list
+
+    _this.fechaInicio = Date.now();
+    return _this;
+  }
+  /*
+  async updateTicket(){
+      const formData = new FormData()
+    formData.append('_method', 'PATCH');
+    formData.append('transDate', transDate);
+    formData.append('priority', priority);
+    formData.append('complexity', complexity);
+    formData.append('description', description);
+    formData.append('tipo', tipo);
+    formData.append('solicitante', solicitante);
+    formData.append('asignado', asignado);
+    formData.append('responsable', responsable);
+    formData.append('incidenteId', incidenteId);
+      await axios.post('/api/tickets/${id}', formData).then(({data})=>{
+      Swal.fire({
+        icon:"success",
+        text:data.message
+      })
+      navigate("/")
+    }).catch(({response})=>{
+      console.log(response);
+      if(response.status===422){
+        setValidationError(response.data.errors)
+      }else{
+        Swal.fire({
+          text:response.data.message,
+          icon:"error"
+        })
+      }
+    })
+      alert('Saved!');
+  }
+  */
+
+
+  _createClass(IBoard, [{
+    key: "ingresarPizarra",
+    value: function ingresarPizarra() {
+      //Inicializo json
+      var registros = []; //iterar data
+
+      for (var i = 0; i < this.state.data.length; i++) {
+        var obj = this.state.data[i];
+        var item = {};
+
+        for (var key in obj) {
+          if (obj.hasOwnProperty(key)) {
+            if (key == "status") {
+              var estado = 1;
+
+              if (obj[key].toUpperCase() == "PENDIENTE") {
+                estado = 1;
+              } else if (obj[key].toUpperCase() == "ASIGNADO") {
+                estado = 2;
+              } else if (obj[key].toUpperCase() == "EN PROGRESO") {
+                estado = 3;
+              } else if (obj[key].toUpperCase() == "COMPLETADO") {
+                estado = 4;
+              } else if (obj[key].toUpperCase() == "CANCELADO") {
+                estado = 5;
+              }
+
+              item[key] = estado;
+            } else {
+              item[key] = obj[key];
+            }
+          }
+        }
+
+        item["color"] = colorCard;
+        item["id"] = obj.id;
+        /*
+        item ["name"] = obj.description; //"Ticket "+(obj.id).toString() 
+        item ["date"] = obj.transDate;
+        item ["description"] = obj.tipo;
+        item ["status"] = estado;
+        
+        */
+
+        console.log(item);
+        registros.push(item);
+      }
+
+      this.setState({
+        projects: registros,
+        isLoading: false
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      // Retrieve project data from the database.
+      fetch('/gettickets', {
+        credentials: 'include'
+      }).then(function (response) {
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.log('Error with session response');
+        }
+      }).then(function (result) {
+        // Set the state of data.
+        _this2.setState({
+          data: result['data']
+        });
+
+        console.log(result['data']);
+
+        _this2.ingresarPizarra();
+      })["catch"](function (error) {
+        console.log('Error: ', error);
+      });
+      console.log("Datos de la pizarra: ");
+      console.log(this.state.data); //this.setState({ projects: projectList, isLoading: false });
+    } //this is called when a Kanban card is dragged over a column (called by column)
+
+  }, {
+    key: "handleOnDragEnter",
+    value: function handleOnDragEnter(e, stageValue) {
+      this.setState({
+        draggedOverCol: stageValue
+      });
+      console.log(this.state.data); //Change cursor of mouse
+
+      e.target.style.cursor = "move";
+    }
+  }, {
+    key: "updateTicket",
+    value: function () {
+      var _updateTicket = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(id, status) {
+        var estado, jsonObject, axios, data, config;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                estado = "";
+
+                if (status == 1) {
+                  estado = "Pendiente";
+                } else if (status == 2) {
+                  estado = "Asignado";
+                } else if (status == 3) {
+                  estado = "En Progreso";
+                } else if (status == 4) {
+                  estado = "Completado";
+                } else if (status == 5) {
+                  estado = "Cancelado";
+                } //Crear json para enviar al servidor
+
+
+                jsonObject = {};
+                jsonObject["status"] = estado;
+                console.log("El ticket :" + id + " se actualizara a estado: " + estado);
+                console.log(jsonObject);
+                axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+                data = JSON.stringify(jsonObject);
+                config = {
+                  method: 'patch',
+                  url: '/api/tickets/' + id,
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  data: data
+                };
+                axios(config).then(function (response) {
+                  console.log(JSON.stringify(response.data));
+                })["catch"](function (error) {
+                  console.log(error);
+                });
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function updateTicket(_x, _x2) {
+        return _updateTicket.apply(this, arguments);
+      }
+
+      return updateTicket;
+    }()
+  }, {
+    key: "updateAsignacion",
+    value: function () {
+      var _updateAsignacion = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(id, asignado) {
+        var jsonObject, axios, data, config;
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                jsonObject = {};
+                jsonObject["asignado"] = asignado;
+                console.log("El ticket : " + id + " ha sido asignado a: " + asignado);
+                axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+                data = JSON.stringify(jsonObject);
+                config = {
+                  method: 'patch',
+                  url: '/api/tickets/' + id,
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  data: data
+                };
+                axios(config).then(function (response) {
+                  console.log(JSON.stringify(response.data));
+                })["catch"](function (error) {
+                  console.log(error);
+                });
+
+              case 7:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      function updateAsignacion(_x3, _x4) {
+        return _updateAsignacion.apply(this, arguments);
+      }
+
+      return updateAsignacion;
+    }() //this is called when a Kanban card dropped over a column (called by card)
+
+  }, {
+    key: "handleOnDragEnd",
+    value: function () {
+      var _handleOnDragEnd = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(e, project) {
+        var proyectoActivo, updatedProjects, _updatedProjects;
+
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                e.preventDefault(); //this.setState({ statusPrevio: project.status });
+
+                proyectoActivo = this.state.projects.slice(0).find(function (entry) {
+                  return entry.id === project.id;
+                });
+                this.setState({
+                  statusPrevio: proyectoActivo.status
+                });
+                console.log("el ticket " + project.id + " se movio de la columna " + this.state.statusPrevio + " a la columna " + this.state.draggedOverCol);
+
+                if (!(this.state.statusPrevio === this.state.draggedOverCol)) {
+                  _context3.next = 8;
+                  break;
+                }
+
+                return _context3.abrupt("return");
+
+              case 8:
+                if (this.state.draggedOverCol === 1 || this.state.draggedOverCol === 5) {
+                  updatedProjects = this.state.projects.slice(0);
+                  updatedProjects.find(function (projectObject) {
+                    return projectObject.id === project.id;
+                  }).status = this.state.draggedOverCol;
+                  this.setState({
+                    projects: updatedProjects
+                  });
+                  console.log(this.state.projects);
+                  this.updateTicket(project.id, project["status"]);
+                } else if (this.state.draggedOverCol === 2 || project.asignado === "") {
+                  this.setState({
+                    ticketActivo: project.id
+                  });
+                  this.setState({
+                    popupActive: true
+                  });
+                  console.log("Activando pop up");
+                } else {
+                  _updatedProjects = this.state.projects.slice(0);
+                  _updatedProjects.find(function (projectObject) {
+                    return projectObject.id === project.id;
+                  }).status = this.state.draggedOverCol;
+                  this.setState({
+                    projects: _updatedProjects
+                  });
+                  console.log(this.state.projects);
+                  this.updateTicket(project.id, project["status"]);
+                }
+
+              case 9:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function handleOnDragEnd(_x5, _x6) {
+        return _handleOnDragEnd.apply(this, arguments);
+      }
+
+      return handleOnDragEnd;
+    }()
+  }, {
+    key: "updateAsignado",
+    value: function updateAsignado(id, asignado) {
+      var updatedProjects = this.state.projects.slice(0);
+      updatedProjects.find(function (projectObject) {
+        return projectObject.id === id;
+      }).asignado = asignado;
+      updateProjects.find(function (projectObject) {
+        return projectObject.id === id;
+      }).status = this.state.draggedOverCol;
+      this.setState({
+        projects: updatedProjects
+      });
+      console.log(this.state.draggedOverCol); //Actualizando el ticket en la base de datos
+
+      this.updateTicket(id, this.state.draggedOverCol);
+      this.updateAsignacion(id, asignado);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      if (this.state.isLoading) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+            className: "loading",
+            children: "Loading\u2026"
+          })
+        });
+      }
+
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+        children: this.state.popupActive ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+          style: {
+            'position': 'relative',
+            'background': 'rgba(0, 0, 0, 1)'
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+            style: {
+              'position': 'absolute',
+              'top': '50%',
+              'left': '50%',
+              'margin': '-25px 0 0 -25px',
+              'zIndex': '101'
+            },
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("form", {
+              onSubmit: this.handleSubmit,
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("label", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("p", {
+                  children: ["Asignar ticket ", this.state.ticketActivo, ":"]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
+                  type: "text",
+                  value: this.state.value,
+                  onChange: this.updateAsignado
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
+                type: "submit",
+                value: "Submit"
+              })]
+            })
+          })
+        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+          children: this.columns.map(function (column) {
+            //<---------MAPING COLUMNS
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(KanbanColumn, {
+              name: column.name,
+              stage: column.stage,
+              color: column.color,
+              projects: _this3.state.projects.filter(function (project) {
+                return parseInt(project.status, 10) === column.stage;
+              }),
+              onDragEnter: _this3.handleOnDragEnter //DRAG ENTER
+              ,
+              onDragEnd: _this3.handleOnDragEnd //DRAG END
+
+            }, column.stage);
+          })
+        })
+      });
+    }
+  }]);
+
+  return IBoard;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+/*
+ * The Kanban Board Column React component COLUMN
+ */
+
+
+
+
+var KanbanColumn = /*#__PURE__*/function (_React$Component2) {
+  _inherits(KanbanColumn, _React$Component2);
+
+  var _super2 = _createSuper(KanbanColumn);
+
+  function KanbanColumn(props) {
+    var _this4;
+
+    _classCallCheck(this, KanbanColumn);
+
+    _this4 = _super2.call(this, props);
+    _this4.state = {
+      mouseIsHovering: false
+    };
+    return _this4;
+  }
+
+  _createClass(KanbanColumn, [{
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps(nextProps) {
+      this.setState({
+        mouseIsHovering: false
+      });
+    }
+  }, {
+    key: "generateKanbanCards",
+    value: function generateKanbanCards() {
+      var _this5 = this;
+
+      return this.props.projects.slice(0).map(function (project) {
+        //<-----MAPING PROJECTS
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(KanbanCard, {
+          project: project,
+          onDragEnd: _this5.props.onDragEnd //drag END 
+
+        }, project.description);
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this6 = this;
+
+      /*
+              const columnStyle = {
+                display: "inline-block",
+                verticalAlign: "top",
+                marginRight: "5px",
+                marginBottom: "5px",
+                paddingLeft: "5px",
+                paddingTop: "0px",
+                width: "230px",
+                textAlign: "center",
+                "borderRadius": "8px",
+                backgroundColor: this.state.mouseIsHovering ? "#d3d3d3" : "#ccccff" };
+                */
+
+      /*
+                 style={
+            'display': 'inline-block',
+            'verticalAlign': 'top',
+            'marginRight': '5px',
+            'marginBottom': '5px',
+            'paddingLeft': '5px',
+            'paddingTop': '0px',
+            'width': '230px',
+            'textAlign': 'center",
+            "borderRadius": '8px',
+            "borderStyle": 'solid',
+            "borderWidth": 'medium',
+            'backgroundColor': this.state.mouseIsHovering
+              ? "#d3d3d3"
+              : this.props.color
+          }
+      */
+
+      /*
+      const columnStyle = {
+      'display': 'inline-block',
+      'verticalAlign': 'top',
+      'marginRight': '5px',
+      'marginBottom': '5px',
+      'paddingLeft': '5px',
+      'paddingTop': '0px',
+      'width': '230px',
+      'textAlign': 'center',
+      'backgroundColor': (this.state.mouseIsHovering) ? '#d3d3d3' : '#f0eeee',
+      };
+      */
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+        style: {
+          'display': 'inline-block',
+          'verticalAlign': 'top',
+          'marginRight': '5px',
+          'marginBottom': '5px',
+          'paddingLeft': '5px',
+          'paddingTop': '0px',
+          'fontFamily': 'Karla',
+          'height': '100%',
+          'minHeight': '35em',
+          'width': '15em',
+          'textAlign': 'center',
+          'backgroundColor': this.state.mouseIsHovering ? '#d3d3d3' : this.props.color,
+          "borderRadius": '8px',
+          "borderStyle": 'solid',
+          "borderWidth": 'medium'
+        },
+        onDragEnter: function onDragEnter(e) {
+          _this6.setState({
+            mouseIsHovering: true
+          });
+
+          _this6.props.onDragEnter(e, _this6.props.stage);
+        } //drag ENTER
+        ,
+        onDragExit: function onDragExit(e) {
+          _this6.setState({
+            mouseIsHovering: false
+          });
+        } //drag EXIT
+        ,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("h4", {
+          children: [this.props.name, " "]
+        }), this.generateKanbanCards(), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("br", {})]
+      }); //	<h4>{this.props.stage}. {this.props.name} ({this.props.projects.length})</h4>
+    } //render
+
+  }]);
+
+  return KanbanColumn;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+/*
+ * The Kanban Board Card component  CARD
+ */
+
+
+var KanbanCard = /*#__PURE__*/function (_React$Component3) {
+  _inherits(KanbanCard, _React$Component3);
+
+  var _super3 = _createSuper(KanbanCard);
+
+  function KanbanCard(props) {
+    var _this7;
+
+    _classCallCheck(this, KanbanCard);
+
+    _this7 = _super3.call(this, props);
+    _this7.state = {
+      collapsed: true
+    };
+    return _this7;
+  }
+
+  _createClass(KanbanCard, [{
+    key: "handleChangeTitle",
+    value: function handleChangeTitle(event) {//this.setState({value: event.target.value});
+      //alert('An essay was submitted: ' + this.state.value);
+      //alert('Title submitted ');
+    }
+  }, {
+    key: "handleChangeDescription",
+    value: function handleChangeDescription(event) {//this.setState({value: event.target.value});
+      //alert('An essay was submitted: ' + this.state.value);
+      //alert('Description submitted ');
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this8 = this;
+
+      //render card
+
+      /*
+      		const cardStyle = {
+      'backgroundColor': '#f9f7f7',
+      'paddingLeft': '0px',
+      'paddingTop': '5px',
+      'paddingBottom': '5px',
+      'marginLeft': '0px',
+      'marginRight': '5px',
+      'marginBottom': '5px',
+      };*/
+      function onClickView(e) {
+        e.target.style.cursor = 'pointer';
+      }
+
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+        style: {
+          'backgroundColor': this.props.project.color,
+          'paddingLeft': '0px',
+          'paddingTop': '5px',
+          'paddingBottom': '5px',
+          'marginLeft': '0px',
+          'marginRight': '5px',
+          'marginBottom': '5px',
+          "borderRadius": "8px",
+          "borderStyle": "solid",
+          "borderWidth": "thin",
+          "boxShadow": "6px 6px 8px #777"
+        },
+        draggable: true,
+        onDragEnter: function onDragEnter(e) {
+          e.target.style.cursor = 'move';
+        } //Drag
+        ,
+        onMouseDown: function onMouseDown(e) {
+          e.target.style.cursor = 'default';
+        },
+        onMouseMove: function onMouseMove(e) {
+          e.target.style.cursor = 'move';
+        },
+        onMouseUp: function onMouseUp(e) {
+          e.target.style.cursor = 'pointer';
+        },
+        onDragEnd: function onDragEnd(e) {
+          _this8.props.onDragEnd(e, _this8.props.project);
+        },
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+          style: {
+            'marginTop': '0px',
+            'marginBottom': '0px'
+          },
+          children: [this.props.project.status === 5 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+            id: "idprojname",
+            style: {
+              'textDecoration': 'line-through'
+            },
+            children: ["[", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("a", {
+              href: "/ticket/" + this.props.project.id,
+              target: "_blank",
+              rel: "noopener noreferrer",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("u", {
+                children: ["Ticket ", this.props.project.id]
+              })
+            }), "]", this.props.project.description]
+          }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+            id: "idprojname",
+            children: ["[", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("a", {
+              href: "/ticket/" + this.props.project.id,
+              target: "_blank",
+              rel: "noopener noreferrer",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("u", {
+                children: ["Ticket ", this.props.project.id]
+              })
+            }), "]", this.props.project.description]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h2", {
+            style: {
+              'marginTop': '0px',
+              'marginBottom': '0px'
+            },
+            children: this.props.project.transDate
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("h2", {
+            style: {
+              'marginTop': '0px',
+              'marginBottom': '0px'
+            },
+            children: this.props.project.transTime
+          })]
+        }), this.state.collapsed ? null : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("form", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
+              style: {
+                'marginTop': '0px',
+                'marginBottom': '0px'
+              },
+              maxLength: "150",
+              onChange: this.handleChangeTitle,
+              children: "Solicitante: " + this.props.project.solicitante
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
+              style: {
+                'marginTop': '0px',
+                'marginBottom': '0px'
+              },
+              maxLength: "250",
+              onChange: this.handleChangeDescription,
+              children: "Tipo: " + this.props.project.tipo
+            })]
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+          style: {
+            'width': '100%',
+            'color': '#7788FF'
+          },
+          onClick: function onClick(e) {
+            _this8.setState({
+              collapsed: !_this8.state.collapsed
+            });
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("u", {
+            children: [" ", this.state.collapsed ? String("Ver más") : String("Ocultar"), " "]
+          })
+        })]
+      }); //style='rows: 3, cols: 50, maxlength: 150'
+
+      /*
+              const cardStyle = {
+                backgroundColor: "#f9f7f7",
+                paddingLeft: "0px",
+                paddingTop: "5px",
+                paddingBottom: "5px",
+                marginLeft: "0px",
+                marginRight: "5px",
+                marginBottom: "5px",
+                "borderRadius": "8px",
+                "box-shadow": "6px 6px 8px #777" };
+                  */
+
+      /*
+          return React.createElement(
+            "div",
+            {
+              style: {
+                backgroundColor: this.props.project.color,
+                paddingLeft: "0px",
+                paddingTop: "5px",
+                paddingBottom: "5px",
+                marginLeft: "0px",
+                marginRight: "5px",
+                marginBottom: "5px",
+                "borderRadius": "8px",
+                "borderStyle": "solid",
+                "borderWidth": "thin",
+                "box-shadow": "6px 6px 8px #777"
+              },
+      
+              draggable: true,
+              onDragEnd: (e) => {
+                this.props.onDragEnd(e, this.props.project);
+              }
+            },
+      
+            //React.createElement("div", null,
+            //React.createElement("h4", null, this.props.project.name) , React.createElement("img", { src: "./edit_icon.svg"})       ),
+      
+            //React.createElement("div", null,
+            //React.createElement("img", { src: "./edit_icon.svg"})   ),
+      
+            React.createElement(
+              "div",
+              null,
+              React.createElement("h4", null, this.props.project.name)
+            ),
+      
+            //this.props.project.description="hjhjhjh",
+      
+            this.state.collapsed
+              ? null
+              : React.createElement(
+                  "div",
+                  null,
+                  //React.createElement("strong", null, "*"),
+                  //this.props.project.description,
+                  React.createElement("img", { src: "./edit_icon.svg" }),
+                  //React.createElement("button", { src: "./edit_icon.svg"}),
+                  React.createElement(
+                    "textarea",
+                    { rows: "3", cols: "50", maxlength: "150" },
+                    this.props.project.name
+                  ),
+      
+                  React.createElement(
+                    "textarea",
+                    {
+                      rows: "5",
+                      cols: "50",
+                      maxlength: "250",
+                      value: this.state.text,
+                      onChange: this._textChange
+                    },
+      
+                    this.props.project.description
+                  ),
+      
+                  React.createElement("br", null)
+                ),
+      
+            React.createElement(
+              "div",
+              {
+                style: { width: "100%" },
+                onClick: (e) => {
+                  this.setState({ collapsed: !this.state.collapsed });
+                }
+              },
+      
+              this.state.collapsed
+                ? String.fromCharCode("9660")
+                : String.fromCharCode("9650")
+            )
+          );
+          */
+    } //render card
+
+  }]);
+
+  return KanbanCard;
+}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+
+/***/ }),
+
 /***/ "./resources/js/components/Ticket/index.js":
 /*!*************************************************!*\
   !*** ./resources/js/components/Ticket/index.js ***!
@@ -5115,10 +6090,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".react-kanban-board{padding:5px}.react
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/Board/index.css":
-/*!***********************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/Board/index.css ***!
-  \***********************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/IncidentBoard/index.css":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/IncidentBoard/index.css ***!
+  \*******************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -5132,7 +6107,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n    font-family: Sans-serif;\n    font-size: 14;\n    width: 100%;\n    background-color: #E0E0E0;\n  }\n\n  h1 {\n    position: absolute;\n    left: 16px;\n    top: 16px;\n  }\n\n  h2{\n    color: #30BF10;\n    font-family: 'Arbutus Slab', serif;\n    font-size: 12px !important;\n    font-weight: 800;\n    line-height: 2rem;\n  }\n\n  menu {\n    position: absolute;\n    right: 16px;\n    top: 0px;\n  }\n\n  menu.kanban .viewlist,\n  menu.list .viewkanban {\n    display: inline;\n  }\n\n  menu.kanban .viewkanban,\n  menu.list .viewlist {\n    display: none;\n  }\n\n  .dd {\n    max-width: 100%;\n    top: 88px;\n    margin: 0 auto;\n    display: block;\n    vertical-align: top;\n  }\n\n  ol {\n    transition: border-color 2s ease, all 0.1s ease;\n  }\n\n  ol.list {\n    padding-top: 2em;\n    padding-left: 15px;\n    max-width: 650px;\n    margin: 0 auto;\n  }\n\n  ol.list .text {\n    float: right;\n    width: 60%;\n  }\n\n  ol.list h3,\n  ol.list .actions,\n  ol.list label {\n    float: left;\n    width: 30%;\n  }\n\n  ol.list > li,\n  ol.list > h3 {\n    max-width: 600px;\n    margin: 0 auto;\n  }\n\n  ol.list > h2 {\n    padding-bottom: 6px;\n  }\n\n  ol.list.To-do {\n    border-left: 2px solid #FFB300;\n  }\n\n  ol.list.Gone {\n    border-left: 2px solid #FF3D00;\n  }\n\n  ol.list.progress {\n    border-left: 2px solid #29B6F6;\n  }\n\n  ol.list.Done {\n    border-left: 2px solid #8BC34A;\n  }\n\n  H2,\n  h1,\n  button {\n    margin-left: 5px;\n    font-family: 'Arbutus Slab', serif;\n  }\n\n  h2 {\n    color: #607D8B;\n  }\n\n  h2 .material-icons {\n    color: #B0BEC5;\n    line-height: 1.5;\n  }\n\n  .dd-handle .material-icons {\n    color: #B0BEC5;\n    font-size: 14px;\n    font-weight: 800;\n    line-height: 2rem;\n    position: relative;\n    right: 0;\n    color: #607D8B;\n    padding: 5px 16px;\n  }\n\n  button>.material-icons {\n    line-height: 0.2;\n    position:relative;\n    top:7px;\n  }\n\n  .dd-item:hover,\n  button:hover {\n    color: #00838F;\n    will-change: box-shadow;\n    transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);\n    box-shadow: 0 5px 6px 0 rgba(0, 0, 0, .14), 0 3px 1px -6px rgba(0, 0, 0, .2), 2px 5px 3px 0 rgba(0, 0, 0, .12);\n  }\n\n  button.addbutt {\n    background-color: #EEEEEE;\n    color: #607D8B;\n    width: 100%;\n  }\n\n  .list > button.addbutt {\n    max-width: 330px;\n  }\n\n  button:active, button:down, button:focus {box-shadow: 0 0 0 0, 0 0 0 0 rgba(0, 0, 0, .2), 0 0 0 0 rgba(0, 0, 0, .12);color:#00838F;}\n  button {\n    align-items: center;\n    background-color: #EEEEEE;\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\n    border: 1px solid #ccc;\n    border-radius: 2px;\n    color: #607D8B;\n    position: relative;\n    margin: 0;\n    min-width: 44px;\n    padding: 10px 16px;\n    display: inline-block;\n    font-size: 14px;\n    font-weight: 600;\n    text-transform: uppercase;\n    letter-spacing: 1;\n    overflow: hidden;\n    outline: none;\n    cursor: pointer;\n    text-decoration: none;\n      }\n\n  ol.kanban.To-do {\n    border-top: 5px solid #FFB300;\n  }\n\n  ol.kanban.Gone {\n    border-top: 5px solid #FF3D00;\n  }\n\n  ol.kanban.progress {\n    border-top: 5px solid #29B6F6;\n  }\n\n  ol.kanban.Done {\n    border-top: 5px solid #8BC34A;\n  }\n\n  ol.kanban {\n    border-top: 5px solid #78909C;\n    width: 20%;\n    height: auto;\n    margin: 1%;\n    max-width: 250px;\n    min-width: 120px;\n    display: inline-block;\n    vertical-align: top;\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\n    flex-direction: column;\n    min-height: 200px;\n    z-index: 1;\n    position: relative;\n    background: #fff;\n    padding: 1em;\n    border-radius: 2px;\n  }\n\n  .dd-item {\n    display: block;\n    position: relative;\n    list-style: none;\n    font-family: \"Roboto\", \"Helvetica\", \"Arial\", sans-serif;\n    min-height: 48px;\n    display: flex;\n    flex-direction: column;\n    font-size: 16px;\n    min-height: 120px;\n    overflow: hidden;\n    z-index: 1;\n    position: relative;\n    background: #fff;\n    border-radius: 2px;\n    box-sizing: border-box;\n  }\n\n  .title {\n    align-self: flex-end;\n    color: inherit;\n    display: block;\n    display: flex;\n    font-size: 24px;\n    line-height: normal;\n    overflow: hidden;\n    transform-origin: 149px 48px;\n    margin: 0;\n  }\n\n  .text {\n    color: grey;\n    border-top: 1px solid;\n    font-size: 1rem;\n    font-weight: 400;\n    line-height: 18px;\n    overflow: hidden;\n    padding: 16px;\n    width: 90%;\n  }\n\n  .actions {\n    border-top: 1px solid rgba(0, 0, 0, .1);\n    font-size: 8px;\n    line-height: normal;\n    width: 100%;\n    color: #B0BEC5;\n    padding: 8px;\n    box-sizing: border-box;\n  }\n\n\n  /**\n   * Nestable\n   */\n\n  .dd {\n    position: relative;\n    display: block;\n    list-style: none;\n  }\n\n  .dd-list {\n    display: block;\n    position: relative;\n    margin: 0;\n    padding: 0;\n    list-style: none;\n  }\n\n  .dd-list .dd-list {\n    padding-left: 30px;\n  }\n\n  .dd-collapsed .dd-list {\n    display: none;\n  }\n\n  .dd-item {\n    display: block;\n    margin: 5px 0;\n    padding: 5px 10px;\n    color: #333;\n    text-decoration: none;\n    font-weight: bold;\n    border: 1px solid #ccc;\n    background: #fafafa;\n    border-radius: 3px;\n    box-sizing: border-box;\n    -moz-box-sizing: border-box;\n  }\n\n  .dd-item:hover {\n    background: #fff;\n  }\n\n  .dd-item > button {\n    display: block;\n    position: relative;\n    cursor: move;\n    float: left;\n    width: 25px;\n    height: 20px;\n    margin: 5px 0;\n    padding: 0;\n    text-indent: 100%;\n    white-space: nowrap;\n    overflow: hidden;\n    border: 0;\n    background: transparent;\n    font-size: 12px;\n    line-height: 1;\n    text-align: center;\n    font-weight: bold;\n  }\n\n  .dd-item > button:before {\n    content: '+';\n    display: block;\n    position: absolute;\n    width: 100%;\n    text-align: center;\n    text-indent: 0;\n  }\n\n  .dd-item > button[data-action=\"collapse\"]:before {\n    content: '<i class=\"material-icons\">filter_none</i>';\n  }\n\n  .dd-placeholder,\n  .dd-empty {\n    margin: 5px 0;\n    padding: 0;\n    min-height: 30px;\n    background: #E0E0E0;\n    border: 1px dashed #b6bcbf;\n    box-sizing: border-box;\n    -moz-box-sizing: border-box;\n  }\n\n  .dd-empty {\n    border: 1px dashed #bbb;\n    min-height: 100px;\n    background-color: #E0E0E0;\n    background-size: 60px 60px;\n    background-position: 0 0, 30px 30px;\n  }\n\n  .dd-dragel {\n    position: absolute;\n    pointer-events: none;\n    z-index: 9999;\n  }\n\n  .dd-dragel > .dd-item .dd-handle {\n    margin-top: 0;\n    cursor: move;\n  }\n\n  .dd-dragel .dd-item {\n    box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, .5);\n    cursor: move;\n  }\n\n#loading\n.loading {\n  position: fixed;\n  z-index: 999;\n  height: 2em;\n  width: 2em;\n  overflow: visible;\n  margin: auto;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n}\n\n/* Transparent Overlay */\n.loading:before {\n  content: '';\n  display: block;\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0,0,0,0.3);\n}\n\n/* :not(:required) hides these rules from IE9 and below */\n.loading:not(:required) {\n  /* hide \"loading...\" text */\n  font: 0/0 a;\n  color: transparent;\n  text-shadow: none;\n  background-color: transparent;\n  border: 0;\n}\n\n.loading:not(:required):after {\n  content: '';\n  display: block;\n  font-size: 10px;\n  width: 1em;\n  height: 1em;\n  margin-top: -0.5em;\n  -webkit-animation: spinner 1500ms infinite linear;\n  animation: spinner 1500ms infinite linear;\n  border-radius: 0.5em;\n  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;\n}\n\n/* Animation */\n\n@-webkit-keyframes spinner {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}\n@keyframes spinner {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\r\n    font-family: Sans-serif;\r\n    font-size: 14;\r\n    width: 100%;\r\n    background-color: #E0E0E0;\r\n  }\r\n\r\n  h1 {\r\n    position: absolute;\r\n    left: 16px;\r\n    top: 16px;\r\n  }\r\n\r\n  h2{\r\n    color: #30BF10;\r\n    font-family: 'Arbutus Slab', serif;\r\n    font-size: 12px !important;\r\n    font-weight: 800;\r\n    line-height: 2rem;\r\n  }\r\n\r\n  menu {\r\n    position: absolute;\r\n    right: 16px;\r\n    top: 0px;\r\n  }\r\n\r\n  menu.kanban .viewlist,\r\n  menu.list .viewkanban {\r\n    display: inline;\r\n  }\r\n\r\n  menu.kanban .viewkanban,\r\n  menu.list .viewlist {\r\n    display: none;\r\n  }\r\n\r\n  .dd {\r\n    max-width: 100%;\r\n    top: 88px;\r\n    margin: 0 auto;\r\n    display: block;\r\n    vertical-align: top;\r\n  }\r\n\r\n  ol {\r\n    transition: border-color 2s ease, all 0.1s ease;\r\n  }\r\n\r\n  ol.list {\r\n    padding-top: 2em;\r\n    padding-left: 15px;\r\n    max-width: 650px;\r\n    margin: 0 auto;\r\n  }\r\n\r\n  ol.list .text {\r\n    float: right;\r\n    width: 60%;\r\n  }\r\n\r\n  ol.list h3,\r\n  ol.list .actions,\r\n  ol.list label {\r\n    float: left;\r\n    width: 30%;\r\n  }\r\n\r\n  ol.list > li,\r\n  ol.list > h3 {\r\n    max-width: 600px;\r\n    margin: 0 auto;\r\n  }\r\n\r\n  ol.list > h2 {\r\n    padding-bottom: 6px;\r\n  }\r\n\r\n  ol.list.To-do {\r\n    border-left: 2px solid #FFB300;\r\n  }\r\n\r\n  ol.list.Gone {\r\n    border-left: 2px solid #FF3D00;\r\n  }\r\n\r\n  ol.list.progress {\r\n    border-left: 2px solid #29B6F6;\r\n  }\r\n\r\n  ol.list.Done {\r\n    border-left: 2px solid #8BC34A;\r\n  }\r\n\r\n  H2,\r\n  h1,\r\n  button {\r\n    margin-left: 5px;\r\n    font-family: 'Arbutus Slab', serif;\r\n  }\r\n\r\n  h2 {\r\n    color: #607D8B;\r\n  }\r\n\r\n  h2 .material-icons {\r\n    color: #B0BEC5;\r\n    line-height: 1.5;\r\n  }\r\n\r\n  .dd-handle .material-icons {\r\n    color: #B0BEC5;\r\n    font-size: 14px;\r\n    font-weight: 800;\r\n    line-height: 2rem;\r\n    position: relative;\r\n    right: 0;\r\n    color: #607D8B;\r\n    padding: 5px 16px;\r\n  }\r\n\r\n  button>.material-icons {\r\n    line-height: 0.2;\r\n    position:relative;\r\n    top:7px;\r\n  }\r\n\r\n  .dd-item:hover,\r\n  button:hover {\r\n    color: #00838F;\r\n    will-change: box-shadow;\r\n    transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);\r\n    box-shadow: 0 5px 6px 0 rgba(0, 0, 0, .14), 0 3px 1px -6px rgba(0, 0, 0, .2), 2px 5px 3px 0 rgba(0, 0, 0, .12);\r\n  }\r\n\r\n  button.addbutt {\r\n    background-color: #EEEEEE;\r\n    color: #607D8B;\r\n    width: 100%;\r\n  }\r\n\r\n  .list > button.addbutt {\r\n    max-width: 330px;\r\n  }\r\n\r\n  button:active, button:down, button:focus {box-shadow: 0 0 0 0, 0 0 0 0 rgba(0, 0, 0, .2), 0 0 0 0 rgba(0, 0, 0, .12);color:#00838F;}\r\n  button {\r\n    align-items: center;\r\n    background-color: #EEEEEE;\r\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\r\n    border: 1px solid #ccc;\r\n    border-radius: 2px;\r\n    color: #607D8B;\r\n    position: relative;\r\n    margin: 0;\r\n    min-width: 44px;\r\n    padding: 10px 16px;\r\n    display: inline-block;\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    text-transform: uppercase;\r\n    letter-spacing: 1;\r\n    overflow: hidden;\r\n    outline: none;\r\n    cursor: pointer;\r\n    text-decoration: none;\r\n      }\r\n\r\n  ol.kanban.To-do {\r\n    border-top: 5px solid #FFB300;\r\n  }\r\n\r\n  ol.kanban.Gone {\r\n    border-top: 5px solid #FF3D00;\r\n  }\r\n\r\n  ol.kanban.progress {\r\n    border-top: 5px solid #29B6F6;\r\n  }\r\n\r\n  ol.kanban.Done {\r\n    border-top: 5px solid #8BC34A;\r\n  }\r\n\r\n  ol.kanban {\r\n    border-top: 5px solid #78909C;\r\n    width: 20%;\r\n    height: auto;\r\n    margin: 1%;\r\n    max-width: 250px;\r\n    min-width: 120px;\r\n    display: inline-block;\r\n    vertical-align: top;\r\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\r\n    flex-direction: column;\r\n    min-height: 200px;\r\n    z-index: 1;\r\n    position: relative;\r\n    background: #fff;\r\n    padding: 1em;\r\n    border-radius: 2px;\r\n  }\r\n\r\n  .dd-item {\r\n    display: block;\r\n    position: relative;\r\n    list-style: none;\r\n    font-family: \"Roboto\", \"Helvetica\", \"Arial\", sans-serif;\r\n    min-height: 48px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    font-size: 16px;\r\n    min-height: 120px;\r\n    overflow: hidden;\r\n    z-index: 1;\r\n    position: relative;\r\n    background: #fff;\r\n    border-radius: 2px;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n  .title {\r\n    align-self: flex-end;\r\n    color: inherit;\r\n    display: block;\r\n    display: flex;\r\n    font-size: 24px;\r\n    line-height: normal;\r\n    overflow: hidden;\r\n    transform-origin: 149px 48px;\r\n    margin: 0;\r\n  }\r\n\r\n  .text {\r\n    color: grey;\r\n    border-top: 1px solid;\r\n    font-size: 1rem;\r\n    font-weight: 400;\r\n    line-height: 18px;\r\n    overflow: hidden;\r\n    padding: 16px;\r\n    width: 90%;\r\n  }\r\n\r\n  .actions {\r\n    border-top: 1px solid rgba(0, 0, 0, .1);\r\n    font-size: 8px;\r\n    line-height: normal;\r\n    width: 100%;\r\n    color: #B0BEC5;\r\n    padding: 8px;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n\r\n  /**\r\n   * Nestable\r\n   */\r\n\r\n  .dd {\r\n    position: relative;\r\n    display: block;\r\n    list-style: none;\r\n  }\r\n\r\n  .dd-list {\r\n    display: block;\r\n    position: relative;\r\n    margin: 0;\r\n    padding: 0;\r\n    list-style: none;\r\n  }\r\n\r\n  .dd-list .dd-list {\r\n    padding-left: 30px;\r\n  }\r\n\r\n  .dd-collapsed .dd-list {\r\n    display: none;\r\n  }\r\n\r\n  .dd-item {\r\n    display: block;\r\n    margin: 5px 0;\r\n    padding: 5px 10px;\r\n    color: #333;\r\n    text-decoration: none;\r\n    font-weight: bold;\r\n    border: 1px solid #ccc;\r\n    background: #fafafa;\r\n    border-radius: 3px;\r\n    box-sizing: border-box;\r\n    -moz-box-sizing: border-box;\r\n  }\r\n\r\n  .dd-item:hover {\r\n    background: #fff;\r\n  }\r\n\r\n  .dd-item > button {\r\n    display: block;\r\n    position: relative;\r\n    cursor: move;\r\n    float: left;\r\n    width: 25px;\r\n    height: 20px;\r\n    margin: 5px 0;\r\n    padding: 0;\r\n    text-indent: 100%;\r\n    white-space: nowrap;\r\n    overflow: hidden;\r\n    border: 0;\r\n    background: transparent;\r\n    font-size: 12px;\r\n    line-height: 1;\r\n    text-align: center;\r\n    font-weight: bold;\r\n  }\r\n\r\n  .dd-item > button:before {\r\n    content: '+';\r\n    display: block;\r\n    position: absolute;\r\n    width: 100%;\r\n    text-align: center;\r\n    text-indent: 0;\r\n  }\r\n\r\n  .dd-item > button[data-action=\"collapse\"]:before {\r\n    content: '<i class=\"material-icons\">filter_none</i>';\r\n  }\r\n\r\n  .dd-placeholder,\r\n  .dd-empty {\r\n    margin: 5px 0;\r\n    padding: 0;\r\n    min-height: 30px;\r\n    background: #E0E0E0;\r\n    border: 1px dashed #b6bcbf;\r\n    box-sizing: border-box;\r\n    -moz-box-sizing: border-box;\r\n  }\r\n\r\n  .dd-empty {\r\n    border: 1px dashed #bbb;\r\n    min-height: 100px;\r\n    background-color: #E0E0E0;\r\n    background-size: 60px 60px;\r\n    background-position: 0 0, 30px 30px;\r\n  }\r\n\r\n  .dd-dragel {\r\n    position: absolute;\r\n    pointer-events: none;\r\n    z-index: 9999;\r\n  }\r\n\r\n  .dd-dragel > .dd-item .dd-handle {\r\n    margin-top: 0;\r\n    cursor: move;\r\n  }\r\n\r\n  .dd-dragel .dd-item {\r\n    box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, .5);\r\n    cursor: move;\r\n  }\r\n\r\n#loading\r\n.loading {\r\n  position: fixed;\r\n  z-index: 999;\r\n  height: 2em;\r\n  width: 2em;\r\n  overflow: visible;\r\n  margin: auto;\r\n  top: 0;\r\n  left: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n}\r\n\r\n/* Transparent Overlay */\r\n.loading:before {\r\n  content: '';\r\n  display: block;\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: rgba(0,0,0,0.3);\r\n}\r\n\r\n/* :not(:required) hides these rules from IE9 and below */\r\n.loading:not(:required) {\r\n  /* hide \"loading...\" text */\r\n  font: 0/0 a;\r\n  color: transparent;\r\n  text-shadow: none;\r\n  background-color: transparent;\r\n  border: 0;\r\n}\r\n\r\n.loading:not(:required):after {\r\n  content: '';\r\n  display: block;\r\n  font-size: 10px;\r\n  width: 1em;\r\n  height: 1em;\r\n  margin-top: -0.5em;\r\n  -webkit-animation: spinner 1500ms infinite linear;\r\n  animation: spinner 1500ms infinite linear;\r\n  border-radius: 0.5em;\r\n  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;\r\n}\r\n\r\n/* Animation */\r\n\r\n@-webkit-keyframes spinner {\r\n  0% {\r\n    transform: rotate(0deg);\r\n  }\r\n  100% {\r\n    transform: rotate(360deg);\r\n  }\r\n}\r\n@keyframes spinner {\r\n  0% {\r\n    transform: rotate(0deg);\r\n  }\r\n  100% {\r\n    transform: rotate(360deg);\r\n  }\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -5156,7 +6131,31 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n\tpadding: 30px 20%;\n  }\n  h1 {\n\tfont-size: 2em;\n\ttext-align: center;\n  }", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\r\n\tpadding: 30px 20%;\r\n  }\r\n  h1 {\r\n\tfont-size: 2em;\r\n\ttext-align: center;\r\n  }", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/TicketBoard/index.css":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/TicketBoard/index.css ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "body {\r\n    font-family: Sans-serif;\r\n    font-size: 14;\r\n    width: 100%;\r\n    background-color: #E0E0E0;\r\n  }\r\n\r\n  h1 {\r\n    position: absolute;\r\n    left: 16px;\r\n    top: 16px;\r\n  }\r\n\r\n  h2{\r\n    color: #30BF10;\r\n    font-family: 'Arbutus Slab', serif;\r\n    font-size: 12px !important;\r\n    font-weight: 800;\r\n    line-height: 2rem;\r\n  }\r\n\r\n  menu {\r\n    position: absolute;\r\n    right: 16px;\r\n    top: 0px;\r\n  }\r\n\r\n  menu.kanban .viewlist,\r\n  menu.list .viewkanban {\r\n    display: inline;\r\n  }\r\n\r\n  menu.kanban .viewkanban,\r\n  menu.list .viewlist {\r\n    display: none;\r\n  }\r\n\r\n  .dd {\r\n    max-width: 100%;\r\n    top: 88px;\r\n    margin: 0 auto;\r\n    display: block;\r\n    vertical-align: top;\r\n  }\r\n\r\n  ol {\r\n    transition: border-color 2s ease, all 0.1s ease;\r\n  }\r\n\r\n  ol.list {\r\n    padding-top: 2em;\r\n    padding-left: 15px;\r\n    max-width: 650px;\r\n    margin: 0 auto;\r\n  }\r\n\r\n  ol.list .text {\r\n    float: right;\r\n    width: 60%;\r\n  }\r\n\r\n  ol.list h3,\r\n  ol.list .actions,\r\n  ol.list label {\r\n    float: left;\r\n    width: 30%;\r\n  }\r\n\r\n  ol.list > li,\r\n  ol.list > h3 {\r\n    max-width: 600px;\r\n    margin: 0 auto;\r\n  }\r\n\r\n  ol.list > h2 {\r\n    padding-bottom: 6px;\r\n  }\r\n\r\n  ol.list.To-do {\r\n    border-left: 2px solid #FFB300;\r\n  }\r\n\r\n  ol.list.Gone {\r\n    border-left: 2px solid #FF3D00;\r\n  }\r\n\r\n  ol.list.progress {\r\n    border-left: 2px solid #29B6F6;\r\n  }\r\n\r\n  ol.list.Done {\r\n    border-left: 2px solid #8BC34A;\r\n  }\r\n\r\n  H2,\r\n  h1,\r\n  button {\r\n    margin-left: 5px;\r\n    font-family: 'Arbutus Slab', serif;\r\n  }\r\n\r\n  h2 {\r\n    color: #607D8B;\r\n  }\r\n\r\n  h2 .material-icons {\r\n    color: #B0BEC5;\r\n    line-height: 1.5;\r\n  }\r\n\r\n  .dd-handle .material-icons {\r\n    color: #B0BEC5;\r\n    font-size: 14px;\r\n    font-weight: 800;\r\n    line-height: 2rem;\r\n    position: relative;\r\n    right: 0;\r\n    color: #607D8B;\r\n    padding: 5px 16px;\r\n  }\r\n\r\n  button>.material-icons {\r\n    line-height: 0.2;\r\n    position:relative;\r\n    top:7px;\r\n  }\r\n\r\n  .dd-item:hover,\r\n  button:hover {\r\n    color: #00838F;\r\n    will-change: box-shadow;\r\n    transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);\r\n    box-shadow: 0 5px 6px 0 rgba(0, 0, 0, .14), 0 3px 1px -6px rgba(0, 0, 0, .2), 2px 5px 3px 0 rgba(0, 0, 0, .12);\r\n  }\r\n\r\n  button.addbutt {\r\n    background-color: #EEEEEE;\r\n    color: #607D8B;\r\n    width: 100%;\r\n  }\r\n\r\n  .list > button.addbutt {\r\n    max-width: 330px;\r\n  }\r\n\r\n  button:active, button:down, button:focus {box-shadow: 0 0 0 0, 0 0 0 0 rgba(0, 0, 0, .2), 0 0 0 0 rgba(0, 0, 0, .12);color:#00838F;}\r\n  button {\r\n    align-items: center;\r\n    background-color: #EEEEEE;\r\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\r\n    border: 1px solid #ccc;\r\n    border-radius: 2px;\r\n    color: #607D8B;\r\n    position: relative;\r\n    margin: 0;\r\n    min-width: 44px;\r\n    padding: 10px 16px;\r\n    display: inline-block;\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    text-transform: uppercase;\r\n    letter-spacing: 1;\r\n    overflow: hidden;\r\n    outline: none;\r\n    cursor: pointer;\r\n    text-decoration: none;\r\n      }\r\n\r\n  ol.kanban.To-do {\r\n    border-top: 5px solid #FFB300;\r\n  }\r\n\r\n  ol.kanban.Gone {\r\n    border-top: 5px solid #FF3D00;\r\n  }\r\n\r\n  ol.kanban.progress {\r\n    border-top: 5px solid #29B6F6;\r\n  }\r\n\r\n  ol.kanban.Done {\r\n    border-top: 5px solid #8BC34A;\r\n  }\r\n\r\n  ol.kanban {\r\n    border-top: 5px solid #78909C;\r\n    width: 20%;\r\n    height: auto;\r\n    margin: 1%;\r\n    max-width: 250px;\r\n    min-width: 120px;\r\n    display: inline-block;\r\n    vertical-align: top;\r\n    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);\r\n    flex-direction: column;\r\n    min-height: 200px;\r\n    z-index: 1;\r\n    position: relative;\r\n    background: #fff;\r\n    padding: 1em;\r\n    border-radius: 2px;\r\n  }\r\n\r\n  .dd-item {\r\n    display: block;\r\n    position: relative;\r\n    list-style: none;\r\n    font-family: \"Roboto\", \"Helvetica\", \"Arial\", sans-serif;\r\n    min-height: 48px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    font-size: 16px;\r\n    min-height: 120px;\r\n    overflow: hidden;\r\n    z-index: 1;\r\n    position: relative;\r\n    background: #fff;\r\n    border-radius: 2px;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n  .title {\r\n    align-self: flex-end;\r\n    color: inherit;\r\n    display: block;\r\n    display: flex;\r\n    font-size: 24px;\r\n    line-height: normal;\r\n    overflow: hidden;\r\n    transform-origin: 149px 48px;\r\n    margin: 0;\r\n  }\r\n\r\n  .text {\r\n    color: grey;\r\n    border-top: 1px solid;\r\n    font-size: 1rem;\r\n    font-weight: 400;\r\n    line-height: 18px;\r\n    overflow: hidden;\r\n    padding: 16px;\r\n    width: 90%;\r\n  }\r\n\r\n  .actions {\r\n    border-top: 1px solid rgba(0, 0, 0, .1);\r\n    font-size: 8px;\r\n    line-height: normal;\r\n    width: 100%;\r\n    color: #B0BEC5;\r\n    padding: 8px;\r\n    box-sizing: border-box;\r\n  }\r\n\r\n\r\n  /**\r\n   * Nestable\r\n   */\r\n\r\n  .dd {\r\n    position: relative;\r\n    display: block;\r\n    list-style: none;\r\n  }\r\n\r\n  .dd-list {\r\n    display: block;\r\n    position: relative;\r\n    margin: 0;\r\n    padding: 0;\r\n    list-style: none;\r\n  }\r\n\r\n  .dd-list .dd-list {\r\n    padding-left: 30px;\r\n  }\r\n\r\n  .dd-collapsed .dd-list {\r\n    display: none;\r\n  }\r\n\r\n  .dd-item {\r\n    display: block;\r\n    margin: 5px 0;\r\n    padding: 5px 10px;\r\n    color: #333;\r\n    text-decoration: none;\r\n    font-weight: bold;\r\n    border: 1px solid #ccc;\r\n    background: #fafafa;\r\n    border-radius: 3px;\r\n    box-sizing: border-box;\r\n    -moz-box-sizing: border-box;\r\n  }\r\n\r\n  .dd-item:hover {\r\n    background: #fff;\r\n  }\r\n\r\n  .dd-item > button {\r\n    display: block;\r\n    position: relative;\r\n    cursor: move;\r\n    float: left;\r\n    width: 25px;\r\n    height: 20px;\r\n    margin: 5px 0;\r\n    padding: 0;\r\n    text-indent: 100%;\r\n    white-space: nowrap;\r\n    overflow: hidden;\r\n    border: 0;\r\n    background: transparent;\r\n    font-size: 12px;\r\n    line-height: 1;\r\n    text-align: center;\r\n    font-weight: bold;\r\n  }\r\n\r\n  .dd-item > button:before {\r\n    content: '+';\r\n    display: block;\r\n    position: absolute;\r\n    width: 100%;\r\n    text-align: center;\r\n    text-indent: 0;\r\n  }\r\n\r\n  .dd-item > button[data-action=\"collapse\"]:before {\r\n    content: '<i class=\"material-icons\">filter_none</i>';\r\n  }\r\n\r\n  .dd-placeholder,\r\n  .dd-empty {\r\n    margin: 5px 0;\r\n    padding: 0;\r\n    min-height: 30px;\r\n    background: #E0E0E0;\r\n    border: 1px dashed #b6bcbf;\r\n    box-sizing: border-box;\r\n    -moz-box-sizing: border-box;\r\n  }\r\n\r\n  .dd-empty {\r\n    border: 1px dashed #bbb;\r\n    min-height: 100px;\r\n    background-color: #E0E0E0;\r\n    background-size: 60px 60px;\r\n    background-position: 0 0, 30px 30px;\r\n  }\r\n\r\n  .dd-dragel {\r\n    position: absolute;\r\n    pointer-events: none;\r\n    z-index: 9999;\r\n  }\r\n\r\n  .dd-dragel > .dd-item .dd-handle {\r\n    margin-top: 0;\r\n    cursor: move;\r\n  }\r\n\r\n  .dd-dragel .dd-item {\r\n    box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, .5);\r\n    cursor: move;\r\n  }\r\n\r\n#loading\r\n.loading {\r\n  position: fixed;\r\n  z-index: 999;\r\n  height: 2em;\r\n  width: 2em;\r\n  overflow: visible;\r\n  margin: auto;\r\n  top: 0;\r\n  left: 0;\r\n  bottom: 0;\r\n  right: 0;\r\n}\r\n\r\n/* Transparent Overlay */\r\n.loading:before {\r\n  content: '';\r\n  display: block;\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: rgba(0,0,0,0.3);\r\n}\r\n\r\n/* :not(:required) hides these rules from IE9 and below */\r\n.loading:not(:required) {\r\n  /* hide \"loading...\" text */\r\n  font: 0/0 a;\r\n  color: transparent;\r\n  text-shadow: none;\r\n  background-color: transparent;\r\n  border: 0;\r\n}\r\n\r\n.loading:not(:required):after {\r\n  content: '';\r\n  display: block;\r\n  font-size: 10px;\r\n  width: 1em;\r\n  height: 1em;\r\n  margin-top: -0.5em;\r\n  -webkit-animation: spinner 1500ms infinite linear;\r\n  animation: spinner 1500ms infinite linear;\r\n  border-radius: 0.5em;\r\n  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;\r\n}\r\n\r\n/* Animation */\r\n\r\n@-webkit-keyframes spinner {\r\n  0% {\r\n    transform: rotate(0deg);\r\n  }\r\n  100% {\r\n    transform: rotate(360deg);\r\n  }\r\n}\r\n@keyframes spinner {\r\n  0% {\r\n    transform: rotate(0deg);\r\n  }\r\n  100% {\r\n    transform: rotate(360deg);\r\n  }\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -5180,7 +6179,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n\tpadding: 30px 20%;\n  }\n  h1 {\n\tfont-size: 2em;\n\ttext-align: center;\n  }", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\r\n\tpadding: 30px 20%;\r\n  }\r\n  h1 {\r\n\tfont-size: 2em;\r\n\ttext-align: center;\r\n  }", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -5204,7 +6203,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n    margin: 0;\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',\n      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',\n      sans-serif;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n  }\n  \n  code {\n    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',\n      monospace;\n  }\n  ", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\r\n    margin: 0;\r\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',\r\n      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',\r\n      sans-serif;\r\n    -webkit-font-smoothing: antialiased;\r\n    -moz-osx-font-smoothing: grayscale;\r\n  }\r\n  \r\n  code {\r\n    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',\r\n      monospace;\r\n  }\r\n  ", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -37342,10 +38341,10 @@ var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMP
 
 /***/ }),
 
-/***/ "./resources/js/components/Board/index.css":
-/*!*************************************************!*\
-  !*** ./resources/js/components/Board/index.css ***!
-  \*************************************************/
+/***/ "./resources/js/components/IncidentBoard/index.css":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/IncidentBoard/index.css ***!
+  \*********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -37355,7 +38354,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_index_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./index.css */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/Board/index.css");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_index_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./index.css */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/IncidentBoard/index.css");
 
             
 
@@ -37386,6 +38385,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_index_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./index.css */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/Incidente/index.css");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_index_css__WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_index_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./resources/js/components/TicketBoard/index.css":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/TicketBoard/index.css ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_index_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./index.css */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/TicketBoard/index.css");
 
             
 

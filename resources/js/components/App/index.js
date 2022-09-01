@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Board from '../Board';
+import TicketBoard from '../TicketBoard';
+import IncidentBoard from '../IncidentBoard';
 import styled from 'styled-components';
 
 const StyledApp = styled.main`
@@ -18,7 +19,8 @@ justify-content: space-around;
 function App() {
     return ( 
         <StyledApp>
-        <Board />
+        <IncidentBoard />
+        <TicketBoard />
         </StyledApp>
     );
 }

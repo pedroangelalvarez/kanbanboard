@@ -326,14 +326,18 @@ export default class IBoard extends React.Component {
       this.updateTicket(project.id, project["status"]);
 
     } else if(this.state.draggedOverCol === 2 || project.asignado === ""){
-      //const updatedProjects = this.state.projects.slice(0);
-    /*updatedProjects.find((projectObject) => {
+      this.setState({ ticketActivo: project.id });
+      this.setState({popupActive: true});
+      console.log("Activando pop up")
+
+    } else {
+      const updatedProjects = this.state.projects.slice(0);
+      updatedProjects.find((projectObject) => {
       return projectObject.id === project.id;
-    }).status = this.state.draggedOverCol;*/
-
-    this.setState({popupActive: true});
-    console.log("Activando pop up")
-
+      }).status = this.state.draggedOverCol;
+      this.setState({ projects: updatedProjects });
+      console.log(this.state.projects);
+      this.updateTicket(project.id, project["status"]);
     }
 
       
@@ -350,7 +354,7 @@ export default class IBoard extends React.Component {
     this.setState({ projects: updatedProjects });
     console.log(this.state.draggedOverCol);
     //Actualizando el ticket en la base de datos
-    this.updateTicket(id, project["status"]);
+    this.updateTicket(id, this.state.draggedOverCol);
     this.updateAsignacion(id, asignado);
   }
 
