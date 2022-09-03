@@ -6,6 +6,7 @@ import detalles from './index.css';
 import axios from 'axios';
 import Swal from 'sweetalert2'
 import "@fontsource/karla";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 let colorCard = "#f9fdf7";
 
@@ -325,11 +326,13 @@ export default class IBoard extends React.Component {
       console.log(this.state.projects);
       this.updateIncidente(project.id, project["status"]);
 
-    } else if(this.state.draggedOverCol === 2 || project.asignado === ""){
-      this.setState({ incidenteActivo: project.id });
+    } else if(project.asignado === "" || project.asignado === null){
+      /*this.setState({ ticketActivo: project.id });
       this.setState({popupActive: true});
-      console.log("Activando pop up")
-
+      console.log("Activando pop up")*/
+      alert("El incidente no está asignado aún");
+      NotificationManager.error('ERROR', 'El ticket no está asignado');
+      console.log("El ticket no esta asignado");
     } else {
       const updatedProjects = this.state.projects.slice(0);
       updatedProjects.find((projectObject) => {

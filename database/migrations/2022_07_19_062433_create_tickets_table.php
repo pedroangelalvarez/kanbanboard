@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('tipo');
             $table->string('solicitante');
-            $table->string('asignado');
+            $table->string('asignado')->nullable();
             $table->string('responsable');
             $table->integer('incidenteId')->nullable();
             //$table->timestamps();

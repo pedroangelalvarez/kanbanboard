@@ -39,6 +39,7 @@
         "mui": "^0.0.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-notifications": "^1.7.4",
         "styled-components": "^5.3.5",
         "sweetalert2": "^11.4.23",
         "webpack": "^5.73.0"

@@ -6,6 +6,7 @@ import detalles from './index.css';
 import axios from 'axios';
 import Swal from 'sweetalert2'
 import "@fontsource/karla";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 let colorCard = "#f9fdf7";
 
@@ -312,7 +313,6 @@ export default class IBoard extends React.Component {
     this.setState({ statusPrevio: proyectoActivo.status });
 
     console.log("el ticket "+project.id+" se movio de la columna "+this.state.statusPrevio+" a la columna "+this.state.draggedOverCol);
-
     if (this.state.statusPrevio === this.state.draggedOverCol) {
         return;
     } else if(this.state.draggedOverCol === 1 || this.state.draggedOverCol === 5){
@@ -325,10 +325,13 @@ export default class IBoard extends React.Component {
       console.log(this.state.projects);
       this.updateTicket(project.id, project["status"]);
 
-    } else if(this.state.draggedOverCol === 2 || project.asignado === ""){
-      this.setState({ ticketActivo: project.id });
+    } else if(project.asignado === "" || project.asignado === null){
+      /*this.setState({ ticketActivo: project.id });
       this.setState({popupActive: true});
-      console.log("Activando pop up")
+      console.log("Activando pop up")*/
+      alert("El ticket aún no está asignado");
+      NotificationManager.error('ERROR', 'El ticket no está asignado');
+      console.log("El ticket no esta asignado");
 
     } else {
       const updatedProjects = this.state.projects.slice(0);
@@ -365,20 +368,12 @@ export default class IBoard extends React.Component {
 
     return (
         <div >
-          {(this.state.popupActive)
-					? <div style={{'position': 'relative','background': 'rgba(0, 0, 0, 1)'}}>
-            <div style={{'position': 'absolute',  'top': '50%',  'left': '50%', 'margin':'-25px 0 0 -25px' , 'zIndex': '101'}}>
-            <form onSubmit={this.handleSubmit}>
-              <label>
-                <p>Asignar ticket {this.state.ticketActivo}:</p>
-                <input type="text" value={this.state.value} onChange={this.updateAsignado} />
-              </label>
-              <input type="submit" value="Submit" />
-            </form>
-            </div>
-          </div>
-          : <div>
-				{this.columns.map((column) => {                          //<---------MAPING COLUMNS
+          <div>
+				{
+        (this.state.popupActive)
+					? null
+          :null}
+        {this.columns.map((column) => {                          //<---------MAPING COLUMNS
 					return (
 						<KanbanColumn
 							name={ column.name }
@@ -390,10 +385,9 @@ export default class IBoard extends React.Component {
 							key={ column.stage }
 						/>
 					);
-				})}
+          })
+        }
       </div>
-      }
-
         </div>
     );
   }

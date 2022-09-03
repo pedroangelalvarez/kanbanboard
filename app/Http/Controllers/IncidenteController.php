@@ -144,7 +144,7 @@ class IncidenteController extends Controller
      * @param  \App\Models\Incidente  $incidente
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Incidente $incidente)
+    public function update(Request $request, $id)
     {
         /*
         $request->validate([
@@ -166,11 +166,11 @@ class IncidenteController extends Controller
                 if (count($request->all()) == 1){
                     $keys = array_keys($request->all());
                     $values = array_values($request->all());
-                    $ticket = Incidencia::where('id',$id);
+                    $ticket = Incidente::where('id',$id);
                     $ticket->update([$keys[0]=>$values[0]]);
                 }
                 else{
-                    $ticket = Incidencia::where("id", $id)->update([
+                    $ticket = Incidente::where("id", $id)->update([
                         'transDate'=>$request->transDate,
                         'transTime'=>$request->transTime,
                         'status'=>$request->status,
@@ -196,7 +196,7 @@ class IncidenteController extends Controller
         }catch(\Exception $e){
             \Log::error($e->getMessage());
             return response()->json([
-                'message'=>'Something goes wrong while updating a incidente!!'
+                'message'=>$e->getMessage()
             ],500);
         }
     }

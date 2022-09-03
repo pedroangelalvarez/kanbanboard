@@ -17,10 +17,15 @@ justify-content: space-around;
 `
 
 function App() {
+
+  var estado = "";
     return ( 
         <StyledApp>
-        <IncidentBoard />
-        <TicketBoard />
+        <select id='selector' defaultValue={"Tickets"} onChange={e => estado = e.target.value} className="form-control">
+          <option value="Tickets">Tickets</option>
+          <option value="Incidentes">Incidentes</option>
+        </select>
+        {estado === 'Incidentes' ?  <IncidentBoard />: <TicketBoard />}
         </StyledApp>
     );
 }
