@@ -1,5 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState, Component } from "react";
+import ReactDOM from "react-dom";
+import { Link } from 'react-router-dom';
 import TicketBoard from '../TicketBoard';
 import IncidentBoard from '../IncidentBoard';
 import styled from 'styled-components';
@@ -15,19 +16,28 @@ justify-content: space-around;
     margin-bottom: 2em;
   }
 `
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      option: "Tickets",
+    }
+  }
 
-function App() {
-
-  var estado = "";
-    return ( 
+  render() {
+    return (
         <StyledApp>
-        <select id='selector' defaultValue={"Tickets"} onChange={e => estado = e.target.value} className="form-control">
+        
+        <select id='selector' defaultValue={"Tickets"} onChange={e => this.setState({ option: e.target.value}) } className="form-control">
           <option value="Tickets">Tickets</option>
           <option value="Incidentes">Incidentes</option>
         </select>
-        {estado === 'Incidentes' ?  <IncidentBoard />: <TicketBoard />}
+        <a  style={{'right':'1px', 'float': 'right'}} href={"/login"}>
+         Cerrar Sesión
+        </a>
+        <br/>
+        {this.state.option === 'Incidentes' ?  <IncidentBoard />: <TicketBoard />}
         </StyledApp>
     );
+  }
 }
-
-export default App;

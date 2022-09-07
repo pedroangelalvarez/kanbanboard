@@ -111,6 +111,7 @@ export default class IBoard extends React.Component {
       statusPrevio: 0,
       ticketActivo: 0,
       popupData: [],
+      usuarios: [],
     };
 
     this.handleOnDragEnter = this.handleOnDragEnter.bind(this);
@@ -228,6 +229,25 @@ export default class IBoard extends React.Component {
     console.log("Datos de la pizarra: ");
     console.log(this.state.data);
 
+    // Retrieve user data from the database.
+    fetch('/getusuarios', {
+      credentials: 'include'
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            console.log('Error with session response');
+        }
+    })
+    .then((result) => {
+        // Set the state of data.
+        this.setState({ usuarios: result['data']})
+        console.log(result['data']);
+    })
+    .catch((error) => {
+      console.log('Error: ', error);
+  });
     //this.setState({ projects: projectList, isLoading: false });
   }
 
@@ -303,6 +323,81 @@ export default class IBoard extends React.Component {
 
 
   }
+
+  enviarWhatsapp(telefono,proyecto, status){
+    var estado = "";
+    if(status == 1){
+      estado = "Pendiente";
+    }else if(status == 2){
+      estado = "Asignado";
+    }else if(status == 3){
+      estado = "En Progreso";
+    }else if(status == 4){
+      estado = "Completado";
+    }else if(status == 5){
+      estado = "Cancelado";
+    }
+    console.log("Enviando mensaje a: "+telefono);
+    var data = JSON.stringify({
+      "messaging_product": "whatsapp",
+      "recipient_type": "individual",
+      "to": telefono,
+      "type": "text",
+      "text": {
+        "preview_url": false,
+        "body": "Hola, el ticket T000"+proyecto+" ha cambiado de estado: "+estado
+      }
+    });
+    
+    var config = {
+      method: 'post',
+      url: 'https://graph.facebook.com/v13.0/103358309167301/messages',
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Authorization': 'Bearer EAAGz0nuJUccBAD2qWiqZA1m7WfVIjOq6xTIiK61z6ZBgSDfA8YxvXH5C9FYYx2ZBCozrhx8ikT42G8gxppA2Cyovf6eTSNa192XibBcQS1ENz49TtBmcdlIZCom1rVqkIxNxBiu1jZAIWoN05a0K0Rpiuj7e6k9zQeAI3ACDHpTWVSG1iCHXF'
+      },
+      data : data
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+  enviarWhatsappAsignacion(telefono,proyecto, asignado){
+    var data = JSON.stringify({
+      "messaging_product": "whatsapp",
+      "recipient_type": "individual",
+      "to": telefono,
+      "type": "text",
+      "text": {
+        "preview_url": false,
+        "body": "Hola, el ticket T000"+proyecto+" ha sido asignado a: "+asignado
+      }
+    });
+    
+    var config = {
+      method: 'post',
+      url: 'https://graph.facebook.com/v13.0/103358309167301/messages',
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Authorization': 'Bearer EAAGz0nuJUccBAD2qWiqZA1m7WfVIjOq6xTIiK61z6ZBgSDfA8YxvXH5C9FYYx2ZBCozrhx8ikT42G8gxppA2Cyovf6eTSNa192XibBcQS1ENz49TtBmcdlIZCom1rVqkIxNxBiu1jZAIWoN05a0K0Rpiuj7e6k9zQeAI3ACDHpTWVSG1iCHXF'
+      },
+      data : data
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
 //this is called when a Kanban card dropped over a column (called by card)
   async handleOnDragEnd(e, project) {
     e.preventDefault();
@@ -324,7 +419,11 @@ export default class IBoard extends React.Component {
       this.setState({ projects: updatedProjects });
       console.log(this.state.projects);
       this.updateTicket(project.id, project["status"]);
-
+      console.log(this.state.usuarios);
+      var usuario = this.state.usuarios.slice(0).find((entry) => {
+        return entry.mobile.toString() === project.solicitante.toString();
+      });
+      this.enviarWhatsapp(usuario.mobile,project.id,this.state.draggedOverCol);
     } else if(project.asignado === "" || project.asignado === null){
       /*this.setState({ ticketActivo: project.id });
       this.setState({popupActive: true});
@@ -341,6 +440,28 @@ export default class IBoard extends React.Component {
       this.setState({ projects: updatedProjects });
       console.log(this.state.projects);
       this.updateTicket(project.id, project["status"]);
+
+      
+      var solicitante = this.state.usuarios.find((entry) => {
+        return entry.mobile.toString() === project.solicitante.toString();
+      });
+
+      console.log(this.state.usuarios);
+      console.log(project);
+      console.log(project.asignado);
+      console.log("---------");
+      console.log(solicitante.mobile);
+      if (this.state.draggedOverCol === 2){
+        
+        var asignado = this.state.usuarios.slice(0).find((entry) => {
+          return entry.id.toString() === project.asignado.toString();
+        });
+        this.enviarWhatsappAsignacion(solicitante.mobile,project.id,asignado.nombre+ " "+asignado.apellido);
+      }
+      else{
+        this.enviarWhatsapp(solicitante.mobile,project.id,this.state.draggedOverCol);
+      }
+
     }
 
       

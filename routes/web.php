@@ -51,3 +51,7 @@ Route::get('/getusuarios', function (Request $request) {
     $usuario = Usuario::paginate(100);
     return $usuario;
 });
+
+Route::get('/login', function (){
+    return view('login');
+});

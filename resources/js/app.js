@@ -8,4 +8,6 @@ if (server_request_uri === '/'){
     require('./components/IndexTicket');
 } else if (server_request_uri.includes('incidente')){
     require('./components/IndexIncidente');
+} else if (server_request_uri.includes('login')){
+    require('./components/IndexLogin');
 }

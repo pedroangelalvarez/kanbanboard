@@ -154,25 +154,19 @@ class TicketController extends Controller
                 $ticket->update([$keys[0]=>$values[0]]);
             }
             else{
-                $ticket = Ticket::where("id", $id)->update([
-                    'transDate'=>$request->transDate,
-                    'transTime'=>$request->transTime,
-                    'status'=>$request->status,
-                    'priority'=>$request->priority,
-                    'complexity'=>$request->complexity,
-                    'description'=>$request->description,
-                    'tipo'=>$request->tipo,
-                    'solicitante'=>$request->solicitante,
-                    'asignado'=>$request->asignado,
-                    'responsable'=>$request->responsable,
-                    'incidenteId'=>$request->incidenteId
-                ]);
+                
+                for ($i=0; $i < count($request->all()); $i++) {
+                    $keys = array_keys($request->all());
+                    $values = array_values($request->all());
+                    $ticket = Ticket::where('id',$id);
+                    $ticket->update([$keys[$i]=>$values[$i]]);
+                }
             }
             
 
             //return $ticket;
             return response()->json([
-                'message'=>'Ticket Updated Successfully!!'
+                'message'=>$ticket
             ]);
 
         }catch(\Exception $e){

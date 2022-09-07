@@ -111,6 +111,8 @@ export default class IBoard extends React.Component {
       statusPrevio: 0,
       incidenteActivo: 0,
       popupData: [],
+      usuarios: [],
+      tickets: [],
     };
 
     this.handleOnDragEnter = this.handleOnDragEnter.bind(this);
@@ -228,6 +230,46 @@ export default class IBoard extends React.Component {
     console.log("Datos de la pizarra: ");
     console.log(this.state.data);
 
+    //Retrieve ticket data from the database.
+    fetch('/gettickets', {
+        credentials: 'include'
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            console.log('Error with session response');
+        }
+    })
+    .then((result) => {
+        // Set the state of data.
+        this.setState({ tickets: result['data']})
+        console.log(result['data']);
+    })
+    .catch((error) => {
+        console.log('Error: ', error);
+    });
+
+    // Retrieve user data from the database.
+    fetch('/getusuarios', {
+        credentials: 'include'
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            console.log('Error with session response');
+        }
+    })
+    .then((result) => {
+        // Set the state of data.
+        this.setState({ usuarios: result['data']})
+        console.log(result['data']);
+    })
+    .catch((error) => {
+      console.log('Error: ', error);
+    });
+
     //this.setState({ projects: projectList, isLoading: false });
   }
 
@@ -303,6 +345,38 @@ export default class IBoard extends React.Component {
 
 
   }
+
+
+  enviarWhatsappConfirmacion(telefono,proyecto){
+    var data = JSON.stringify({
+      "messaging_product": "whatsapp",
+      "recipient_type": "individual",
+      "to": "51"+telefono,
+      "type": "text",
+      "text": {
+        "preview_url": false,
+        "body": "Hola, el ticket T000"+proyecto+" ha sido solucionado, por favor revisar."
+      }
+    });
+    
+    var config = {
+      method: 'post',
+      url: 'https://graph.facebook.com/v13.0/103358309167301/messages',
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Authorization': 'Bearer EAAGz0nuJUccBAD2qWiqZA1m7WfVIjOq6xTIiK61z6ZBgSDfA8YxvXH5C9FYYx2ZBCozrhx8ikT42G8gxppA2Cyovf6eTSNa192XibBcQS1ENz49TtBmcdlIZCom1rVqkIxNxBiu1jZAIWoN05a0K0Rpiuj7e6k9zQeAI3ACDHpTWVSG1iCHXF'
+      },
+      data : data
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
 //this is called when a Kanban card dropped over a column (called by card)
   async handleOnDragEnd(e, project) {
     e.preventDefault();
@@ -341,6 +415,17 @@ export default class IBoard extends React.Component {
       this.setState({ projects: updatedProjects });
       console.log(this.state.projects);
       this.updateIncidente(project.id, project["status"]);
+
+      
+      if (this.state.draggedOverCol === 4){
+
+        var ticketsInvolucrados = this.state.tickets.slice(0).filter((entry) => {
+          return entry.incidenteId.toString() === project.id.toString();
+        });
+        ticketsInvolucrados.forEach(ticket => {
+          this.enviarWhatsappConfirmacion(ticket.mobile,ticket.id);
+        });
+      }
     }
 
       
