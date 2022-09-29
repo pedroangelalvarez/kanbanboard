@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import "@fontsource/karla";
+import moment from "moment";
 import './index.css';
 
 const StyledCardForm = styled.div`
@@ -182,6 +183,38 @@ export default class Ticket extends React.Component {
 
     saveData(){
 
+      function enviarWhatsapp(telefono,proyecto, estado){
+        console.log("Enviando mensaje a: "+telefono);
+        var data = JSON.stringify({
+          "messaging_product": "whatsapp",
+          "recipient_type": "individual",
+          "to": telefono,
+          "type": "text",
+          "text": {
+            "preview_url": false,
+            "body": "Hola, el ticket T000"+proyecto+" ha cambiado de estado: "+estado
+          }
+        });
+        
+        var config = {
+          method: 'post',
+          url: 'https://graph.facebook.com/v13.0/103358309167301/messages',
+          headers: { 
+            'Content-Type': 'application/json', 
+            'Authorization': 'Bearer EAAGz0nuJUccBAHftEbT3TyoUYn3ZAxR0VZA176Ei3LXKin0YUssMYKxWwIRKeFVxKuzqWGTHW98UOYVr7sjAZBATPFkFZAxgnVETQ0iDfNZBm1ukPazuYCHbiuxa7d632iZBoFuMurhfv6DJX5emBfTJ4B1iJvOR5UoNxwnZBv01vPolQLQER2y'
+          },
+          data : data
+        };
+        
+        axios(config)
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      }
+
       var jsonObject = {
         "transDate": this.state.transDate,
         "transTime": this.state.transTime,
@@ -195,6 +228,23 @@ export default class Ticket extends React.Component {
         "responsable": this.state.responsable,
         "incidenteId": this.state.incidenteId,
       };
+      if(this.state.status === "Completado" || this.state.status === "Cancelado"){
+        jsonObject = {
+          "transDate": this.state.transDate,
+          "transTime": this.state.transTime,
+          "status": this.state.status,
+          "priority": this.state.priority,
+          "complexity": this.state.complexity,
+          "description": this.state.description,
+          "tipo": this.state.tipo,
+          "solicitante": this.state.solicitante,
+          "asignado": this.state.asignado,
+          "responsable": this.state.responsable,
+          "incidenteId": this.state.incidenteId,
+          "closeDate": moment().format('YYYY-MM-DD'),
+          "closeTime": moment().format('HH:mm:ss')
+        };
+      }
       
       console.log(this.state.solicitante);
       console.log(this.state.asignado);
@@ -205,6 +255,47 @@ export default class Ticket extends React.Component {
       var config = {
         method: 'patch',
         url: '/api/tickets/'+this.state.id,
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        data : data
+      };
+      
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        enviarWhatsapp(this.state.solicitante,this.state.id,this.state.status);
+      })
+    .catch(function (error) {
+        console.log(error);
+      });
+
+
+
+      jsonObject = {
+        "status": this.state.status,
+        "priority": this.state.priority,
+        "complexity": this.state.complexity,
+        "asignado": this.state.asignado,
+        "responsable": this.state.responsable,
+      };
+      if(this.state.status === "Completado" || this.state.status === "Cancelado"){
+        jsonObject = {
+          "status": this.state.status,
+          "priority": this.state.priority,
+          "complexity": this.state.complexity,
+          "asignado": this.state.asignado,
+          "responsable": this.state.responsable,
+          "closeDate": moment().format('YYYY-MM-DD'),
+          "closeTime": moment().format('HH:mm:ss')
+        };
+      }
+      console.log(jsonObject);
+      data = JSON.stringify(jsonObject);
+      
+      config = {
+        method: 'patch',
+        url: '/api/incidentes/'+ticket.incidenteId,
         headers: { 
           'Content-Type': 'application/json'
         },

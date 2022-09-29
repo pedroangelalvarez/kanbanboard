@@ -26,8 +26,8 @@ export default class App extends React.Component {
 
   render() {
     return (
-        <StyledApp>
-        
+      <div>
+        <div>
         <select id='selector' defaultValue={"Tickets"} onChange={e => this.setState({ option: e.target.value}) } className="form-control">
           <option value="Tickets">Tickets</option>
           <option value="Incidentes">Incidentes</option>
@@ -35,9 +35,11 @@ export default class App extends React.Component {
         <a  style={{'right':'1px', 'float': 'right'}} href={"/login"}>
          Cerrar Sesión
         </a>
-        <br/>
+        </div>
+        <StyledApp>
         {this.state.option === 'Incidentes' ?  <IncidentBoard />: <TicketBoard />}
         </StyledApp>
+        </div>
     );
   }
 }

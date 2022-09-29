@@ -6,6 +6,7 @@ import detalles from './index.css';
 import axios from 'axios';
 import Swal from 'sweetalert2'
 import "@fontsource/karla";
+import moment from "moment";
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 let colorCard = "#f9fdf7";
@@ -354,7 +355,7 @@ export default class IBoard extends React.Component {
       url: 'https://graph.facebook.com/v13.0/103358309167301/messages',
       headers: { 
         'Content-Type': 'application/json', 
-        'Authorization': 'Bearer EAAGz0nuJUccBAD2qWiqZA1m7WfVIjOq6xTIiK61z6ZBgSDfA8YxvXH5C9FYYx2ZBCozrhx8ikT42G8gxppA2Cyovf6eTSNa192XibBcQS1ENz49TtBmcdlIZCom1rVqkIxNxBiu1jZAIWoN05a0K0Rpiuj7e6k9zQeAI3ACDHpTWVSG1iCHXF'
+        'Authorization': 'Bearer EAAGz0nuJUccBAHftEbT3TyoUYn3ZAxR0VZA176Ei3LXKin0YUssMYKxWwIRKeFVxKuzqWGTHW98UOYVr7sjAZBATPFkFZAxgnVETQ0iDfNZBm1ukPazuYCHbiuxa7d632iZBoFuMurhfv6DJX5emBfTJ4B1iJvOR5UoNxwnZBv01vPolQLQER2y'
       },
       data : data
     };
@@ -385,7 +386,7 @@ export default class IBoard extends React.Component {
       url: 'https://graph.facebook.com/v13.0/103358309167301/messages',
       headers: { 
         'Content-Type': 'application/json', 
-        'Authorization': 'Bearer EAAGz0nuJUccBAD2qWiqZA1m7WfVIjOq6xTIiK61z6ZBgSDfA8YxvXH5C9FYYx2ZBCozrhx8ikT42G8gxppA2Cyovf6eTSNa192XibBcQS1ENz49TtBmcdlIZCom1rVqkIxNxBiu1jZAIWoN05a0K0Rpiuj7e6k9zQeAI3ACDHpTWVSG1iCHXF'
+        'Authorization': 'Bearer EAAGz0nuJUccBAHftEbT3TyoUYn3ZAxR0VZA176Ei3LXKin0YUssMYKxWwIRKeFVxKuzqWGTHW98UOYVr7sjAZBATPFkFZAxgnVETQ0iDfNZBm1ukPazuYCHbiuxa7d632iZBoFuMurhfv6DJX5emBfTJ4B1iJvOR5UoNxwnZBv01vPolQLQER2y'
       },
       data : data
     };
@@ -463,6 +464,62 @@ export default class IBoard extends React.Component {
       }
 
     }
+
+    if(this.state.draggedOverCol === 4 || this.state.draggedOverCol === 5){
+      
+      jsonObject = {
+        "closeDate": moment().format('YYYY-MM-DD'),
+        "closeTime": moment().format('HH:mm:ss')
+      };
+    
+    console.log(jsonObject);
+    data = JSON.stringify(jsonObject);
+    config = {
+      method: 'patch',
+      url: '/api/tickets/'+project.id.toString(),
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+  .catch(function (error) {
+      console.log(error);
+    });
+
+
+    jsonObject = {
+        "status": this.state.draggedOverCol,
+        "closeDate": moment().format('YYYY-MM-DD'),
+        "closeTime": moment().format('HH:mm:ss')
+      };
+    console.log(jsonObject);
+    data = JSON.stringify(jsonObject);
+    
+    config = {
+      method: 'patch',
+      url: '/api/incidentes/'+updatedProjects.find((projectObject) => {
+      return projectObject.id === project.id;
+      }).incidentId,
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+  .catch(function (error) {
+      console.log(error);
+    });
+
+  }
 
       
   }

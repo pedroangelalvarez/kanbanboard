@@ -23,8 +23,11 @@ class TicketController extends Controller
                             ->where('transTime', $params['transTime'])
                             ->get();
             return response()->json($ticket);
-        }
-        else {
+        } else if (isset($params['incidenteId'])){
+            $ticket = Ticket::where('incidenteId', $params['incidenteId'])
+                            ->get();
+            return response()->json($ticket);
+        } else {
             return Ticket::select('id','transDate','transTime','closeDate','closeTime','status','priority','complexity','description','tipo','solicitante','asignado','responsable','incidenteId')->get();
         }
     }

@@ -6,6 +6,7 @@ import detalles from './index.css';
 import axios from 'axios';
 import Swal from 'sweetalert2'
 import "@fontsource/karla";
+import moment from "moment";
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 let colorCard = "#f9fdf7";
@@ -351,20 +352,47 @@ export default class IBoard extends React.Component {
     var data = JSON.stringify({
       "messaging_product": "whatsapp",
       "recipient_type": "individual",
-      "to": "51"+telefono,
-      "type": "text",
-      "text": {
-        "preview_url": false,
-        "body": "Hola, el ticket T000"+proyecto+" ha sido solucionado, por favor revisar."
+      "to": +telefono,
+      "type": "interactive",
+      "interactive": {
+        "type": "button",
+        "header": {
+          "type": "text",
+          "text": "Ticket T00"+proyecto
+        },
+        "body": {
+          "text": "Confirme sí su incidente ha sido resuelto"
+        },
+        "footer": {
+          "text": "MDCG"
+        },
+        "action": {
+          "buttons": [
+            {
+              "type": "reply",
+              "reply": {
+                "id": "slot-1",
+                "title": "Resuelto T00"+proyecto+"✅"
+              }
+            },
+            {
+              "type": "reply",
+              "reply": {
+                "id": "slot-2",
+                "title": "No resuelto T00"+proyecto+"❌"
+              }
+            }
+          ]
+        }
       }
     });
-    
+        
     var config = {
       method: 'post',
       url: 'https://graph.facebook.com/v13.0/103358309167301/messages',
       headers: { 
         'Content-Type': 'application/json', 
-        'Authorization': 'Bearer EAAGz0nuJUccBAD2qWiqZA1m7WfVIjOq6xTIiK61z6ZBgSDfA8YxvXH5C9FYYx2ZBCozrhx8ikT42G8gxppA2Cyovf6eTSNa192XibBcQS1ENz49TtBmcdlIZCom1rVqkIxNxBiu1jZAIWoN05a0K0Rpiuj7e6k9zQeAI3ACDHpTWVSG1iCHXF'
+        'Authorization': 'Bearer EAAGz0nuJUccBAHftEbT3TyoUYn3ZAxR0VZA176Ei3LXKin0YUssMYKxWwIRKeFVxKuzqWGTHW98UOYVr7sjAZBATPFkFZAxgnVETQ0iDfNZBm1ukPazuYCHbiuxa7d632iZBoFuMurhfv6DJX5emBfTJ4B1iJvOR5UoNxwnZBv01vPolQLQER2y'
       },
       data : data
     };
@@ -422,13 +450,77 @@ export default class IBoard extends React.Component {
         var ticketsInvolucrados = this.state.tickets.slice(0).filter((entry) => {
           return entry.incidenteId.toString() === project.id.toString();
         });
+        console.log("TICKETS INVOLUCRADOS");
+        console.log(ticketsInvolucrados);
         ticketsInvolucrados.forEach(ticket => {
-          this.enviarWhatsappConfirmacion(ticket.mobile,ticket.id);
+          this.enviarWhatsappConfirmacion(ticket.solicitante,ticket.id);
         });
       }
+ 
     }
 
+    if(this.state.draggedOverCol === 4 || this.state.draggedOverCol === 5){
       
+        jsonObject = {
+          "status": this.state.draggedOverCol,
+          "closeDate": moment().format('YYYY-MM-DD'),
+          "closeTime": moment().format('HH:mm:ss')
+        };
+      
+      console.log(jsonObject);
+      data = JSON.stringify(jsonObject);
+      config = {
+        method: 'patch',
+        url: '/api/incidentes/'+project.id.toString(),
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        data : data
+      };
+      
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+    .catch(function (error) {
+        console.log(error);
+      });
+    }
+
+    var ticketsInvolucrados = this.state.tickets.slice(0).filter((entry) => {
+      return entry.incidenteId.toString() === project.id.toString();
+    });
+    
+    ticketsInvolucrados.forEach(ticket => {
+      
+    
+        jsonObject = {
+          "status": this.state.draggedOverCol,
+          "closeDate": moment().format('YYYY-MM-DD'),
+          "closeTime": moment().format('HH:mm:ss')
+        };
+      console.log(jsonObject);
+      data = JSON.stringify(jsonObject);
+      
+      config = {
+        method: 'patch',
+        url: '/api/tickets/'+ticket.id.toString(),
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        data : data
+      };
+      
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+    .catch(function (error) {
+        console.log(error);
+      });
+    });
+
+
   }
 
   updateAsignado(id, asignado){
